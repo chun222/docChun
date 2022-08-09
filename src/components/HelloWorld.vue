@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-09 17:38:12
+ * @LastEditTime: 2022-08-09 17:45:13
  * @FilePath: \web\src\components\HelloWorld.vue
 -->
 <script setup>
@@ -136,6 +136,8 @@ escription 1
 |居左测试文本111|居中测试文本222|居右测试文本333|
 
 ![中文](./docimg/5.png)
+
+![中文](http://localhost:8082/src/assets/vue.svg)
 
 
 
