@@ -1,13 +1,53 @@
+<!--
+ * @Date: 2022-08-08 14:16:39
+ * @LastEditors: 春贰
+ * @gitee: https://gitee.com/chun22222222
+ * @github: https://github.com/chun222
+ * @Desc: 
+ * @LastEditTime: 2022-08-09 17:13:16
+ * @FilePath: \web\index.html
+-->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + Vue</title>
+  <script>
+    window.MathJax = {
+      options: {
+        enableMenu: false,
+      },
+      loader: {
+        load: ['[tex]/tagformat']
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady();
+        }
+      },
+      tex: {
+        packages: { '[+]': ['tagformat'] },
+        tagSide: 'left',
+        macros: {
+          RR: '{\\bf R}',
+          bold: ['{\\bf #1}', 1]
+        },
+        tagformat: {
+          tag: (n) => '[' + n + ']'
+        }
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+  $$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.$$
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
