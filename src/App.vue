@@ -1,31 +1,25 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+<!--
+ * @Date: 2022-08-08 14:16:39
+ * @LastEditors: 春贰
+ * @gitee: https://gitee.com/chun22222222
+ * @github: https://github.com/chun222
+ * @Desc: 
+ * @LastEditTime: 2022-08-10 12:26:24
+ * @FilePath: \web\src\App.vue
+-->
+<script>
+import Layout from "@/components/layout/index.vue"; 
+ 
+export default {
+  components: {
+    Layout
+  }
+}
+ </script>
 
-<template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
+<template> 
+    <Layout></Layout>
+</template> 
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>

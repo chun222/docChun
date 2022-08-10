@@ -4,9 +4,13 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-09 18:01:33
+ * @LastEditTime: 2022-08-10 08:33:59
  * @FilePath: \web\src\components\HelloWorld.vue
 -->
+<template>  
+  <div class="card" v-html="rawHtml"></div>
+</template>
+
 <script setup>
 import { ref,onMounted,nextTick } from "vue";
 import { marked } from "marked";
@@ -173,11 +177,7 @@ $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
 // `
 </script>
 
-<template>
-  <h1>{{ msg }}</h1>
 
-  <div class="card" v-html="rawHtml"></div>
-</template>
 
 <style>
 body {

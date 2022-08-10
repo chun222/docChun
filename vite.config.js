@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-08 14:21:12
+ * @LastEditTime: 2022-08-10 12:19:12
  * @FilePath: \web\vite.config.js
  */
 
@@ -25,7 +25,7 @@ const config = ({ mode }) => {
       extensions: ['.js', '.vue', '.json'],
       alias: {
         "@": path.resolve(__dirname, "src"),
-        "component": path.resolve(__dirname, "src/component"),
+        "components": path.resolve(__dirname, "src/components"),
         "img": path.resolve(__dirname, "src/assets/image"),
         "images": path.resolve(__dirname, "src/assets/image"),
         "font": path.resolve(__dirname, "src/assets/font"),
