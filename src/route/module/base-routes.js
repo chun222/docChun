@@ -1,31 +1,34 @@
 /*
- * @Date: 2021-11-30 15:42:07
+ * @Date: 2022-08-10 08:56:08
  * @LastEditors: 春贰
+ * @gitee: https://gitee.com/chun22222222
+ * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 09:58:04
+ * @LastEditTime: 2022-08-10 15:25:46
  * @FilePath: \web\src\route\module\base-routes.js
  */
-/// 基础路由  
-
-export default [  
+export default [
   {
     path: '/',
-    redirect: "/dashboard/console",
+    component: () => import('@/view/index.vue'),
+    meta: {
+      title: '首页'
+    },
     hidden: 0,
-  },  
-   {
+  },
+  {
     path: '/login',
     component: () => import('@/view/base/login.vue'),
     meta: {
-      title: 'login', 
+      title: 'login',
     },
     hidden: 0,
-  },   
+  },
   {
     path: '/error/404',
     component: () => import('@/view/404.vue'),
     meta: {
-      title: '404' 
-    },  
-  } 
+      title: '404'
+    },
+  }
 ]

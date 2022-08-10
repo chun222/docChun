@@ -1,0 +1,23 @@
+
+.title_nav { position: sticky; top:10px; border-left: 1px solid #ccc; padding: 10px;}
+
+#components-layout-demo-responsive .logo {
+    height: 32px; 
+    margin: 16px;
+  }
+  
+  .site-layout-sub-header-background {
+    background: #fff;
+  }
+  
+  .site-layout-background {
+    background: #fff;
+  }
+  
+  .ant-layout-sider {
+        background: #fff !important;
+  }
+  
+  [data-theme='dark'] .site-layout-sub-header-background {
+    background: #141414;
+  }
