@@ -1,5 +1,13 @@
 :root { 
   --light-bg : #ffffff ;
+  --light-footer-bg : #1d202e ; 
+  --chun-font-size-h1: 34px; 
+  --chun-font-size-h2: 30px; 
+  --chun-font-size-h3: 26px; 
+  --chun-font-size-h4: 22px; 
+  --chun-font-size-h5: 18px;
+  --chun-font-size-h6: 14px;
+  --chun-font-size-p: 14px;
 
 
   --mobile-bg-end: #0B0F28;
@@ -57,10 +65,7 @@
   --chun-padding-lg: 24px;
   --chun-padding-xl: 32px;
  
-  --chun-font-size-xs: 12px;
-  --chun-font-size-sm: 14px;
-  --chun-font-size-md: 18px;
-  --chun-font-size-lg: 20px;
+
   --chun-font-weight-bold: 500;
   --chun-line-height-xs: 14px;
   --chun-line-height-sm: 18px;

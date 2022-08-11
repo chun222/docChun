@@ -5,6 +5,142 @@ body,html { padding: 0; margin: 0;}
   padding: 10px;
 }
 
+#content {
+  height: calc(100vh - 160px);
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.content-loading {
+  width: 100%;
+  min-height: 60vh;
+  padding-top: 30vh;
+  text-align: center;
+  background-color: transparent;
+  height: 100%;
+}
+
+.doc-card blockquote {
+  padding: 10px 15px;
+  border-left-style: solid;
+  border-left-width: 10px;
+}
+.doc-card { padding: 20px 20px;}
+.doc-card p {font-size: var(--chun-font-size-p);}
+.doc-card h1 {
+  font-size: var(--chun-font-size-h1);
+}
+ 
+.doc-card h2 {
+  font-size: var(--chun-font-size-h2);
+}
+.doc-card h3 {
+  font-size: var(--chun-font-size-h3);
+}
+.doc-card h4 {
+  font-size: var(--chun-font-size-h4);
+}
+.doc-card h5 {
+  font-size: var(--chun-font-size-h5);
+}
+.doc-card h6 {
+  font-size: var(--chun-font-size-h6);
+}
+.doc-card nav {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: white;
+  margin-right: 10px;
+}
+
+.doc-card nav > ul {
+  position: sticky;
+  top: 5px;
+  margin: 10px 0px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 14px;
+}
+
+.doc-card nav > ul > li {
+  min-width: 125px;
+  padding: 0px 15px;
+}
+
+.doc-card nav > ul > li > ul {
+  padding-left: 25px;
+}
+
+.doc-card nav > ul > li > ul > li {
+  font-size: 0.8em;
+}
+
+.doc-card nav .selected {
+  color: #111;
+  font-weight: bold;
+}
+
+.doc-card nav .selected:hover {
+  text-decoration: none;
+}
+
+.doc-card header {
+  display: flex;
+} 
+
+.doc-card table {
+  border-spacing: 0;
+  border-collapse: collapse; 
+  width: 100%;
+}
+
+.doc-card td, .doc-card th { 
+  padding: 5px;
+}
+
+.doc-card a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.doc-card a:hover {
+  text-decoration: underline;
+}
+
+.doc-card pre {
+  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+}
+
+.doc-card code:not([class]) {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(27,31,35,0.05);
+  border-radius: 3px;
+}
+
+.doc-card .tip-header {  }
+.doc-card .tip-header h4 {   height: 40px; color: currentColor;} 
+.doc-card .tip-header svg { float: left; margin-top:5px;}
+.doc-card .tip-header h4 span { float: left; margin-left: 5px;  }
+
+.doc-card .info,.doc-card .error,.doc-card .success,.doc-card .warning {padding:5px 10px; margin-bottom: 10px; }
+.doc-card .info p,.doc-card .error p,.doc-card .success p,.doc-card .warning p{ color: #000; font-size: 16px; white-space: pre-line;}
+.doc-card .info {background-color: #fefefe; border-left: 4px solid #474748; color:#474748 ; }
+.doc-card .error { background-color: #ffebec; border-left: 4px solid #e13238; color:#e13238 ; }
+.doc-card .success {background-color: #e6f6e6; border-left: 4px solid #009400; color:#009400 ; }
+.doc-card .warning { background-color: #fff8e6; border-left: 4px solid #e6a700;color:#e6a700 ;  }
+
+.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+
+.doc-card .read-the-docs {
+color: #888;
+}
 
  
 

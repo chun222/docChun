@@ -4,17 +4,16 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 17:56:29
- * @FilePath: \web\src\view\index.vue
+ * @LastEditTime: 2022-08-11 12:47:40
+ * @FilePath: \web\src\view\index\index.vue
 -->
 <template>  
     <a-row type="flex" gutter="10"> 
     <a-col flex="auto">
-         <div class="card" v-html="rawHtml"></div>
+         <div class="doc-card" v-html="rawHtml"></div>
     </a-col>
     <a-col flex="300px">
-        <div class="title_nav">
-
+        <div class="title_nav"> 
         导航
         {{sss.theme}}
         </div></a-col>
@@ -23,7 +22,8 @@
 </template>
 
 <script setup>
-import { useStore } from '../store/index'
+import { useStore } from '../../store/index' 
+import {svgArr} from './svg'
 import { ref,onMounted,nextTick } from "vue";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -86,44 +86,108 @@ const tips = {
         class: match[1], 
         tokens: []                                    // Array where child inline tokens will be generated
       };
-      this.lexer.inlineTokens(token.text, token.tokens); 
-      //this.lexer.inline(token.text, token.tokens);    // Queue this data to be processed for inline tokens  blockTokens
+     //  this.lexer.inlineTokens(token.text, token.tokens); 
+      this.lexer.inlineTokens(token.text, token.tokens);    // Queue this data to be processed for inline tokens  blockTokens
       return token;
     }
   },
   renderer(token) {
-    console.log(token);
+    console.log(this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):/,"").replace(/::$/,""));
    // console.log("redendr",this.parser.parseInline(token.tokens)); .replace(/^:tip:/,"").replace(/::$/,"")
-    return `<div class="${token.class}" >${this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):/,"").replace(/::$/,"")}</div>`; // parseInline to turn child tokens into HTML 
+    return `<div class="${token.class}" >
+    <div class="tip-header"><h4>${svgArr[token.class]||""} <span>${token.class}</span> </h4></div>
+    <p> ${this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):\s+/,"").replace(/::$/,"")}</p>
+    </div>`; // parseInline to turn child tokens into HTML   (\n|\r|\r\n|↵)/g
   }
 };
  
 marked.use({ extensions: [tips] }); 
 
 const rawHtml = marked.parse(`
-水水水水
+:info:
 
-> 这是一段引用    //在\`>\`后面有 1 个空格
-> 
->     这是引用的代码块形式    
->     
-> 代码例子：
+info 
+**ssss**
 
-\`\`\`js
-   protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-\`\`\`
-  
+ss
+:: 
+:success: 
+success 
+::
+:warning: 
+warning 
+::
+:error: 
+error 
+::  
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题 
+
+*斜体文本*
+_斜体文本_
+**粗体文本**
+__粗体文本__
+***粗斜体文本***
+___粗斜体文本___ 
+
+***
+
+* * *
+
+*****
+
+- - - 
+
+----------
+
+~~删除线~~
+
+<u>下划线</u>
+
+* 第一行
+* 第二行
+
+- 第一行
+- 第二行
+
++ 第一行
++ 第二行
+
+1.第一行
+  - 第一点
+  - 第二点
+
  
 
 > 一级引用
 > > 二级引用
 > > > 三级引用
 
-> #### 这是一个四级标题
-> 
+> 区块中使用列表
+> 1. 第一项
+> 2. 第二项
+>> + 第一项
+>> + 第二项
+>> + 第三项
+
+[这是百度](https://www.baidu.com)
+
+ 
+
+\`\`\`js
+   protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+\`\`\` 
+
+> #### 这是一个四级标题 
+
+
 > 1. 这是第一行列表项
 > 2. 这是第二行列表项
 
@@ -143,9 +207,7 @@ Topic 1:  D
 escription 1   
 :Topic 1:  Description 1   
 
-::  
-
-
+::   
 |标题|标题|标题|
 |:---|:---:|---:|
 |居左测试文本|居中测试文本|居右测试文本|
@@ -156,8 +218,7 @@ escription 1
 ![中文](./docimg/5.png)
 
 ![中文](http://localhost:8082/src/assets/vue.svg)
-
-
+ 
 
 ## 混合 
 :warning: 
@@ -169,118 +230,10 @@ $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
 啊`);
 
 
-
-// `
-// # Marked in Node.js
-// Rendered by **marked**.
-
-// :tip
-// sss
-// :
-// \`\`\`go
-// 	for _, v := range pointPrices {
-// 			if _, ok := pointPricesMap[uint(v.UnitId)]; !ok {
-// 				pointPricesMap[uint(v.UnitId)] = make([]AppDbModel.EmsUnitPrice, 0)
-// 			}
-// 			pointPricesMap[uint(v.UnitId)] = append(pointPricesMap[uint(v.UnitId)], v)
-// 		}
-// function(){
-//   alert(1)
-// }
-// \`\`\`
-// `
+ 
 </script>
 
  
 <style scoped>
 
-nav {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    background: white;
-    margin-right: 10px;
-}
-
-nav > ul {
-    position: sticky;
-    top: 5px;
-    margin: 10px 0px;
-    padding: 0;
-    list-style-type: none;
-    font-size: 14px;
-}
-
-nav > ul > li {
-    min-width: 125px;
-    padding: 0px 15px;
-}
-
-nav > ul > li > ul {
-    padding-left: 25px;
-}
-
-nav > ul > li > ul > li {
-    font-size: 0.8em;
-}
-
-nav .selected {
-    color: #111;
-    font-weight: bold;
-}
-
-nav .selected:hover {
-    text-decoration: none;
-}
-
-header {
-    display: flex;
-}
-
-header h1 { margin: 0; }
-
-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-}
-
-td, th {
-    border: 1px solid #ddd;
-    padding: 5px;
-}
-
-a {
-    color: #0366d6;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-pre {
-    font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 3px;
-}
-
-code:not([class]) {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(27,31,35,0.05);
-    border-radius: 3px;
-}
-
-.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
-.error { color: red;}
-.success { color: aquamarine;}
-.warning { color: rgb(212, 200, 19);}
-.read-the-docs {
-  color: #888;
-}
 </style>

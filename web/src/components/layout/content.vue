@@ -2,7 +2,7 @@
  * @Date: 2021-11-30 15:42:07
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-10 14:49:37
+ * @LastEditTime: 2022-08-11 09:50:35
  * @FilePath: \web\src\components\layout\content.vue
 -->
 <template>
@@ -34,17 +34,5 @@ export default {
 };
 </script>
 <style  scoped>
-#content {
-  height: calc(100vh - 160px);
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-.content-loading {
-  width: 100%;
-  min-height: 60vh;
-  padding-top: 30vh;
-  text-align: center;
-  background-color: transparent;
-  height: 100%;
-}
+
 </style>

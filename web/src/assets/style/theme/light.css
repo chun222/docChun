@@ -5,6 +5,33 @@
     background: var(--light-bg);
 }
 .light .ant-layout-header { border-bottom:  1px solid var(--chun-gray-2);}
+
+.light .ant-layout-footer {
+   background-color: var(--light-footer-bg);
+}
 .ant-switch { background-color: var(--chun-gray-1);}
+
+.light .doc-card blockquote {
+    border-color: #D6DBDF;
+    background: none repeat scroll 0 0 rgba(102,128,153,.05);
+}
+
+.light .doc-card table tbody>tr:nth-child(2n+1)>td, .light .doc-card table tbody>tr:nth-child(2n+1)>th {
+    background-color:#efefef;
+}
+
+.light .doc-card table {
+    border-spacing: 0;
+    border-collapse: collapse; 
+    width: 100%; 
+    border:1px solid #D6DBDF;
+  }
+  
+  .light .doc-card th { font-weight: bold;}
+  .light .doc-card td, .light .doc-card th { 
+    padding: 5px; 
+    border:1px solid #D6DBDF;
+  }
+
 
  
