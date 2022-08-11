@@ -4,22 +4,30 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-11 16:18:01
+ * @LastEditTime: 2022-08-11 17:42:15
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
 
 import (
+	"chunDoc/system/core/request"
 	"chunDoc/system/core/response"
-	"chunDoc/system/service/FileService"
+	"chunDoc/system/model/RequestModel"
+	"chunDoc/system/service/md"
 
 	"github.com/gin-gonic/gin"
 )
 
-var this FileService.FileService
+var this md.MdService
 
 //获取文档列表
 func List(c *gin.Context) {
-	files := this.List()
+	var r RequestModel.LangName
+	err, msg := request.Binding(&r, c)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	files := this.List(r.LangName)
 	response.OkWithData(files, c)
 }

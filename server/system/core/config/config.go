@@ -2,7 +2,7 @@
  * @Date: 2022-02-14 12:00:49
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-07-15 09:43:28
+ * @LastEditTime: 2022-08-11 16:53:15
  * @FilePath: \server\system\core\config\config.go
  */
 package config
@@ -83,7 +83,7 @@ func InitConfig(tomlPath ...string) {
 		if err != nil {
 			log.Fatal("无法写入配置模板", err.Error())
 		}
-		log.Fatal("配置文件不存在，已在根目录下生成示例模板文件【config.toml】，请修改后重新启动程序！")
+		log.Fatal("首次启动！生成【config.toml】，请按需修改后重新启动程序！")
 	}
 	v := viper.New()
 	v.SetConfigFile(tomlPath[0])

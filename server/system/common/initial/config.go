@@ -2,10 +2,12 @@
  * @Date: 2022-02-14 14:09:57
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-07-15 09:42:36
+ * @LastEditTime: 2022-08-11 17:18:54
  * @FilePath: \server\system\common\initial\config.go
  */
 package initial
+
+const DataLang = `[{"name":"中文","dir":"zh-cn"},{"name":"English","dir":"en-us"}]`
 
 const ConfigToml = `[app]
 Key = "ADSDWW1DSADSADSAWJJK"   
@@ -47,3 +49,8 @@ AllowType = ["png", "jpeg", "jpg", "zip"]
 [pdf]
 Path = 'runtime/pdf' 
 `
+
+const ZhMd = `# 中文
+[{"name":"中文","dir":"zh-cn"},{"name":"English","dir":"en-us"}]`
+
+const EnMd = `# EN`

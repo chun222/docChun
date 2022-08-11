@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 15:43:52
+ * @LastEditTime: 2022-08-11 17:53:43
  * @FilePath: \web\src\view\index\index.vue
 -->
 <template>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { useStore } from "../../store/index";
+import { doclist } from "@/api/module/base";
 import { svgArr } from "./svg";
 import { ref, onMounted, nextTick, watch } from "vue";
 import { marked } from "marked";
@@ -39,7 +39,8 @@ import "highlight.js/styles/github-dark.css";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-console.log(route.params);
+console.log(doclist({langname : "zh-cn"}));
+
 
 watch(
   () => route.params,
