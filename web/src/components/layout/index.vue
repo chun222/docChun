@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 17:01:17
+ * @LastEditTime: 2022-08-11 09:35:31
  * @FilePath: \web\src\components\layout\index.vue
 -->
 <template>
@@ -22,7 +22,7 @@
       >
         <Menu></Menu>
       </a-layout-sider>
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
+      <a-layout-content>
         <Content></Content>
       </a-layout-content>
     </a-layout>

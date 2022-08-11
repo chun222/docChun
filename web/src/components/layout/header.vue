@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 18:01:32
+ * @LastEditTime: 2022-08-11 09:32:54
  * @FilePath: \web\src\components\layout\header.vue
 -->
 <template>
@@ -13,9 +13,14 @@
     <a-col flex="auto">auto</a-col>
     <a-col flex="300px">
       <a-space>
-        <a-switch v-model:checked="checked3" @change="changeTheme">
-          <template #checkedChildren><check-outlined /></template>
-          <template #unCheckedChildren><close-outlined /></template>
+        <a-switch
+          :checked="themeActive"
+          @change="changeTheme"
+          :checkedValue="'dark'"
+          :unCheckedValue="'light'"
+        >
+          <template #checkedChildren><moon theme="filled"/></template>
+          <template #unCheckedChildren><brightness theme="filled" /></template>
         </a-switch>
       </a-space>
     </a-col>
@@ -23,31 +28,25 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs } from "vue";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons-vue";
-import { useStore } from '@/store/index'
+import { defineComponent, reactive, toRefs, computed } from "vue";
+import { Brightness ,Moon} from "@icon-park/vue-next";
+import { useStore } from "@/store/index";
 export default defineComponent({
-  components: {
-    CheckOutlined,
-    CloseOutlined,
+  components: { 
+    Brightness,Moon
   },
   setup() {
-     const store = useStore()
+    const store = useStore();
 
-    const state = reactive({
-      checked1: true,
-      checked2: false,
-      checked3: false,
-    });
+    const themeActive = computed(() => store.theme);
+    const state = reactive({});
+
     const changeTheme = (v) => {
       console.log(v);
-      if (v) {
-        store.changeTheme("ssss")
-      }else{
- store.changeTheme("vvvv")
-      }
+
+      store.changeTheme(v);
     };
-    return { ...toRefs(state), changeTheme };
+    return { ...toRefs(state), changeTheme, themeActive };
   },
 });
 </script>

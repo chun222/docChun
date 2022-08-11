@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-10 17:45:44
+ * @LastEditTime: 2022-08-11 09:32:04
  * @FilePath: \web\src\store\index.js
  */
 import { defineStore } from 'pinia'
@@ -15,10 +15,8 @@ export const useStore = defineStore('main', {
     // 推荐使用 完整类型推断的箭头函数
     state: () => {
         return {
-            // 所有这些属性都将自动推断其类型
-            counter: 0,
-            theme: 'dark',
-            isAdmin: true,
+            // 所有这些属性都将自动推断其类型 
+            theme: 'light',  //light or dark 
         }
     },
     getters: {

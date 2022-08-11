@@ -1,0 +1,89 @@
+:root { 
+  --light-bg : #ffffff ;
+
+
+  --mobile-bg-end: #0B0F28;
+  --mobile-bg-front:  linear-gradient(to right, #17246b, #101638) ;
+  --mobile-bg-front2:  linear-gradient(to bottom, #17246b, #101638) ;
+  --mobile-title-main:#4093f1 ; 
+  
+ 
+  --chun-gray-1: #6e6e6e;
+  --chun-gray-2: #f2f3f5; 
+  --chun-red: #ee0a24;
+  --chun-blue: #4093f1;
+  --chun-orange: #ff976a;
+  --chun-orange-dark: #ed6a0c;
+  --chun-orange-light: #fffbe8;
+  --chun-green: #07c160;
+
+
+/* 头部导航颜色 */
+  --chun-nav-bar-background-color : var(--mobile-bg-front) ;
+  --chun-nav-bar-text-color :#fff;
+  --chun-nav-bar-icon-color :#fff;
+
+  /* 底部导航颜色 */
+  --chun-tabbar-background-color :var(--mobile-bg-front)  ;
+
+  /* 首页宫格 */
+  --chun-grid-item-content-background-color: var(--mobile-bg-front2) ;
+ 
+  --chun-gradient-red: linear-gradient(to right, #ff6034, #ee0a24);
+  --chun-gradient-orange: linear-gradient(to right, #ffd01e, #ff8917);
+
+ 
+  --chun-primary-color: var(--chun-blue);
+  --chun-success-color: var(--chun-green);
+  --chun-danger-color: var(--chun-red);
+  --chun-warning-color: var(--chun-orange);
+  --chun-text-color: var(--chun-gray-8);
+  --chun-text-color-2: var(--chun-gray-6);
+  --chun-text-color-3: var(--chun-gray-5);
+  --chun-text-link-color: #576b95;
+  --chun-active-color: var(--chun-gray-2);
+  --chun-active-opacity: 0.6;
+  --chun-disabled-opacity: 0.5;
+
+  --chun-background-color:#222222;
+  
+  --chun-background-color-light: rgba(6, 77, 158, 1);
+
+ 
+  --chun-padding-base: 4px;
+  --chun-padding-xs: 8px;
+  --chun-padding-sm: 12px;
+  --chun-padding-md: 16px;
+  --chun-padding-lg: 24px;
+  --chun-padding-xl: 32px;
+ 
+  --chun-font-size-xs: 12px;
+  --chun-font-size-sm: 14px;
+  --chun-font-size-md: 18px;
+  --chun-font-size-lg: 20px;
+  --chun-font-weight-bold: 500;
+  --chun-line-height-xs: 14px;
+  --chun-line-height-sm: 18px;
+  --chun-line-height-md: 20px;
+  --chun-line-height-lg: 22px;
+  --chun-base-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+    Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB',
+    'Microsoft Yahei', sans-serif;
+  --chun-price-integer-font-family: Avenir-Heavy, PingFang SC, Helvetica Neue,
+    Arial, sans-serif;
+
+ 
+  --chun-animation-duration-base: 0.3s;
+  --chun-animation-duration-fast: 0.2s;
+  --chun-animation-timing-function-enter: ease-out;
+  --chun-animation-timing-function-leave: ease-in;
+
+ 
+  --chun-border-color: var(--chun-gray-3);
+  --chun-border-width-base: 1px;
+  --chun-border-radius-sm: 2px;
+  --chun-border-radius-md: 4px;
+  --chun-border-radius-lg: 8px;
+  --chun-border-radius-max: 999px;
+
+}

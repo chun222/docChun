@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@icon-park/vue-next": "^1.4.2",
     "ant-design-vue": "^3.2.11",
     "dompurify": "^2.3.10",
     "highlight.js": "^11.6.0",
@@ -21,7 +22,6 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
     "vite": "^3.0.0",
-    "terser": "^5.14.2",
-    "less": "^3.5.0"
+    "terser": "^5.14.2"
   }
 }

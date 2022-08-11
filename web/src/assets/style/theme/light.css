@@ -1,0 +1,10 @@
+.light .title_nav {
+    border-left: 1px solid #ccc;
+} 
+.light .site-layout-sub-header-background,.light .site-layout-background,.light .ant-layout-sider,.light .ant-layout-header,.light .ant-layout {
+    background: var(--light-bg);
+}
+.light .ant-layout-header { border-bottom:  1px solid var(--chun-gray-2);}
+.ant-switch { background-color: var(--chun-gray-1);}
+
+ 
