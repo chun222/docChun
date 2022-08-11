@@ -1,37 +1,56 @@
 .light .title_nav {
     border-left: 1px solid #ccc;
-} 
-.light .site-layout-sub-header-background,.light .site-layout-background,.light .ant-layout-sider,.light .ant-layout-header,.light .ant-layout {
+}
+
+.light .site-layout-sub-header-background,
+.light .site-layout-background,
+.light .ant-layout-sider,
+.light .ant-layout-header,
+.light .ant-layout {
     background: var(--light-bg);
 }
-.light .ant-layout-header { border-bottom:  1px solid var(--chun-gray-2);}
+
+.light .ant-layout-header {
+    border-bottom: 1px solid var(--chun-gray-2);
+}
 
 .light .ant-layout-footer {
-   background-color: var(--light-footer-bg);
+    background-color: var(--light-footer-bg);
 }
-.ant-switch { background-color: var(--chun-gray-1);}
+
+.ant-switch {
+    background-color: var(--chun-gray-1);
+}
 
 .light .doc-card blockquote {
     border-color: #D6DBDF;
-    background: none repeat scroll 0 0 rgba(102,128,153,.05);
+    background: none repeat scroll 0 0 rgba(102, 128, 153, .05);
 }
 
-.light .doc-card table tbody>tr:nth-child(2n+1)>td, .light .doc-card table tbody>tr:nth-child(2n+1)>th {
-    background-color:#efefef;
+.light .doc-card table tbody>tr:nth-child(2n+1)>td,
+.light .doc-card table tbody>tr:nth-child(2n+1)>th {
+    background-color: #efefef;
 }
 
 .light .doc-card table {
     border-spacing: 0;
-    border-collapse: collapse; 
-    width: 100%; 
-    border:1px solid #D6DBDF;
-  }
-  
-  .light .doc-card th { font-weight: bold;}
-  .light .doc-card td, .light .doc-card th { 
-    padding: 5px; 
-    border:1px solid #D6DBDF;
-  }
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #D6DBDF;
+}
 
+.light .doc-card th {
+    font-weight: bold;
+}
 
- 
+.light .doc-card td,
+.light .doc-card th {
+    padding: 5px;
+    border: 1px solid #D6DBDF;
+}
+
+.light .doc-card .info p,.light .doc-card .error p,.light .doc-card .success p,.light .doc-card .warning p{ color: #000; }
+.light .doc-card .info {background-color: #fefefe; border-color:  var(--chun-info-color); color: var(--chun-info-color); }
+.light .doc-card .error { background-color: #ffebec; border-color:  var(--chun-error-color); color:var(--chun-error-color) ; }
+.light .doc-card .success {background-color: #e6f6e6; border-color:   var(--chun-success-color); color: var(--chun-success-color); }
+.light .doc-card .warning { background-color: #fff8e6; border-color:  var(--chun-warning-color);color: var(--chun-warning-color);  }

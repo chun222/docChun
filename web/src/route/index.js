@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 12:15:43
+ * @LastEditTime: 2022-08-11 14:57:54
  * @FilePath: \web\src\route\index.js
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
@@ -22,11 +22,11 @@ const setDocumentTitle = title => {
 }
 
 //添加动态路由
-router.beforeEach(to => {
-  NProgress.start();
+router.beforeEach(to => { 
   const { meta } = to
   setDocumentTitle(meta.title)
   if (!router.hasRoute("admin")) {
+    NProgress.start();
     router.addRoute({ path: '/admin', name: 'admin', component: () => import('@/view/admin.vue') })
     return to.fullPath
   }
@@ -34,11 +34,12 @@ router.beforeEach(to => {
 
 //控制权限
 router.beforeEach((to, from, next) => {
-  NProgress.start();
+  //NProgress.start();
   if (!to.fullPath.includes('login') && !localStorage.getItem('USER_TOKEN') && false) {
     next({ path: '/login' }) 
   } else {
-    if (router.getRoutes().map(it => it.path).includes(to.path)) {
+    console.log("router",router.getRoutes(),to.path,to.fullPath,to.name);
+    if (router.getRoutes().map(it => it.name).includes(to.name)) {
       next()
     } else {
       next('/error/404')

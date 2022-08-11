@@ -4,12 +4,13 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 10:44:11
+ * @LastEditTime: 2022-08-11 14:48:37
  * @FilePath: \web\src\route\module\base-routes.js
  */
 export default [
   {
-    path: '/',
+    name:'index',
+    path: '/:id',
     component: () => import('@/view/index/index.vue'),
     meta: {
       title: '首页'
@@ -17,6 +18,7 @@ export default [
     hidden: 0,
   }, 
   {
+    name:'error/404',
     path: '/error/404',
     component: () => import('@/view/404.vue'),
     meta: {

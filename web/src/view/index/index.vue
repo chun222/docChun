@@ -4,18 +4,17 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 12:47:40
+ * @LastEditTime: 2022-08-11 15:12:41
  * @FilePath: \web\src\view\index\index.vue
 -->
 <template>  
-    <a-row type="flex" gutter="10"> 
+    <a-row type="flex" :gutter="10"> 
     <a-col flex="auto">
-         <div class="doc-card" v-html="rawHtml"></div>
+         <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
     </a-col>
     <a-col flex="300px">
-        <div class="title_nav"> 
-        导航
-        {{sss.theme}}
+        <div class="title_nav">  
+        <p v-for="v in listTitle"><router-link  :to="'/'+v.id" title="heading" :style="{'margin-left':v.level+'px'}">{{v.id}}</router-link></p> 
         </div></a-col>
   </a-row>
  
@@ -24,26 +23,48 @@
 <script setup>
 import { useStore } from '../../store/index' 
 import {svgArr} from './svg'
-import { ref,onMounted,nextTick } from "vue";
+import { ref,onMounted,nextTick,watch } from "vue";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
-import "highlight.js/styles/github-dark.css";
+import "highlight.js/styles/github-dark.css"; 
+import { useRoute } from 'vue-router';
+ 
+const route = useRoute();  
+console.log(route.params);
+ 
+watch(
+    () => route.params,
+    (val) => {
+       jumpLocation(val.id)
+    },
+);
 defineProps({
   msg: String,
 });
 
 const count = ref(0);
+const doc_card = ref() 
+const listTitle = ref([])  
 
-const sss = useStore();
-
-console.log(sss,"useStore");
+//跳转
+const jumpLocation = (id)=>{ 
+  if (document.getElementById(id)) {
+     document.getElementById(id).scrollIntoView({
+behavior: "smooth", 
+})
+  }
+ 
+}
 
  onMounted(() => { 
 		nextTick(() => { 
-      MathJax.typeset();
-
+      MathJax.typeset(); 
+      const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6") 
+       domlist.forEach((x)=>{
+      listTitle.value.push( {id:x.id,nodeName:x.nodeName,level:parseInt(x.nodeName.replace(/[Hh]/,""))*10 })
+     }) 
 		})
  
     });
@@ -92,10 +113,10 @@ const tips = {
     }
   },
   renderer(token) {
-    console.log(this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):/,"").replace(/::$/,""));
+   // console.log(this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):/,"").replace(/::$/,""));
    // console.log("redendr",this.parser.parseInline(token.tokens)); .replace(/^:tip:/,"").replace(/::$/,"")
     return `<div class="${token.class}" >
-    <div class="tip-header"><h4>${svgArr[token.class]||""} <span>${token.class}</span> </h4></div>
+    <div class="tip-header">${svgArr[token.class]||""} <span>${token.class}</span></div>
     <p> ${this.parser.parseInline(token.tokens).replace(/^:(info|success|warning|error):\s+/,"").replace(/::$/,"")}</p>
     </div>`; // parseInline to turn child tokens into HTML   (\n|\r|\r\n|↵)/g
   }
@@ -176,7 +197,7 @@ ___粗斜体文本___
 
 [这是百度](https://www.baidu.com)
 
- 
+ ###### 哈哈哈 
 
 \`\`\`js
    protected void onCreate(Bundle savedInstanceState) {
