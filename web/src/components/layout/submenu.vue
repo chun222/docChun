@@ -4,15 +4,15 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-12 09:17:28
+ * @LastEditTime: 2022-08-12 14:09:16
  * @FilePath: \web\src\components\layout\submenu.vue
 -->
 <template>
     <a-sub-menu :key="menuInfo.key"> 
       <template #title>{{ menuInfo.name }}</template>
-      <template v-for="item in menuInfo.children" :key="item.name">
+      <template v-for="item in menuInfo.children" :key="item.key">
         <template v-if="!item.children">
-          <a-menu-item :key="item.name"> 
+          <a-menu-item :key="item.key"> 
             {{ item.name }}
           </a-menu-item>
         </template>

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 17:53:43
+ * @LastEditTime: 2022-08-12 13:57:32
  * @FilePath: \web\src\view\index\index.vue
 -->
 <template>
@@ -38,8 +38,7 @@ import "highlight.js/styles/github.css";
 import "highlight.js/styles/github-dark.css";
 import { useRoute } from "vue-router";
 
-const route = useRoute();
-console.log(doclist({langname : "zh-cn"}));
+const route = useRoute(); 
 
 
 watch(
