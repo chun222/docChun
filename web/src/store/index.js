@@ -4,10 +4,12 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-11 09:32:04
+ * @LastEditTime: 2022-08-12 09:13:04
  * @FilePath: \web\src\store\index.js
  */
 import { defineStore } from 'pinia'
+
+
 
 // useStore 可以是 useUser、useCart 之类的任何东西
 // 第一个参数是应用程序中 store 的唯一 id
@@ -17,6 +19,8 @@ export const useStore = defineStore('main', {
         return {
             // 所有这些属性都将自动推断其类型 
             theme: 'light',  //light or dark 
+            //菜单
+            menus:[],
         }
     },
     getters: {
@@ -27,6 +31,13 @@ export const useStore = defineStore('main', {
         changeTheme(v){
             this.theme = v ;
         },
+        // async getMenus(lang) {
+        //     doclist({langname : lang}).then((re)=>{
+        //       if (re.code==0) {
+        //         this.menus = re.data ;
+        //       }
+        //     })
+        // },
         async registerUser(login, password) {
           try {
             this.userData = await api.post({ login, password })

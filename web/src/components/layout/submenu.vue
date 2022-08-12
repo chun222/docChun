@@ -4,24 +4,20 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 16:20:42
+ * @LastEditTime: 2022-08-12 09:17:28
  * @FilePath: \web\src\components\layout\submenu.vue
 -->
 <template>
-    <a-sub-menu :key="menuInfo.key">
-      <template #icon><MailOutlined /></template>
-      <template #title>{{ menuInfo.title }}</template>
-      <template v-for="item in menuInfo.children" :key="item.key">
+    <a-sub-menu :key="menuInfo.key"> 
+      <template #title>{{ menuInfo.name }}</template>
+      <template v-for="item in menuInfo.children" :key="item.name">
         <template v-if="!item.children">
-          <a-menu-item :key="item.key">
-            <template #icon>
-              <PieChartOutlined />
-            </template>
-            {{ item.title }}
+          <a-menu-item :key="item.name"> 
+            {{ item.name }}
           </a-menu-item>
         </template>
         <template v-else>
-          <sub-menu :menu-info="item" :key="item.key" />
+          <sub-menu :menu-info="item" :key="item.name" />
         </template>
       </template>
     </a-sub-menu>
@@ -30,11 +26,7 @@
 
 </style>
 
-<script> 
-import { 
-  PieChartOutlined,
-  MailOutlined,
-} from '@ant-design/icons-vue';
+<script>  
 export default {
   name: 'SubMenu',
   props: {
@@ -43,9 +35,7 @@ export default {
       default: () => ({}),
     },
   },
-   components: {
-    PieChartOutlined,
-    MailOutlined,
+   components: { 
   }, 
 };
 </script>

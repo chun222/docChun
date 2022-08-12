@@ -4,64 +4,43 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-10 16:23:51
+ * @LastEditTime: 2022-08-12 09:15:04
  * @FilePath: \web\src\components\layout\menu.vue
 -->
 <template>
   <a-menu
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
-    mode="inline" 
+    mode="inline"
     :inline-collapsed="collapsed"
   >
-    <template v-for="item in list" :key="item.key">
+    <template v-for="item in list" :key="item.name">
       <template v-if="!item.children">
-        <a-menu-item :key="item.key">
-          <template #icon>
-            <PieChartOutlined />
-          </template>
-          {{ item.title }}
+        <a-menu-item :key="item.name"> 
+          {{ item.name }}
         </a-menu-item>
       </template>
       <template v-else>
-        <sub-menu :key="item.key" :menu-info="item" />
+        <sub-menu :key="item.name" :menu-info="item" />
       </template>
     </template>
   </a-menu>
 </template>
 <script>
 import { defineComponent, ref } from "vue";
-import SubMenu from "./submenu.vue";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-  MailOutlined,
-} from "@ant-design/icons-vue";
+import SubMenu from "./submenu.vue"; 
 
-const list = [
-  {
-    key: "1",
-    title: "Option 1",
-  },
-  {
-    key: "2",
-    title: "Navigation 2",
-    children: [
-      {
-        key: "2.1",
-        title: "Navigation 3",
-        children: [{ key: "2.1.1", title: "Option 2.1.1",children: [{ key: "2.1.1", title: "Option 2.1.1" ,children: [{ key: "2.1.1", title: "Option 2.1.1" }],}], }],
-      },
-    ],
-  },
-];
+import { doclist } from "@/api/module/base";
+const list = ref([]);
+doclist({ langname: 'zh-cn' }).then((re) => {
+  if (re.code == 0) {
+    list.value = re.data;
+  }
+}); 
+
 export default defineComponent({
   components: {
-    "sub-menu": SubMenu,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PieChartOutlined,
+    "sub-menu": SubMenu, 
   },
   setup() {
     const collapsed = ref(false);

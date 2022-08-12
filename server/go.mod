@@ -17,6 +17,7 @@ require (
 )
 
 require (
+	github.com/dlclark/regexp2 v1.7.0
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
