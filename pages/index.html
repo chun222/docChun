@@ -1,0 +1,51 @@
+<!--
+ * @Date: 2022-08-08 14:16:39
+ * @LastEditors: 春贰
+ * @gitee: https://gitee.com/chun22222222
+ * @github: https://github.com/chun222
+ * @Desc: 
+ * @LastEditTime: 2022-08-12 23:25:08
+ * @FilePath: \pages\index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>docChun</title>
+  <script>
+    window.MathJax = {
+      options: {
+        enableMenu: false,
+      },
+      loader: {
+        load: ['[tex]/tagformat']
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady();
+        }
+      },
+      tex: {
+        packages: { '[+]': ['tagformat'] },
+        tagSide: 'left',
+        macros: {
+          RR: '{\\bf R}',
+          bold: ['{\\bf #1}', 1]
+        },
+        tagformat: {
+          tag: (n) => '[' + n + ']'
+        }
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
