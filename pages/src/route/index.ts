@@ -4,8 +4,8 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 14:57:54
- * @FilePath: \web\src\route\index.js
+ * @LastEditTime: 2022-08-13 21:59:17
+ * @FilePath: \pages\src\route\index.ts
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './module/base-routes'
@@ -17,7 +17,7 @@ const router = createRouter({
   routes
 })
 
-const setDocumentTitle = title => {
+const setDocumentTitle = (title:string) => {
   document.title = `chunDoc-${title}`
 }
 

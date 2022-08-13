@@ -4,8 +4,8 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-12 13:57:32
- * @FilePath: \web\src\view\index\index.vue
+ * @LastEditTime: 2022-08-13 22:50:00
+ * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
   <a-row type="flex" :gutter="10">
@@ -27,8 +27,7 @@
   </a-row>
 </template>
 
-<script setup>
-import { doclist } from "@/api/module/base";
+<script setup lang="ts">
 import { svgArr } from "./svg";
 import { ref, onMounted, nextTick, watch } from "vue";
 import { marked } from "marked";
@@ -66,7 +65,7 @@ const jumpLocation = (id) => {
 
 onMounted(() => {
   nextTick(() => {
-    MathJax.typeset();
+    window.MathJax.typeset();
     const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
     domlist.forEach((x) => {
       listTitle.value.push({

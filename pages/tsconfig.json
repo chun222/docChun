@@ -4,14 +4,20 @@
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true, 
+    "allowJs":true,
+    "baseUrl": "./", 
+    "paths": {
+      "@": ["src"],
+      "@/*": ["src/*"]  
+    }
   },
   "include": ["env.d.ts","src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

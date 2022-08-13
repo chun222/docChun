@@ -4,8 +4,8 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-12 09:13:04
- * @FilePath: \web\src\store\index.js
+ * @LastEditTime: 2022-08-13 22:06:33
+ * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
 
@@ -24,11 +24,11 @@ export const useStore = defineStore('main', {
         }
     },
     getters: {
-        doubleCount: (state) => state.counter * 2,
+      //  doubleCount: (state) => state.counter * 2,
     }, 
     actions: {
         //改变主题
-        changeTheme(v){
+        changeTheme(v:string){
             this.theme = v ;
         },
         // async getMenus(lang) {
@@ -37,16 +37,6 @@ export const useStore = defineStore('main', {
         //         this.menus = re.data ;
         //       }
         //     })
-        // },
-        async registerUser(login, password) {
-          try {
-            this.userData = await api.post({ login, password })
-            showTooltip(`Welcome back ${this.userData.name}!`)
-          } catch (error) {
-            showTooltip(error)
-            // 让表单组件显示错误
-            return error
-          }
-        },
+        // }, 
       },
 })

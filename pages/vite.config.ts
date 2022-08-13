@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-12 23:34:24
+ * @LastEditTime: 2022-08-13 23:00:01
  * @FilePath: \pages\vite.config.ts
  */
 import { defineConfig } from "vite";
@@ -15,14 +15,9 @@ export default defineConfig({
   plugins: [vue()],
   base: "./",  
   resolve: {
-    alias: {
+    alias: { 
       // 如果报错__dirname找不到，需要安装node,执行npm install @types/node --save-dev
-      "@": path.resolve(__dirname, "src"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@images": path.resolve(__dirname, "src/assets/images"),
-      "@views": path.resolve(__dirname, "src/views"),
-      "@store": path.resolve(__dirname, "src/store"),
+        '@': path.resolve(__dirname, 'src'),
     },
   },
   build: {

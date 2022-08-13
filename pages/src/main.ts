@@ -4,12 +4,12 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 09:23:57
- * @FilePath: \web\src\main.js
+ * @LastEditTime: 2022-08-13 21:57:53
+ * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue' 
 import App from './App.vue'
-import Router from "./route";
+import Router from "./route/index";
 
 import registerComponents from './tools/registerComponents' 
 import {  message } from 'ant-design-vue';
