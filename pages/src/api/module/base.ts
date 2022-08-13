@@ -4,11 +4,11 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-14 00:52:05
+ * @LastEditTime: 2022-08-14 01:03:32
  * @FilePath: \pages\src\api\module\base.ts
  */
 
-import request from '../index' 
+import http from '../http' 
 import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosInterceptorManager, AxiosResponse } from 'axios';
 
  
