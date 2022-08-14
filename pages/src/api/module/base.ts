@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-14 01:03:32
+ * @LastEditTime: 2022-08-14 12:06:01
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -23,5 +23,11 @@ export const doclist = (data: TypedDoclist) => {
     data: data,
     method: 'post'
   })
+}
+
+export const doclist2 = (data: TypedDoclist) => {
+  return http.post<string>(
+   '',data
+  )
 }
  

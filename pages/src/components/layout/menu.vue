@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-14 00:10:34
+ * @LastEditTime: 2022-08-14 12:12:26
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -30,15 +30,16 @@
 import { defineComponent, ref } from "vue";
 import SubMenu from "./submenu.vue"; 
 
-import { doclist } from "@/api/module/base";
+import { doclist,doclist2 } from "@/api/module/base";
 const list = ref([]);
 
  
 
 
-doclist({ langname: 'zh-cn' }).then((re) => {
+doclist({ langname: 'zh-cn' }).then((re)=> {
   if (re.code == 0) {
-    list.value = re.data;
+    console.log(re.data);
+   // list.value = re.data;
   }
 }); 
 

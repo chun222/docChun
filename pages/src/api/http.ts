@@ -1,18 +1,11 @@
-/*
- * @Date: 2022-03-04 11:07:17
- * @LastEditors: 春贰
- * @gitee: https://gitee.com/chun22222222
- * @github: https://github.com/chun222
- * @Desc: 
- * @LastEditTime: 2022-08-14 00:59:04
- * @FilePath: \pages\src\api\http.ts
- */
-
-import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosInterceptorManager, AxiosResponse } from 'axios';
-
+import axios from "axios";
 import { notification, message as Msg } from "ant-design-vue";
-
-
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+type Result<T> = {
+  code: number;
+  msg: string;
+  data: T;
+};
 
 const refreshToken = (response: AxiosResponse) => {
   let token = response.headers.authorization
@@ -25,147 +18,131 @@ notification.config({
   duration: 5
 })
 
+
 const baseurl = "http://localhost:8023/";
 
-
-type ResultDataType = {
-  code: number;
-  data?: any;
-  msg?: string;
-}
-
-interface NewAxiosInstance extends AxiosInstance {
-  /* 
-  设置泛型T，默认为any，将请求后的结果返回变成AxiosPromise<T>
-  */
-  <T = any>(config: AxiosRequestConfig): AxiosPromise<ResultDataType>;
-  interceptors: {
-    request: AxiosInterceptorManager<AxiosRequestConfig>;
-    response: AxiosInterceptorManager<AxiosResponse<ResultDataType>>;
-  }
-}
-
-
-
-interface RequestInterceptors {
-  // 请求拦截
-  requestInterceptors?: (config: AxiosRequestConfig) => AxiosRequestConfig
-  requestInterceptorsCatch?: (err: any) => any
-  // 响应拦截
-  responseInterceptors?: (config: AxiosResponse) => AxiosResponse
-  responseInterceptorsCatch?: (err: any) => any
-}
-// 自定义传入的参数
-interface RequestConfig extends AxiosRequestConfig {
-  interceptors?: RequestInterceptors
-}
-
-class Http { 
+class Http {
   // axios 实例
-  instance: AxiosInstance; 
-  // 拦截器对象
-  interceptorsObj?: RequestInterceptors
-  config: AxiosRequestConfig<any>;
-  constructor(config: AxiosRequestConfig) {
-    this.config = config || {
-      timeout: 1000 * 60 * 3, //默认三分钟
-      withCredentials: true,
-      baseURL: baseurl,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      }
-    };
-  }
+  instance: AxiosInstance;
+  // 基础配置，url和超时时间
+  baseConfig: AxiosRequestConfig = {
+    baseURL: baseurl, timeout: 60000, withCredentials: true,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    }
+  };
 
-  interceptors(instance: NewAxiosInstance) {
-    /**
-     * 请求拦截器
-     */
-    instance.interceptors.request.use(
-      config => {
+  constructor(config: AxiosRequestConfig) {
+    // 使用axios.create创建axios实例
+    this.instance = axios.create(Object.assign(this.baseConfig, config));
+
+    this.instance.interceptors.request.use(
+      (config: AxiosRequestConfig) => {
+        // 一般会请求拦截里面加token
         const token = localStorage.getItem("USER_TOKEN");
         if (token) {
           config.headers["Authorization"] = token;
         }
-
-        // config.cancelToken = new axios.CancelToken(async cancel => {
-        //   await store.dispatch("app/execCancelToken", { cancelToken: cancel });
-        // });
         return config;
       },
-      error => {
-        return Promise.reject(error);
+      (err: any) => {
+        return Promise.reject(err);
       }
     );
-    /** 响应拦截 */
-    instance.interceptors.response.use(
-      response => {
-        refreshToken(response);//有token 就刷新 
-        if (response.data.code > 1) {
-          notification.error({
-            message: response.data.code,
-            description: response.data.msg
-          });
-        }
-        // return Promise.resolve;
-        return response.data;
+
+    this.instance.interceptors.response.use(
+      <T>(res: AxiosResponse<Result<T>>) => {
+        refreshToken(res);//有token 就刷新 
+        // 直接返回res，当然你也可以只返回res.data
+        return res.data;
       },
-      error => {
-        console.log('error', error.response);
-        if (error.response) {
-          refreshToken(error.response); //有token 就刷新 
-          if (error.response.status === 403) {
-            notification.error({
-              message: "permision error",
-              description: error.response.request.responseURL
-            });
-          } else if (error.response.status === 401) {
-            // store.dispatch("user/logout").then(() => {
-            // });
-          } else if (error.response.status === 404) {
-            notification.error({
-              message: "not find api",
-              description: "not find api"
-            });
-          }
-        } else {
-          let { message } = error;
-          Msg.error(message);
+      (err: any) => {
+        // 这里用来处理http常见错误，进行全局提示
+        refreshToken(err.response);//有token 就刷新 
+        let message = "";
+        switch (err.response.status) {
+          case 400:
+            message = "请求错误(400)";
+            break;
+          case 401:
+            message = "未授权，请重新登录(401)";
+            // 这里可以做清空storage并跳转到登录页的操作
+            break;
+          case 403:
+            message = "拒绝访问(403)";
+            break;
+          case 404:
+            message = "请求出错(404)";
+            break;
+          case 408:
+            message = "请求超时(408)";
+            break;
+          case 500:
+            message = "服务器错误(500)";
+            break;
+          case 501:
+            message = "服务未实现(501)";
+            break;
+          case 502:
+            message = "网络错误(502)";
+            break;
+          case 503:
+            message = "服务不可用(503)";
+            break;
+          case 504:
+            message = "网络超时(504)";
+            break;
+          case 505:
+            message = "HTTP版本不受支持(505)";
+            break;
+          default:
+            message = `连接出错(${err.response.status})!`;
         }
-        return Promise.reject("error response");
+        // 这里错误消息可以使用全局弹框展示出来 
+        notification.error({
+          message: err.response.status,
+          description: message
+        });
+
+        // 这里是AxiosError类型，所以一般我们只reject我们需要的响应即可
+        return Promise.reject(err.response);
       }
     );
-  } 
-  // request<T>(config: RequestConfig): Promise<T> {
-  //   return new Promise((resolve, reject) => {
-  //     // 如果我们为单个请求设置拦截器，这里使用单个请求的拦截器
-  //     if (config.interceptors?.requestInterceptors) {
-  //       config = config.interceptors.requestInterceptors(config)
-  //     }
-  //     this.instance
-  //       .request<any, ResultDataType>(config)
-  //       .then(res => {
-  //         // 如果我们为单个响应设置拦截器，这里使用单个响应的拦截器
-  //         if (config.interceptors?.responseInterceptors) {
-  //           res = config.interceptors.responseInterceptors<T>(res)
-  //         }
+  }
 
-  //         resolve(res)
-  //       })
-  //       .catch((err: any) => {
-  //         reject(err)
-  //       })
-  //   })
-  // }
+  // 定义请求方法
+  public request<T = any>(config: AxiosRequestConfig): Promise<Result<T>> { 
+    //合并配置
+    return this.instance.request(Object.assign({}, this.baseConfig, config));
+  }
 
-  request(options: AxiosRequestConfig){
-    const instance:NewAxiosInstance = axios.create();
-    const requestOptions = Object.assign({}, this.config, options);
-    this.interceptors(instance);
-    return instance(requestOptions);
+  public get<T = any>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<Result<T>> {
+    return this.instance.get(url, Object.assign({}, this.baseConfig, config));
+  }
+  public post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<Result<T>> {
+    return this.instance.post(url, data, Object.assign({}, this.baseConfig, config));
+  }
+  public put<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<Result<T>> {
+    return this.instance.put(url, data, Object.assign({}, this.baseConfig, config));
+  }
+  //Promise<AxiosResponse<Result<T>>>
+  public delete<T = any>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<Result<T>> {
+    return this.instance.delete(url, Object.assign({}, this.baseConfig, config));
   }
 }
-
-
 const http = new Http({});
 export default http;
