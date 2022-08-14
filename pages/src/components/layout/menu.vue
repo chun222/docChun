@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-14 12:12:26
+ * @LastEditTime: 2022-08-14 12:18:44
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -36,7 +36,7 @@ const list = ref([]);
  
 
 
-doclist({ langname: 'zh-cn' }).then((re)=> {
+doclist({ langname: 'zh-cn' }).then((re)=> { 
   if (re.code == 0) {
     console.log(re.data);
    // list.value = re.data;

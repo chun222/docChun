@@ -111,7 +111,7 @@ class Http {
   }
 
   // 定义请求方法
-  public request<T = any>(config: AxiosRequestConfig): Promise<Result<T>> { 
+  public request<T = any>(config: AxiosRequestConfig): Promise<Result<T>> {
     //合并配置
     return this.instance.request(Object.assign({}, this.baseConfig, config));
   }
