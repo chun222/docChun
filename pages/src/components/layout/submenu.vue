@@ -4,8 +4,8 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-12 14:09:16
- * @FilePath: \web\src\components\layout\submenu.vue
+ * @LastEditTime: 2022-08-15 09:49:18
+ * @FilePath: \pages\src\components\layout\submenu.vue
 -->
 <template>
     <a-sub-menu :key="menuInfo.key"> 
@@ -13,7 +13,10 @@
       <template v-for="item in menuInfo.children" :key="item.key">
         <template v-if="!item.children">
           <a-menu-item :key="item.key"> 
-            {{ item.name }}
+           <router-link
+            :to="`/${encodeURIComponent(item.fullpath)}`" 
+            >{{ item.name }}</router-link
+          >
           </a-menu-item>
         </template>
         <template v-else>
@@ -26,7 +29,7 @@
 
 </style>
 
-<script>  
+<script lang="ts">  
 export default {
   name: 'SubMenu',
   props: {

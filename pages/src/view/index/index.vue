@@ -4,27 +4,27 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-13 22:50:00
+ * @LastEditTime: 2022-08-15 11:33:45
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
-  <a-row type="flex" :gutter="10">
-    <a-col flex="auto">
+
+      <div class="doc-main">
+        
       <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
-    </a-col>
-    <a-col flex="300px">
-      <div class="title_nav">
+  
+      <div class="title_nav" >
         <p v-for="v in listTitle">
           <router-link
-            :to="'/' + v.id"
+            :to="`/${encodeURIComponent(v.page)}/${encodeURIComponent(v.id)}`"
             title="heading"
             :style="{ 'margin-left': v.level + 'px' }"
             >{{ v.id }}</router-link
           >
         </p>
-      </div></a-col
-    >
-  </a-row>
+      </div> 
+      
+      </div>
 </template>
 
 <script setup lang="ts">
@@ -35,15 +35,17 @@ import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 import "highlight.js/styles/github-dark.css";
-import { useRoute } from "vue-router";
+import { RouteParams, useRoute } from "vue-router";
+import { read } from "@/api/module/base";
 
-const route = useRoute(); 
-
+const route = useRoute();
 
 watch(
   () => route.params,
-  (val) => {
-    jumpLocation(val.id);
+  (val: RouteParams) => {
+    console.log(route.params, "====");
+    jumpLocation(val.id as string);
+    loaddocRaw(val.page as string);
   }
 );
 defineProps({
@@ -55,30 +57,13 @@ const doc_card = ref();
 const listTitle = ref([]);
 
 //跳转
-const jumpLocation = (id) => {
+const jumpLocation = (id: string) => {
   if (document.getElementById(id)) {
     document.getElementById(id).scrollIntoView({
       behavior: "smooth",
     });
   }
 };
-
-onMounted(() => {
-  nextTick(() => {
-    window.MathJax.typeset();
-    const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
-    domlist.forEach((x) => {
-      listTitle.value.push({
-        id: x.id,
-        nodeName: x.nodeName,
-        level: parseInt(x.nodeName.replace(/[Hh]/, "")) * 10,
-      });
-    });
-    if (route.params.id) {
-      jumpLocation(route.params.id);
-    }
-  });
-});
 
 // Set options
 // `highlight` example uses https://highlightjs.org
@@ -141,132 +126,34 @@ const tips = {
 };
 
 marked.use({ extensions: [tips] });
+const rawHtml = ref("");
+//请求页面数据
+const loaddocRaw = (page: string): void => {
+  read({ path: page }).then((v) => {
+    rawHtml.value = marked.parse(v.data);
+    nextTick(() => {
+      listTitle.value = [];
+      window.MathJax.typeset();
+      const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      domlist.forEach((x) => {
+        listTitle.value.push({
+          page: page,
+          id: x.id,
+          nodeName: x.nodeName,
+          level: parseInt(x.nodeName.replace(/[Hh]/, "")) * 10,
+        });
+      });
+      if (route.params.id) {
+        jumpLocation(route.params.id as string);
+      }
+    });
+  });
+};
 
-const rawHtml = marked.parse(`
-:info:
-
-info 
-**ssss**
-
-ss
-:: 
-:success: 
-success 
-::
-:warning: 
-warning 
-::
-:error: 
-error 
-::  
-# 一级标题
-## 二级标题
-### 三级标题
-#### 四级标题
-##### 五级标题
-###### 六级标题 
-
-*斜体文本*
-_斜体文本_
-**粗体文本**
-__粗体文本__
-***粗斜体文本***
-___粗斜体文本___ 
-
-***
-
-* * *
-
-*****
-
-- - - 
-
-----------
-
-~~删除线~~
-
-<u>下划线</u>
-
-* 第一行
-* 第二行
-
-- 第一行
-- 第二行
-
-+ 第一行
-+ 第二行
-
-1.第一行
-  - 第一点
-  - 第二点
-
- 
-
-> 一级引用
-> > 二级引用
-> > > 三级引用
-
-> 区块中使用列表
-> 1. 第一项
-> 2. 第二项
->> + 第一项
->> + 第二项
->> + 第三项
-
-[这是百度](https://www.baidu.com)
-
- ###### 哈哈哈 
-
-\`\`\`js
-   protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-\`\`\` 
-
-> #### 这是一个四级标题 
-
-
-> 1. 这是第一行列表项
-> 2. 这是第二行列表项
-
-:success:
-
-abv
-
-::
-
-:error:
-
-**ssss**
-
-### 事实上
-
-Topic 1:  D
-escription 1   
-:Topic 1:  Description 1   
-
-::   
-|标题|标题|标题|
-|:---|:---:|---:|
-|居左测试文本|居中测试文本|居右测试文本|
-|居左测试文本1|居中测试文本2|居右测试文本3|
-|居左测试文本11|居中测试文本22|居右测试文本33|
-|居左测试文本111|居中测试文本222|居右测试文本333|
-
-![中文](./docimg/5.png)
-
-![中文](http://localhost:8082/src/assets/vue.svg)
- 
-
-## 混合 
-:warning: 
-Topic 1:  Description 1   
-:Topic 1:  Description 1  
-::
-$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
-# 事实上
-啊`);
+onMounted(() => {
+  const page = route.params.page as string;
+  loaddocRaw(page);
+});
 </script>
 
  

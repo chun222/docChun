@@ -2,8 +2,8 @@
  * @Date: 2021-11-30 15:42:07
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-11 09:50:35
- * @FilePath: \web\src\components\layout\content.vue
+ * @LastEditTime: 2022-08-15 09:07:39
+ * @FilePath: \pages\src\components\layout\content.vue
 -->
 <template>
   <!-- 框架 content 区域 -->
@@ -22,8 +22,7 @@
     </div>
   </div>
 </template>
-<script>
-import { computed } from "vue";
+<script lang="ts"> 
 export default {
   setup() {
     const keepAlive = true;

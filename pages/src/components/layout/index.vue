@@ -33,7 +33,7 @@
   </a-layout>
 </template>
 
-<script>
+<script lang="ts">
 import { UserOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
 import Content from "./content.vue";

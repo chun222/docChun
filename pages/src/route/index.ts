@@ -4,10 +4,10 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-13 21:59:17
+ * @LastEditTime: 2022-08-15 09:50:46
  * @FilePath: \pages\src\route\index.ts
  */
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteMeta } from 'vue-router'
 import routes from './module/base-routes'
 import NProgress from "nprogress";
 import "nprogress/nprogress.css"; 
@@ -17,14 +17,14 @@ const router = createRouter({
   routes
 })
 
-const setDocumentTitle = (title:string) => {
+const setDocumentTitle = (title: unknown) => {
   document.title = `chunDoc-${title}`
 }
 
 //添加动态路由
 router.beforeEach(to => { 
-  const { meta } = to
-  setDocumentTitle(meta.title)
+  const  meta = to.meta
+    setDocumentTitle(meta.title)
   if (!router.hasRoute("admin")) {
     NProgress.start();
     router.addRoute({ path: '/admin', name: 'admin', component: () => import('@/view/admin.vue') })
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
   if (!to.fullPath.includes('login') && !localStorage.getItem('USER_TOKEN') && false) {
     next({ path: '/login' }) 
   } else {
-    console.log("router",router.getRoutes(),to.path,to.fullPath,to.name);
+   // console.log("router",router.getRoutes(),to.path,to.fullPath,to.name);
     if (router.getRoutes().map(it => it.name).includes(to.name)) {
       next()
     } else {

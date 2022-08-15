@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-12 17:20:10
+ * @LastEditTime: 2022-08-15 18:09:21
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -18,19 +18,23 @@ import (
 	"chunDoc/system/util/str"
 	"chunDoc/system/util/sys"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"sort"
+	"strings"
 
 	"github.com/dlclark/regexp2"
 	//"sort"
 )
 
-type MdService struct{}
+type MdService struct {
+}
 
 type LineConfig struct {
-	Position int64
-	Label    string
+	Position   int64
+	Label      string
+	EffectRows int //有效行数
 }
 
 type SysFile struct {
@@ -45,16 +49,16 @@ type SysFile struct {
 }
 
 var basedir = sys.ExecutePath() + "/" //根目录
-var mdDir = basedir + "md/"
+var mdDir = "md/"
 var FileKey uint = 0
 
 func (_this *MdService) List(lang string) []*SysFile {
-	filesr := _this.GetDirFiles(mdDir + lang + "/")
+	filesr := _this.getDirFiles(mdDir + lang + "/")
 	return filesr
 }
 
 //递归获取文件夹下所有内容
-func (_this *MdService) GetDirFiles(path string) []*SysFile {
+func (_this *MdService) getDirFiles(path string) []*SysFile {
 	FileKey = 0
 	f := SysFile{
 		Key:  FileKey,
@@ -77,9 +81,9 @@ func sortFileTree(f []*SysFile) {
 	}
 }
 
-//递归获取文件夹下所有内容
+//递归获取文件夹下所有内容 , path 不包含根目录
 func (_this *MdService) getFileTree(path string, s *SysFile) {
-	fs, _ := ioutil.ReadDir(path)
+	fs, _ := ioutil.ReadDir(basedir + path)
 	//sort.Sort(file.ByModTime(fs))
 	s.Child = make([]*SysFile, 0)
 	var posintion int64 = 999
@@ -91,7 +95,7 @@ func (_this *MdService) getFileTree(path string, s *SysFile) {
 			if !file.CheckNotExist(configpath) {
 				lineRe := _this.readFileHead(configpath)
 
-				fmt.Println("===", configpath, lineRe.Label, lineRe.Position)
+				//fmt.Println("===", configpath, lineRe.Label, lineRe.Position)
 				if lineRe.Label != "" {
 					name = lineRe.Label
 				}
@@ -149,8 +153,9 @@ func preInsertSlice(s []*SysFile, i *SysFile) []*SysFile {
 //解析头部两行的信息
 func (_this *MdService) readFileHead(fullpath string) LineConfig {
 	var re LineConfig = LineConfig{
-		Position: 999,
-		Label:    "",
+		Position:   999,
+		Label:      "",
+		EffectRows: 0,
 	}
 	fileone, err := os.Open(fullpath)
 	if err != nil {
@@ -167,9 +172,11 @@ func (_this *MdService) readFileHead(fullpath string) LineConfig {
 		labelReturn, positionReturn := _this.readConfigLine(line)
 		if positionReturn != nil {
 			re.Position = *positionReturn
+			re.EffectRows++
 		}
 		if labelReturn != nil {
 			re.Label = *labelReturn
+			re.EffectRows++
 		}
 
 	}
@@ -180,7 +187,6 @@ func (_this *MdService) readFileHead(fullpath string) LineConfig {
 func (_this *MdService) readConfigLine(line string) (*string, *int64) {
 	var labelReturn *string
 	var positionReturn *int64
-
 	reg := regexp2.MustCompile(`label|position`, 0)
 	if ok, _ := reg.MatchString(line); ok {
 		if data, err := reg.FindStringMatch(line); err == nil {
@@ -208,4 +214,118 @@ func (_this *MdService) readConfigLine(line string) (*string, *int64) {
 		}
 	}
 	return labelReturn, positionReturn
+}
+
+//读取md内容
+func (_this *MdService) ReadContent(path string) string {
+	fullpath := basedir + path
+	re := ""
+	fileone, err := os.Open(fullpath)
+	if err != nil {
+		return re
+	}
+	defer fileone.Close()
+	buf := bufio.NewReader(fileone)
+
+	//读取2行,判断是否返回前两行
+	i := 0
+	for {
+		line, err := buf.ReadString('\n')
+		if i < 2 {
+			if s, in := _this.readConfigLine(line); s == nil && in == nil {
+				re = re + line
+			}
+		} else {
+			re = re + line
+		}
+		i++
+
+		if err != nil {
+			if err == io.EOF { //读取结束，会报EOF
+				break
+			}
+			break
+		}
+	}
+	return re
+
+}
+
+//搜索
+
+type FindedResult struct {
+	Id       string
+	PagePath string
+	Text     string
+}
+
+func (_this *MdService) Search(lang string, keyword string) []FindedResult {
+	files := _this.List(lang)
+	var result []FindedResult
+	for _, vfile := range files {
+		f, err := os.Open(basedir + vfile.Fullpath)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+		rd := bufio.NewReader(f)
+
+		HasIndexTitles := make(map[string]int, 0)
+		IndexTitle := ""
+		HasTitleFind := false
+
+		for {
+			line, err := rd.ReadString('\n')                              //以'\n'为结束符读入一行
+			reg := regexp2.MustCompile(`(?<=^\s*#+\s+)[^\s]+.*[^\s$]`, 0) //匹配标题
+			if ok, _ := reg.MatchString(line); ok {
+				if data, err := reg.FindStringMatch(line); err == nil {
+					regReplace := regexp2.MustCompile(`[\*\[\]]`, 0) //替换的
+					IndexTitle, _ = regReplace.Replace(data.String(), "", -1, -1)
+					IndexTitle = strings.ReplaceAll(IndexTitle, " ", "-")
+
+					//判断标题是否找到，如果找到 下面的内容不继续搜索
+					if find := strings.Contains(IndexTitle, keyword); find {
+						HasTitleFind = true
+					} else {
+						HasTitleFind = false
+					}
+
+					if num, ok := HasIndexTitles[IndexTitle]; ok {
+						HasIndexTitles[IndexTitle] = num + 1
+						IndexTitle = fmt.Sprintf("%s-%d", IndexTitle, num+1)
+					} else {
+						HasIndexTitles[IndexTitle] = 1
+					}
+
+					if HasTitleFind {
+						result = append(result, FindedResult{
+							Id:       IndexTitle,
+							PagePath: vfile.Fullpath,
+							Text:     line,
+						})
+					}
+
+				}
+			} else {
+				//非标题
+				if find := strings.Contains(line, keyword); find && !HasTitleFind {
+					result = append(result, FindedResult{
+						Id:       IndexTitle,
+						PagePath: vfile.Fullpath,
+						Text:     line,
+					})
+				}
+			}
+
+			if err != nil {
+				// if err == io.EOF { //读取结束，会报EOF
+				// 	break
+				// }
+				break
+			}
+		}
+
+	}
+
+	return result
 }

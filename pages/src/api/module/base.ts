@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-14 12:06:01
+ * @LastEditTime: 2022-08-15 17:39:11
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -14,10 +14,10 @@ import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosIn
  
 
 //获取文档列表
-interface TypedDoclist {
+type TypeDoclist = {
   langname:string
-}
-export const doclist = (data: TypedDoclist) => {
+} 
+export const doclist = (data: TypeDoclist) => {
   return http.request({
     url: '/doclist',
     data: data,
@@ -25,9 +25,30 @@ export const doclist = (data: TypedDoclist) => {
   })
 }
 
-export const doclist2 = (data: TypedDoclist) => {
-  return http.post<string>(
-   '',data
-  )
+
+type TypePath =  {
+  path:string
+}
+
+export const read = (data: TypePath) => {
+  return http.request<string>({
+    url: '/read',
+    data: data,
+    method: 'post'
+  })
+}
+
+
+type TypeSearch =  {
+  langname:string ;
+  keyword:string;
+}
+
+export const search = (data: TypeSearch) => {
+  return http.request({
+    url: '/search',
+    data: data,
+    method: 'post'
+  })
 }
  
