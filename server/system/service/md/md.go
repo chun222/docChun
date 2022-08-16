@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-15 18:09:21
+ * @LastEditTime: 2022-08-16 09:26:26
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -67,7 +67,6 @@ func (_this *MdService) getDirFiles(path string) []*SysFile {
 	}
 	_this.getFileTree(path, &f)
 	sortFileTree(f.Child)
-
 	return f.Child
 }
 
@@ -142,6 +141,48 @@ func (_this *MdService) getFileTree(path string, s *SysFile) {
 			}
 		}
 	}
+}
+
+//获取文件列表list，不包含文件夹
+func (_this *MdService) getFileList(path string) []SysFile {
+
+	fs, _ := ioutil.ReadDir(basedir + path)
+	//sort.Sort(file.ByModTime(fs))
+	result := make([]SysFile, 0)
+	var posintion int64 = 999
+	for _, f := range fs {
+		if f.IsDir() {
+			result = append(result, _this.getFileList(path+"/"+f.Name()+"/")...)
+
+		} else {
+
+			fileType := str.AfterLast(f.Name(), ".")
+			//只取markdown文件
+			if fileType == "md" {
+
+				lineRe := _this.readFileHead(path + "/" + f.Name())
+				name := str.BeforeLast(f.Name(), ".") //默认为文件名称
+				if lineRe.Label != "" {
+					name = lineRe.Label
+				}
+				if lineRe.Position != 0 {
+					posintion = lineRe.Position
+				}
+				fileNow := SysFile{
+					Key:        FileKey,
+					Position:   posintion,
+					Name:       name,
+					Size:       float64(f.Size()) / 1024, //返回kb
+					Fullpath:   path + f.Name(),
+					Type:       fileType,
+					CreateTime: f.ModTime().Format("2006-01-02 15:04:05"),
+				}
+				result = append(result, fileNow)
+			}
+		}
+	}
+
+	return result
 }
 
 //切片的前序元素添加（头部添加）
@@ -255,12 +296,13 @@ func (_this *MdService) ReadContent(path string) string {
 
 type FindedResult struct {
 	Id       string
+	PageName string
 	PagePath string
 	Text     string
 }
 
 func (_this *MdService) Search(lang string, keyword string) []FindedResult {
-	files := _this.List(lang)
+	files := _this.getFileList(mdDir + lang + "/")
 	var result []FindedResult
 	for _, vfile := range files {
 		f, err := os.Open(basedir + vfile.Fullpath)
@@ -300,6 +342,7 @@ func (_this *MdService) Search(lang string, keyword string) []FindedResult {
 					if HasTitleFind {
 						result = append(result, FindedResult{
 							Id:       IndexTitle,
+							PageName: vfile.Name,
 							PagePath: vfile.Fullpath,
 							Text:     line,
 						})
@@ -311,6 +354,7 @@ func (_this *MdService) Search(lang string, keyword string) []FindedResult {
 				if find := strings.Contains(line, keyword); find && !HasTitleFind {
 					result = append(result, FindedResult{
 						Id:       IndexTitle,
+						PageName: vfile.Name,
 						PagePath: vfile.Fullpath,
 						Text:     line,
 					})

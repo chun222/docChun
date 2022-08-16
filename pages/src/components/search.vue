@@ -2,7 +2,7 @@
  * @Date: 2021-12-17 09:44:58
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-15 17:53:36
+ * @LastEditTime: 2022-08-16 09:28:53
  * @FilePath: \pages\src\components\search.vue
 -->
 <template>
@@ -28,6 +28,7 @@
           @click="cancel()"
         >
           <li>
+            <h2>{{ item.PageName }}</h2>
             <h5>{{ item.Id }}</h5>
             <p>{{ item.Text }}</p>
           </li>
