@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 09:48:46
+ * @LastEditTime: 2022-08-17 17:27:38
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -16,11 +16,10 @@
   >
     <template v-for="item in list" :key="item.key">
       <template v-if="!item.children">
-        <a-menu-item :key="item.key"> 
-          <router-link
-            :to="`/${encodeURIComponent(item.fullpath)}`" 
-            >{{ item.name }}</router-link
-          >
+        <a-menu-item :key="item.key">
+          <router-link :to="`/${encodeURIComponent(item.fullpath)}`">{{
+            item.name
+          }}</router-link>
         </a-menu-item>
       </template>
       <template v-else>
@@ -30,24 +29,43 @@
   </a-menu>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import SubMenu from "./submenu.vue"; 
+import { defineComponent, ref, watch } from "vue";
+import SubMenu from "./submenu.vue";
 
+import { useStore } from "@/store/index";
 import { doclist } from "@/api/module/base";
-const list = ref([]); 
-
-doclist({ langname: 'zh-cn' }).then((re)=> { 
-  if (re.code == 0) {
-    console.log(re.data);
-    list.value = re.data;
-  }
-}); 
 
 export default defineComponent({
   components: {
-    "sub-menu": SubMenu, 
+    "sub-menu": SubMenu,
   },
   setup() {
+    const list = ref([]);
+
+    const store = useStore();
+    
+    const getMenu = ()=>{ 
+    doclist({ lang: store.lang.dir, version: store.version.dir }).then((re) => {
+      if (re.code == 0) {
+        list.value = re.data;
+      }
+    });
+    }  
+    watch(() => store.version , (v1,v2) => {
+     getMenu()
+    })
+
+    watch(() => store.lang , (v1,v2) => {
+    getMenu()
+    })
+
+    getMenu();
+
+     
+    // store.$subscribe((mutation, state) => {
+    //     console.log("state",state);
+    // })
+
     const collapsed = ref(false);
 
     const toggleCollapsed = () => {

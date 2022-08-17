@@ -54,3 +54,10 @@
 .light .doc-card .error { background-color: #ffebec; border-color:  var(--chun-error-color); color:var(--chun-error-color) ; }
 .light .doc-card .success {background-color: #e6f6e6; border-color:   var(--chun-success-color); color: var(--chun-success-color); }
 .light .doc-card .warning { background-color: #fff8e6; border-color:  var(--chun-warning-color);color: var(--chun-warning-color);  }
+
+.light .toprightNavHover {
+    color: #000;
+  }
+  .light .toprightNavHover:hover {
+    color: var(--chun-primary-color);
+  }

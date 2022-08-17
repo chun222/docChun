@@ -2,7 +2,7 @@
  * @Date: 2021-12-17 09:44:58
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-16 09:28:53
+ * @LastEditTime: 2022-08-17 17:33:52
  * @FilePath: \pages\src\components\search.vue
 -->
 <template>
@@ -37,11 +37,10 @@
     </div>
   </a-modal>
 </template>
-<script lang="ts">
-import { message } from "ant-design-vue";
+<script lang="ts"> 
 import { defineComponent, reactive, ref, toRaw, watch } from "vue";
-import { debounce } from "@/tools/common";
-
+import { debounce } from "@/tools/common"; 
+import { useStore } from "@/store/index";
 import { search } from "@/api/module/base";
 export default defineComponent({
   props: {
@@ -57,6 +56,7 @@ export default defineComponent({
   },
   emit: ["close"],
   setup(props, context) {
+     const store = useStore();
     const state = reactive({
       depts: [],
       showPath: true,
@@ -70,8 +70,7 @@ export default defineComponent({
       context.emit("close", e);
     };
     const changeInput = debounce(() => {
-      search({ langname: "zh-cn", keyword: state.serchValue }).then((v) => {
-        console.log(v.data);
+      search({ lang: store.lang.dir, version:store.version.dir, keyword: state.serchValue }).then((v) => { 
         state.searchResult = v.data;
       });
     }, 500);

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-16 09:26:26
+ * @LastEditTime: 2022-08-17 16:45:59
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -52,8 +52,8 @@ var basedir = sys.ExecutePath() + "/" //根目录
 var mdDir = "md/"
 var FileKey uint = 0
 
-func (_this *MdService) List(lang string) []*SysFile {
-	filesr := _this.getDirFiles(mdDir + lang + "/")
+func (_this *MdService) List(lang string, version string) []*SysFile {
+	filesr := _this.getDirFiles(fmt.Sprintf("%s%s/%s/", mdDir, version, lang))
 	return filesr
 }
 
@@ -301,8 +301,8 @@ type FindedResult struct {
 	Text     string
 }
 
-func (_this *MdService) Search(lang string, keyword string) []FindedResult {
-	files := _this.getFileList(mdDir + lang + "/")
+func (_this *MdService) Search(lang string, version string, keyword string) []FindedResult {
+	files := _this.getFileList(fmt.Sprintf("%s%s/%s/", mdDir, version, lang))
 	var result []FindedResult
 	for _, vfile := range files {
 		f, err := os.Open(basedir + vfile.Fullpath)

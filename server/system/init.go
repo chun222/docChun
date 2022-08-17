@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:启动核心服务
- * @LastEditTime: 2022-08-11 17:20:54
+ * @LastEditTime: 2022-08-17 10:58:48
  * @FilePath: \server\system\init.go
  */
 package system
@@ -18,6 +18,8 @@ import (
 	"chunDoc/system/router"
 	"chunDoc/system/util/file"
 	"chunDoc/system/util/sys"
+
+	"chunDoc/system/service/configService"
 	"context"
 	"embed"
 	"fmt"
@@ -77,31 +79,58 @@ func shutDown(s *http.Server) {
 
 //初始化data，json格式
 func InitData() {
-	file.IsNotExistMkDir(basedir + "data")
-	//写入多语言配置
-	langPath := basedir + "data/lang.json"
-	if file.CheckNotExist(langPath) {
-		err := ioutil.WriteFile(langPath, []byte(initial.DataLang), 0777)
-		if err != nil {
-			log.Write(log.Fatal, "json:"+err.Error())
-		}
-	}
-	//默认文档
-	file.IsNotExistMkDir(basedir + "md/en-us")
-	file.IsNotExistMkDir(basedir + "md/zh-cn")
-	zhMDDir := basedir + "md/zh-cn/index.md"
-	enMDDir := basedir + "md/en-us/index.md"
-	if file.CheckNotExist(zhMDDir) {
-		err := ioutil.WriteFile(zhMDDir, []byte(initial.ZhMd), 0777)
-		if err != nil {
-			log.Write(log.Fatal, "zhMDDir:"+err.Error())
-		}
-	}
 
-	if file.CheckNotExist(enMDDir) {
-		err := ioutil.WriteFile(enMDDir, []byte(initial.EnMd), 0777)
-		if err != nil {
-			log.Write(log.Fatal, "enMDDir:"+err.Error())
+	initlockFilePtah := basedir + "init_lock"
+	if file.CheckNotExist(initlockFilePtah) {
+
+		file.IsNotExistMkDir(basedir + "data")
+		//写入多语言配置
+		langPath := basedir + "data/lang.json"
+		if file.CheckNotExist(langPath) {
+			err := ioutil.WriteFile(langPath, []byte(initial.DataLang), 0777)
+			if err != nil {
+				log.Write(log.Fatal, "lang:"+err.Error())
+			}
+		}
+
+		//写入多版本配置
+		versionPath := basedir + "data/version.json"
+		if file.CheckNotExist(versionPath) {
+			err := ioutil.WriteFile(versionPath, []byte(initial.DataVersion), 0777)
+			if err != nil {
+				log.Write(log.Fatal, "version:"+err.Error())
+			}
+		}
+
+		//读取默认版本
+		var serConfig configService.ConfigService
+		var versions []configService.DirAlias
+		var langs []configService.DirAlias
+		serConfig.GetStructBystring([]byte(initial.DataVersion), &versions)
+		serConfig.GetStructBystring([]byte(initial.DataLang), &langs)
+
+		for _, v := range versions {
+			for _, l := range langs {
+				dirMk := fmt.Sprintf("%s/md/%s/%s", basedir, v.Dir, l.Dir)
+				file.IsNotExistMkDir(dirMk)
+				fileMk := fmt.Sprintf("%s/index.md", dirMk)
+				if file.CheckNotExist(fileMk) {
+					contentInit := initial.EnMd
+					if l.Dir == "zh-cn" {
+						contentInit = initial.ZhMd
+					}
+					err := ioutil.WriteFile(fileMk, []byte(contentInit), 0777)
+					if err != nil {
+						log.Write(log.Fatal, fileMk+err.Error())
+					}
+				}
+			}
+		}
+
+		if lockfile, err := os.Create(initlockFilePtah); err != nil {
+			panic(err)
+		} else {
+			lockfile.Close()
 		}
 	}
 

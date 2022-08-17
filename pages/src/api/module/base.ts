@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 17:39:11
+ * @LastEditTime: 2022-08-17 16:34:04
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -15,7 +15,8 @@ import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosIn
 
 //获取文档列表
 type TypeDoclist = {
-  langname:string
+  lang:string
+  version:string 
 } 
 export const doclist = (data: TypeDoclist) => {
   return http.request({
@@ -40,7 +41,8 @@ export const read = (data: TypePath) => {
 
 
 type TypeSearch =  {
-  langname:string ;
+  lang:string ; 
+  version:string ;
   keyword:string;
 }
 
@@ -51,4 +53,13 @@ export const search = (data: TypeSearch) => {
     method: 'post'
   })
 }
+
+//所有配置
+export const allconfig = () => {
+  return http.request({
+    url: '/allconfig', 
+    method: 'post'
+  })
+}
+
  

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-15 17:35:02
+ * @LastEditTime: 2022-08-17 16:42:26
  * @FilePath: \server\system\model\RequestModel\tools.go
  */
 package RequestModel
@@ -12,12 +12,14 @@ package RequestModel
 import "mime/multipart"
 
 type Search struct {
-	LangName string `json:"langname" binding:"required"`
-	Keyword  string `json:"keyword" binding:"required"`
+	Lang    string `json:"lang" binding:"required"`
+	Version string `json:"version" binding:"required"`
+	Keyword string `json:"keyword" binding:"required"`
 }
 
-type LangName struct {
-	LangName string `json:"langname" binding:"required"`
+type InitData struct {
+	Lang    string `json:"lang" binding:"required"`
+	Version string `json:"version" binding:"required"`
 }
 
 type Path struct {

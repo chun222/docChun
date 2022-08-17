@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-15 17:36:52
+ * @LastEditTime: 2022-08-17 11:05:42
  * @FilePath: \server\system\router\base.go
  */
 
@@ -21,6 +21,7 @@ func BaseRouter(r *gin.Engine) {
 	r.POST("/doclist", base.List)
 	r.POST("/read", base.ReadContent)
 	r.POST("/search", base.Search)
+	r.POST("/allconfig", base.AllConfig)
 
 	// authG := r.Group("tools")
 	// //只需要登录

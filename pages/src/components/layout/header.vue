@@ -4,15 +4,22 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 14:23:14
+ * @LastEditTime: 2022-08-17 16:18:33
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
-  <a-row type="flex">
+  <a-row type="flex" id="header">
     <a-col flex="200px">LOGO</a-col>
     <a-col flex="auto">auto</a-col>
-    <a-col flex="300px">
-      <a-space>
+    <a-col flex="600px">
+      <a-space :size="20" style="flex-direction: row-reverse; float: right">
+        <a-input placeholder="搜索" readonly @click="showSearch = true">
+          <template #prefix>
+            <search theme="outline" size="26" />
+          </template>
+          <template #suffix> </template>
+        </a-input>
+
         <a-switch
           :checked="themeActive"
           @change="changeTheme"
@@ -23,54 +30,104 @@
           <template #unCheckedChildren><brightness theme="filled" /></template>
         </a-switch>
 
-        <a-input  placeholder="搜索" readonly @click="showSearch = true">
-          <template #prefix>
-            <search theme="outline" size="26" />
+        <a-dropdown
+          :getPopupContainer="(triggerNode:any) => triggerNode.parentNode"
+        >
+          <div class="toprightNavHover" @click.prevent>
+            <translate theme="filled" class="navicon" /><span>{{
+              lang.name
+            }}</span
+            ><down-one theme="filled" class="navicon" />
+          </div>
+          <template #overlay>
+            <a-menu @click="changeLang">
+              <a-menu-item v-for="v in langs" :key="v">{{
+                v.name
+              }}</a-menu-item>
+            </a-menu>
           </template>
-          <template #suffix>
-           
+        </a-dropdown>
+
+        <a-dropdown
+          :getPopupContainer="(triggerNode:any) => triggerNode.parentNode"
+        >
+          <div class="toprightNavHover" @click.prevent>
+            <span>{{ version.name }}</span
+            ><down-one theme="filled" class="navicon" />
+          </div>
+          <template #overlay>
+            <a-menu @click="changeVersion">
+              <a-menu-item v-for="v in versions" :key="v">{{
+                v.name
+              }}</a-menu-item>
+            </a-menu>
           </template>
-        </a-input>
+        </a-dropdown>
       </a-space>
     </a-col>
   </a-row>
-  <vsearch :visible="showSearch" @close="showSearch = false">
- 
-    
-  </vsearch>
+  <vsearch :visible="showSearch" @close="showSearch = false"> </vsearch>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, computed } from "vue";
-import { Brightness, Moon,Search } from "@icon-park/vue-next";
+import {
+  Brightness,
+  Moon,
+  Search,
+  DownOne,
+  Translate,
+} from "@icon-park/vue-next";
 import { useStore } from "@/store/index";
-
-import vsearch    from "@/components/search.vue";
+import vsearch from "@/components/search.vue"; 
 export default defineComponent({
   components: {
     Brightness,
     Moon,
     Search,
-    vsearch
+    vsearch,
+    DownOne,
+    Translate,
   },
   setup() {
     const store = useStore();
 
     const themeActive = computed(() => store.theme);
     const state = reactive({
-      showSearch:false
+      showSearch: false,
     });
 
-    const changeTheme = (v) => {
+    const changeTheme = (v: string) => {
       console.log(v);
-
       store.changeTheme(v);
     };
-    return { ...toRefs(state), changeTheme, themeActive };
+
+    const changeLang= ({ key }) => {
+      store.changeLang(key)
+    };
+
+    const changeVersion = ({ key }) => {
+     store.changeVersion(key)
+    };
+
+    const langs = computed(() => store.langs);
+
+    const versions = computed(() => store.versions);
+    const lang = computed(() => store.lang);
+    const version = computed(() => store.version); 
+    return {
+      ...toRefs(state),
+      changeTheme,
+      themeActive,
+      langs,
+      versions,
+      lang,
+      version,
+      changeLang,
+      changeVersion,
+    };
   },
 });
 </script>
 
-<style scoped>
-.ant-input-affix-wrapper { border-radius: 20px;}
-</style>
+ 
