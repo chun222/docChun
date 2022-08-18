@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-17 16:16:30
+ * @LastEditTime: 2022-08-18 09:39:39
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -31,6 +31,7 @@ export const useStore = defineStore('main', {
       lang: {name:"",dir:""},
       versions:[{name:"",dir:""}],
       langs: [{name:"",dir:""}],
+      routeLoading:false,
     }
   },
   getters: {

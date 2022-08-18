@@ -2,9 +2,10 @@
  * @Date: 2022-02-14 10:20:39
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-08-11 16:27:22
+ * @LastEditTime: 2022-08-18 12:17:37
  * @FilePath: \server\main.go
  */
+//go:generate goversioninfo
 package main
 
 import (
@@ -16,8 +17,8 @@ import (
 	"os"
 )
 
-//go:embed static
-var staticFs embed.FS
+//go:embed pages
+var pagesFs embed.FS
 
 var serviceConfig = &service.Config{
 	Name:        "TjsEmsServer_V2_",
@@ -113,5 +114,5 @@ func (p *Program) Stop(s service.Service) error {
 
 func (p *Program) run() {
 	log.Println("开始成功")
-	system.Init(staticFs)
+	system.Init(pagesFs)
 }

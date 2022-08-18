@@ -2,7 +2,7 @@
  * @Date: 2022-02-14 10:46:28
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-08-11 16:25:23
+ * @LastEditTime: 2022-08-18 12:16:36
  * @FilePath: \server\system\router\InitRouter.go
  */
 
@@ -10,12 +10,13 @@ package router
 
 import (
 	"embed"
-	//"io/fs"
+	"io/fs"
 	"net/http"
 
 	"chunDoc/system/core/config"
 	"chunDoc/system/middleware"
 	"chunDoc/system/util/sys"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,8 +37,8 @@ func InitRouter(staticFs embed.FS) *gin.Engine {
 
 	r.Static("/static", basedir+"static") //静态文件
 
-	// fads, _ := fs.Sub(staticFs, "static")
-	// r.StaticFS("/static", http.FS(fads))                                               //挂载到二进制中
+	fads, _ := fs.Sub(staticFs, "pages")
+	r.StaticFS("/pages", http.FS(fads)) //挂载到二进制中
 
 	r.StaticFS("/apidoc", http.Dir(basedir+"apidoc"))                                          //挂载目录提供http访问
 	r.StaticFS(config.Instance().Upload.Path, http.Dir(basedir+config.Instance().Upload.Path)) //挂载目录提供http访问

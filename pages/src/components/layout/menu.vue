@@ -4,26 +4,25 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-17 17:27:38
+ * @LastEditTime: 2022-08-18 10:29:43
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
   <a-menu
-    v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
     mode="inline"
     :inline-collapsed="collapsed"
   >
-    <template v-for="item in list" :key="item.key">
+    <template v-for="item in list" :key="item.fullpath">
       <template v-if="!item.children">
-        <a-menu-item :key="item.key">
+        <a-menu-item :key="item.fullpath">
           <router-link :to="`/${encodeURIComponent(item.fullpath)}`">{{
             item.name
           }}</router-link>
         </a-menu-item>
       </template>
       <template v-else>
-        <sub-menu :key="item.name" :menu-info="item" />
+        <sub-menu :key="item.fullpath" :menu-info="item" />
       </template>
     </template>
   </a-menu>
@@ -31,9 +30,12 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import SubMenu from "./submenu.vue";
+import router from "@/route/index";
 
 import { useStore } from "@/store/index";
 import { doclist } from "@/api/module/base";
+
+import { RouteParams, useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -41,30 +43,53 @@ export default defineComponent({
   },
   setup() {
     const list = ref([]);
+    const route = useRoute();
 
     const store = useStore();
-    
-    const getMenu = ()=>{ 
-    doclist({ lang: store.lang.dir, version: store.version.dir }).then((re) => {
-      if (re.code == 0) {
-        list.value = re.data;
+
+    const getMenu = (isReload: boolean) => {
+      doclist({ lang: store.lang.dir, version: store.version.dir }).then(
+        (re) => {
+          if (re.code == 0) {
+            list.value = re.data;
+            //默认指向第一篇文章
+            if (list.value.length > 0 && isReload) {
+              router.push(`/${encodeURIComponent(list.value[0].fullpath)}`);
+            } else {
+            }
+          }
+        }
+      );
+    };
+    watch(
+      () => store.version,
+      (v1, v2) => {
+        getMenu(true);
       }
-    });
-    }  
-    watch(() => store.version , (v1,v2) => {
-     getMenu()
-    })
+    );
 
-    watch(() => store.lang , (v1,v2) => {
-    getMenu()
-    })
+    watch(
+      () => store.lang,
+      (v1, v2) => {
+        getMenu(true);
+      }
+    );
 
-    getMenu();
+    getMenu(false);
 
-     
     // store.$subscribe((mutation, state) => {
     //     console.log("state",state);
     // })
+
+    //监听菜单选择
+    const selectedKeys = ref();
+    watch(
+      () => route.params.page,
+      (page) => {
+        selectedKeys.value = [page];
+      },
+      { immediate: true }
+    );
 
     const collapsed = ref(false);
 
@@ -75,8 +100,7 @@ export default defineComponent({
       list,
       collapsed,
       toggleCollapsed,
-      selectedKeys: ref(["1"]),
-      openKeys: ref(["2"]),
+      selectedKeys,
     };
   },
 });

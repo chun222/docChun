@@ -4,14 +4,17 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 11:33:45
+ * @LastEditTime: 2022-08-18 12:06:57
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
 
       <div class="doc-main">
+
+      
         
-      <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
+        <template v-if="!pageLoading">
+          <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
   
       <div class="title_nav" >
         <p v-for="v in listTitle">
@@ -23,6 +26,11 @@
           >
         </p>
       </div> 
+        </template>
+         <div class="content-loading" v-else>
+      <a-spin size="large" />
+    </div>
+      
       
       </div>
 </template>
@@ -36,21 +44,30 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 import "highlight.js/styles/github-dark.css";
 import { RouteParams, useRoute } from "vue-router";
-import { read } from "@/api/module/base";
-
+import { read } from "@/api/module/base"; 
+import { useStore } from "@/store/index";
 const route = useRoute();
-
+ const store = useStore();
 watch(
-  () => route.params,
-  (val: RouteParams) => {
-    console.log(route.params, "====");
-    jumpLocation(val.id as string);
-    loaddocRaw(val.page as string);
+  () => route.params.page,
+  (val: any) => { 
+    loaddocRaw(val as string);
   }
 );
+
+watch(
+  () => route.params.id,
+  (val: any) => { 
+    jumpLocation(val as string); 
+  }
+);
+
+
 defineProps({
   msg: String,
 });
+
+const pageLoading = ref(true)
 
 const count = ref(0);
 const doc_card = ref();
@@ -128,12 +145,19 @@ const tips = {
 marked.use({ extensions: [tips] });
 const rawHtml = ref("");
 //请求页面数据
-const loaddocRaw = (page: string): void => {
+const loaddocRaw = (page: string): void => { 
+
+  pageLoading.value = true
+  listTitle.value = [];
   read({ path: page }).then((v) => {
-    rawHtml.value = marked.parse(v.data);
-    nextTick(() => {
-      listTitle.value = [];
-      window.MathJax.typeset();
+    pageLoading.value = false
+    if (v.data == "") {
+      rawHtml.value = "404"
+       return 
+    }
+    rawHtml.value = marked.parse(v.data); 
+    nextTick(() => { 
+      (window as any).MathJax.typeset();
       const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
       domlist.forEach((x) => {
         listTitle.value.push({
@@ -143,6 +167,7 @@ const loaddocRaw = (page: string): void => {
           level: parseInt(x.nodeName.replace(/[Hh]/, "")) * 10,
         });
       });
+     
       if (route.params.id) {
         jumpLocation(route.params.id as string);
       }

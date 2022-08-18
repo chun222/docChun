@@ -7,7 +7,7 @@ html {
 #header {
   font-size: var(--chun-font-size-h5);
 }
-
+.logo img { height: 40px;}
 .toprightNavHover { 
   display: flex;
   justify-content: center; 
