@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-12 23:25:08
+ * @LastEditTime: 2022-08-18 16:54:49
  * @FilePath: \pages\index.html
 -->
 <!DOCTYPE html>
@@ -13,14 +13,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./favicon.ico" />
   <title>docChun</title>
   <script>
+
     window.MathJax = {
       options: {
         enableMenu: false,
       },
+      chtml: {
+        scale: 1.5,                      // global scaling factor for all expressions
+        minScale: .5,                  // smallest scaling factor to use
+        mtextInheritFont: false,       // true to make mtext elements use surrounding font
+        merrorInheritFont: true,       // true to make merror text use surrounding font
+        mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
+        skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
+        exFactor: .5,                  // default size of ex in em units
+        displayAlign: 'center',        // default for indentalign when set to 'auto'
+        displayIndent: '0',            // default for indentshift when set to 'auto'
+        matchFontHeight: true,         // true to match ex-height of surrounding font
+        fontURL: './fonts',   // The URL where the fonts are found
+        adaptiveCSS: true              // true means only produce CSS that is used in the processed equations
+      },
       loader: {
-        load: ['[tex]/tagformat']
+        load: ['./tagformat']
       },
       startup: {
         pageReady: () => {
@@ -40,12 +56,13 @@
       }
     };
   </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script id="MathJax-script" async src="./tex-chtml.js"></script>
 </head>
 
 <body>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 
 </html>

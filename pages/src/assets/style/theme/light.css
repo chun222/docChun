@@ -1,6 +1,8 @@
 .light .title_nav {
     border-left: 1px solid #ccc;
 }
+.light .title_nav p a { color: rgb(49, 49, 49);}
+.light .title_nav p a:hover { color:var(--chun-primary-color);}
 
 .light .site-layout-sub-header-background,
 .light .site-layout-background,
@@ -9,6 +11,10 @@
 .light .ant-layout {
     background: var(--light-bg);
 }
+.light #header .ant-input-affix-wrapper { background-color: #D6DBDF;color:rgb(66, 66, 66) ;}
+.light #header .ant-input-affix-wrapper .ant-input::placeholder {
+    color: rgb(66, 66, 66);
+  }
 
 .light .ant-layout-header {
     border-bottom: 1px solid var(--chun-gray-2);
@@ -49,15 +55,58 @@
     border: 1px solid #D6DBDF;
 }
 
-.light .doc-card .info p,.light .doc-card .error p,.light .doc-card .success p,.light .doc-card .warning p{ color: #000; }
-.light .doc-card .info {background-color: #fefefe; border-color:  var(--chun-info-color); color: var(--chun-info-color); }
-.light .doc-card .error { background-color: #ffebec; border-color:  var(--chun-error-color); color:var(--chun-error-color) ; }
-.light .doc-card .success {background-color: #e6f6e6; border-color:   var(--chun-success-color); color: var(--chun-success-color); }
-.light .doc-card .warning { background-color: #fff8e6; border-color:  var(--chun-warning-color);color: var(--chun-warning-color);  }
+.light .doc-card .info p,
+.light .doc-card .error p,
+.light .doc-card .success p,
+.light .doc-card .warning p {
+    color: #000;
+}
+
+.light .doc-card .info {
+    background-color: #fefefe;
+    border-color: var(--chun-info-color);
+    color: var(--chun-info-color);
+}
+
+.light .doc-card .error {
+    background-color: #ffebec;
+    border-color: var(--chun-error-color);
+    color: var(--chun-error-color);
+}
+
+.light .doc-card .success {
+    background-color: #e6f6e6;
+    border-color: var(--chun-success-color);
+    color: var(--chun-success-color);
+}
+
+.light .doc-card .warning {
+    background-color: #fff8e6;
+    border-color: var(--chun-warning-color);
+    color: var(--chun-warning-color);
+}
 
 .light .toprightNavHover {
     color: #000;
-  }
-  .light .toprightNavHover:hover {
+}
+
+.light .toprightNavHover:hover {
     color: var(--chun-primary-color);
-  }
+}
+
+.light .totop {background-color: rgba(7, 7, 7, 0.555); color: rgb(254, 254, 254);}
+
+/* ant */
+.light .ant-menu-vertical .ant-menu-item::after, .light .ant-menu-vertical-left .ant-menu-item::after, .light .ant-menu-vertical-right .ant-menu-item::after, .light .ant-menu-inline .ant-menu-item::after {
+    border-right:3px solid var(--chun-primary-color);
+}
+
+.light .ant-menu-light .ant-menu-item:hover,.light .ant-menu-light .ant-menu-item-active,.light .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,.light .ant-menu-light .ant-menu-submenu-active,.light .ant-menu-light .ant-menu-submenu-title:hover,.light .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-expand-icon,.light .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+    color:var(--chun-primary-color) ;
+}
+
+.light .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color:#e6f7ff;
+}
+
+.light .ant-menu-item-selected a,.light .ant-menu-item a:hover, .light .ant-menu-item-selected a:hover ,.light .ant-menu-submenu-selected{ color:var(--chun-primary-color) ;}

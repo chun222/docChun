@@ -2,7 +2,7 @@
  * @Date: 2021-11-30 15:42:07
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-18 12:00:45
+ * @LastEditTime: 2022-08-18 16:10:20
  * @FilePath: \pages\src\components\layout\content.vue
 -->
 <template>
@@ -25,10 +25,12 @@
 </template>
 <script lang="ts"> 
 
+
+
 import { computed } from "vue";
 import { useStore } from "@/store/index";
 export default {
-  setup() {
+  setup() { 
     const store = useStore();
     const Loading =computed(()=>store.routeLoading)
     const keepAlive = true;

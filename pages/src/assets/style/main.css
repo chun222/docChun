@@ -4,9 +4,12 @@ html {
   margin: 0;
 }
 
+ 
+
 #header {
   font-size: var(--chun-font-size-h5);
 }
+
 .logo img { height: 40px;}
 .toprightNavHover { 
   display: flex;
@@ -19,10 +22,18 @@ html {
   align-items: center;
 }
 
+.navicon { margin-top: 5px; margin-left: 5px; margin-right: 5px; float: left;}
+#header .ant-switch { vertical-align: baseline;}
+
+#header .ant-input-affix-wrapper { width: 140px; padding:0px 5px; vertical-align: middle; border: none; border-radius: 25px; background-color: #ccc;}
+#header .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused { box-shadow: none;}
+
+#header .ant-input-affix-wrapper .ant-input { background-color: transparent;}
 
 .doc-main {
   width: 100%;
   display: flex;
+  position: relative;
 }
 
 .doc-card {
@@ -42,6 +53,8 @@ html {
   padding: 0;
   margin-bottom: 6px;
 }
+
+.totop { position: fixed; bottom: 100px; right: 300px; cursor: pointer;   padding: 10px 10px 5px 10px; border-radius: 5px;}
 
 #content {
   height: calc(100vh - 160px);

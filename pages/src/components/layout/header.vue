@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 11:38:37
+ * @LastEditTime: 2022-08-18 17:48:53
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
@@ -15,7 +15,7 @@
       <a-space :size="20" style="flex-direction: row-reverse; float: right">
         <a-input placeholder="搜索" readonly @click="showSearch = true">
           <template #prefix>
-            <search theme="outline" size="26" />
+            <search theme="outline" size="22" style="margin-top:6px"/>
           </template>
           <template #suffix> </template>
         </a-input>

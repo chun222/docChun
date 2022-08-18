@@ -1,1 +1,0 @@
-import{_ as s,r as a,o as n,c as t,a as o,w as l,b as r,d as u}from"./index.3b84f4b4.js";const e={},d=r("h1",null,"后台",-1),c=u("ss");const f=s(e,[["render",function(s,r,u,e,f,b){const i=a("a-button");return n(),t("div",null,[d,o(i,null,{default:l((()=>[c])),_:1})])}]]);export{f as default};

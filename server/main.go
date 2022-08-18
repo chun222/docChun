@@ -2,7 +2,7 @@
  * @Date: 2022-02-14 10:20:39
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-08-18 12:17:37
+ * @LastEditTime: 2022-08-18 14:30:14
  * @FilePath: \server\main.go
  */
 //go:generate goversioninfo
@@ -21,9 +21,9 @@ import (
 var pagesFs embed.FS
 
 var serviceConfig = &service.Config{
-	Name:        "TjsEmsServer_V2_",
-	DisplayName: "TjsEmsServer_V2_",
-	Description: "天俱时能源管理服务2.0",
+	Name:        "chunDocService",
+	DisplayName: "chunDocService",
+	Description: "markdown在线生成文件管理服务，主页：https://github.com/chun222",
 }
 
 func main() {
@@ -32,8 +32,12 @@ func main() {
 	prog := &Program{}
 
 	//注册到服务的时候，需要设置目录
-	if len(os.Args) >= 3 {
-		serviceConfig.Arguments = append(serviceConfig.Arguments, os.Args[2])
+	if len(os.Args) >= 2 {
+		typecmd := os.Args[1]
+		if typecmd == "install" {
+			dir, _ := os.Getwd()
+			serviceConfig.Arguments = append(serviceConfig.Arguments, dir)
+		}
 	}
 
 	s, err := service.New(prog, serviceConfig)
@@ -74,13 +78,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("卸载成功")
-	} else if cmd == "stopp" {
-		err = s.Start()
+		fmt.Println("开始成功")
+	} else if cmd == "stop" {
+		err = s.Stop()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("卸载成功")
+		fmt.Println("停止成功")
 	} else {
 		//直接运行 第一个参数为运行目录
 		err = s.Run()
@@ -90,7 +94,7 @@ func main() {
 		return
 	}
 
-	// install, uninstall, start, stop 的另一种实现方式
+	// install, uninstall, start, stop 的另一种实现方式,这里不适用
 	// err = service.Control(s, os.Args[1])
 	// if err != nil {
 	// 	log.Fatal(err)

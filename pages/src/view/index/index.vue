@@ -4,19 +4,15 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 12:06:57
+ * @LastEditTime: 2022-08-18 16:14:10
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
+  <div class="doc-main" id="doc-main">
+    <template v-if="!pageLoading">
+      <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
 
-      <div class="doc-main">
-
-      
-        
-        <template v-if="!pageLoading">
-          <div class="doc-card" v-html="rawHtml" ref="doc_card"></div>
-  
-      <div class="title_nav" >
+      <div class="title_nav">
         <p v-for="v in listTitle">
           <router-link
             :to="`/${encodeURIComponent(v.page)}/${encodeURIComponent(v.id)}`"
@@ -25,49 +21,53 @@
             >{{ v.id }}</router-link
           >
         </p>
-      </div> 
-        </template>
-         <div class="content-loading" v-else>
+      </div>
+    </template>
+    <div class="content-loading" v-else>
       <a-spin size="large" />
     </div>
-      
-      
-      </div>
+
+    <div @click="jumpLocation('doc-main')" v-show="showTop" class="totop"><to-top theme="outline" size="34" /></div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { svgArr } from "./svg";
-import { ref, onMounted, nextTick, watch } from "vue";
+import { ref, onMounted, nextTick, watch, defineComponent } from "vue";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 import "highlight.js/styles/github-dark.css";
 import { RouteParams, useRoute } from "vue-router";
-import { read } from "@/api/module/base"; 
+import { read } from "@/api/module/base";
 import { useStore } from "@/store/index";
+import { ToTop } from "@icon-park/vue-next";
 const route = useRoute();
- const store = useStore();
+const store = useStore();
 watch(
   () => route.params.page,
-  (val: any) => { 
+  (val: any) => {
     loaddocRaw(val as string);
   }
 );
 
 watch(
   () => route.params.id,
-  (val: any) => { 
-    jumpLocation(val as string); 
+  (val: any) => {
+    jumpLocation(val as string);
   }
 );
 
+defineComponent({
+  ToTop,
+});
 
 defineProps({
   msg: String,
 });
 
-const pageLoading = ref(true)
+const pageLoading = ref(true);
 
 const count = ref(0);
 const doc_card = ref();
@@ -145,18 +145,17 @@ const tips = {
 marked.use({ extensions: [tips] });
 const rawHtml = ref("");
 //请求页面数据
-const loaddocRaw = (page: string): void => { 
-
-  pageLoading.value = true
+const loaddocRaw = (page: string): void => {
+  pageLoading.value = true;
   listTitle.value = [];
   read({ path: page }).then((v) => {
-    pageLoading.value = false
+    pageLoading.value = false;
     if (v.data == "") {
-      rawHtml.value = "404"
-       return 
+      rawHtml.value = "404";
+      return;
     }
-    rawHtml.value = marked.parse(v.data); 
-    nextTick(() => { 
+    rawHtml.value = DOMPurify.sanitize(marked.parse(v.data));
+    nextTick(() => {
       (window as any).MathJax.typeset();
       const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
       domlist.forEach((x) => {
@@ -167,7 +166,7 @@ const loaddocRaw = (page: string): void => {
           level: parseInt(x.nodeName.replace(/[Hh]/, "")) * 10,
         });
       });
-     
+
       if (route.params.id) {
         jumpLocation(route.params.id as string);
       }
@@ -175,7 +174,22 @@ const loaddocRaw = (page: string): void => {
   });
 };
 
+const showTop = ref(false)
+
+const lisscroll = () => { 
+    const odiv = document.getElementById("content"); 
+    odiv.onscroll = function (e) {
+       if (odiv.scrollTop>200) {
+          showTop.value = true
+       } else {
+         showTop.value = false
+       }
+    };
+ 
+};
+
 onMounted(() => {
+  lisscroll();
   const page = route.params.page as string;
   loaddocRaw(page);
 });

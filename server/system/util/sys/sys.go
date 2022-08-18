@@ -1,8 +1,10 @@
 /*
- * @Date: 2022-02-22 11:29:54
+ * @Date: 2022-08-11 15:50:15
  * @LastEditors: 春贰
+ * @gitee: https://gitee.com/chun22222222
+ * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-01 16:12:01
+ * @LastEditTime: 2022-08-18 14:29:54
  * @FilePath: \server\system\util\sys\sys.go
  */
 package sys
