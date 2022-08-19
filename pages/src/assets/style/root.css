@@ -15,6 +15,10 @@
   --chun-warning-color: #e6a700;
 
 
+  --ant-primary-color-hover:var(--chun-primary-color);
+  --ant-primary-5:var(--chun-primary-color);
+  --ant-primary-color:var(--chun-primary-color);
+
   --mobile-bg-end: #0B0F28;
   --mobile-bg-front: linear-gradient(to right, #17246b, #101638);
   --mobile-bg-front2: linear-gradient(to bottom, #17246b, #101638);

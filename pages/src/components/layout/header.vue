@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 17:48:53
+ * @LastEditTime: 2022-08-19 10:18:32
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
@@ -13,11 +13,10 @@
     <a-col flex="auto">auto</a-col>
     <a-col flex="600px">
       <a-space :size="20" style="flex-direction: row-reverse; float: right">
-        <a-input placeholder="搜索" readonly @click="showSearch = true">
+        <a-input placeholder="搜索" readonly @click="doshowSearch">
           <template #prefix>
             <search theme="outline" size="22" style="margin-top:6px"/>
-          </template>
-          <template #suffix> </template>
+          </template> 
         </a-input>
 
         <a-switch
@@ -66,11 +65,11 @@
       </a-space>
     </a-col>
   </a-row>
-  <vsearch :visible="showSearch" @close="showSearch = false"> </vsearch>
+  <vsearch :visible="showSearch"  :parentNode="domParent" @close="showSearch = false"> </vsearch>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, computed } from "vue";
+import { defineComponent, reactive, toRefs, computed,nextTick } from "vue";
 import {
   Brightness,
   Moon,
@@ -79,7 +78,7 @@ import {
   Translate,
 } from "@icon-park/vue-next";
 import { useStore } from "@/store/index";
-import vsearch from "@/components/search.vue"; 
+import vsearch from "@/components/search.vue";  
 export default defineComponent({
   components: {
     Brightness,
@@ -90,12 +89,23 @@ export default defineComponent({
     Translate,
   },
   setup() {
+
+    
+   
     const store = useStore();
 
     const themeActive = computed(() => store.theme);
     const state = reactive({
       showSearch: false,
+      domParent:null
     });
+
+     const doshowSearch = ()=>{
+      nextTick(()=>{ 
+         state.domParent = document.getElementById('content') ;
+          state.showSearch = true ;
+      })
+    }
 
     const changeTheme = (v: string) => {
       console.log(v);
@@ -124,7 +134,8 @@ export default defineComponent({
       lang,
       version,
       changeLang,
-      changeVersion,
+      changeVersion, 
+      doshowSearch,
     };
   },
 });

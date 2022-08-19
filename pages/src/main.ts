@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-17 11:26:28
+ * @LastEditTime: 2022-08-19 08:35:54
  * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue' 
@@ -13,7 +13,7 @@ import Router from "./route/index";
 
 import registerComponents from './tools/registerComponents' 
 import {  message } from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';  
+import 'ant-design-vue/dist/antd.variable.min.css';  
 import './assets/style/root.css'; 
 import './assets/style/main.css'; 
 import './assets/style/theme/dark.css'; 

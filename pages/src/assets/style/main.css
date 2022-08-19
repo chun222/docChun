@@ -1,19 +1,22 @@
 body,
 html {
   padding: 0;
-  margin: 0;
+  margin: 0; 
 }
 
- 
 
+.mt5 { margin-top: 5px;}
 #header {
   font-size: var(--chun-font-size-h5);
 }
 
-.logo img { height: 40px;}
-.toprightNavHover { 
+.logo img {
+  height: 40px;
+}
+
+.toprightNavHover {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   overflow: hidden;
   height: 30px;
   line-height: 30px;
@@ -22,14 +25,49 @@ html {
   align-items: center;
 }
 
-.navicon { margin-top: 5px; margin-left: 5px; margin-right: 5px; float: left;}
-#header .ant-switch { vertical-align: baseline;}
+.search_result {
+  max-height: 60vh;
+  overflow-y: scroll;
+  padding:0 15px;
+}
+.search_result ul { margin: 0; padding: 0;}
+.search_result ul li {   margin-top: 5px; list-style: none; padding: 0 10px;}
+.search_result ul li h2 span { font-size: 16px; }
+ 
 
-#header .ant-input-affix-wrapper { width: 140px; padding:0px 5px; vertical-align: middle; border: none; border-radius: 25px; background-color: #ccc;}
-#header .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused { box-shadow: none;}
 
-#header .ant-input-affix-wrapper .ant-input { background-color: transparent;}
+#content .ant-modal-body {padding: 0 0 10px 0;}
+.navicon {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  float: left;
+}
 
+#header .ant-switch {
+  vertical-align: baseline;
+}
+
+#header .ant-input-affix-wrapper {
+  width: 140px;
+  padding: 0px 5px;
+  vertical-align: middle;
+  border: none;
+  border-radius: 25px;
+  background-color: #ccc;
+}
+
+#header .ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  box-shadow: none;
+}
+
+#header .ant-input-affix-wrapper .ant-input {
+  background-color: transparent;
+}
+
+#footer { text-align: center; vertical-align: middle;}
+.ant-layout-footer { padding: 20px; height: 70px;}
 .doc-main {
   width: 100%;
   display: flex;
@@ -54,10 +92,17 @@ html {
   margin-bottom: 6px;
 }
 
-.totop { position: fixed; bottom: 100px; right: 300px; cursor: pointer;   padding: 10px 10px 5px 10px; border-radius: 5px;}
+.totop {
+  position: fixed;
+  bottom: 100px;
+  right: 300px;
+  cursor: pointer;
+  padding: 10px 10px 5px 10px;
+  border-radius: 5px;
+}
 
 #content {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 134px);
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
@@ -262,3 +307,19 @@ html {
     animation: octocat-wave 560ms ease-in-out
   }
 }
+
+
+div::-webkit-scrollbar {
+  width: 10px;
+  height: 10px; 
+}
+
+div::-webkit-scrollbar-track { 
+  border-radius: 2px;
+}
+
+div::-webkit-scrollbar-thumb { 
+  border-radius: 2px;
+}
+
+ 
