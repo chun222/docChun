@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 17:52:57
+ * @LastEditTime: 2022-08-19 17:55:37
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -36,8 +36,7 @@
 <script setup lang="ts">
 import { svgArr } from "./svg";
 import { ref, onMounted, nextTick, watch, defineComponent } from "vue";
-import { marked } from "marked";
-import Clipboard from "clipboard";
+import { marked } from "marked"; 
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
