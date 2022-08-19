@@ -19,7 +19,7 @@ notification.config({
 })
 
 
-const baseurl = "http://localhost:8023/";
+const baseurl = "http://localhost:8024/";
 
 class Http {
   // axios 实例

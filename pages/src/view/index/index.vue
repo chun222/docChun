@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 16:56:26
+ * @LastEditTime: 2022-08-19 17:52:57
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -46,6 +46,7 @@ import { RouteParams, useRoute } from "vue-router";
 import { read } from "@/api/module/base";
 import { useStore } from "@/store/index";
 import { ToTop } from "@icon-park/vue-next";
+import {copyText} from "@/tools/common"
 const route = useRoute();
 const store = useStore();
 watch(
@@ -101,7 +102,9 @@ marked.setOptions({
     console.log("code", code);
     const language = hljs.getLanguage(lang) ? lang : "plaintext";
     console.log("code22", hljs.highlight(code, { language }));
-    return `<div class="hljs-box"><div class="doc-codelang" value="${encodeURIComponent(code)}">${language}</div><ol><li>${hljs
+    return `<div class="hljs-box"><div class="doc-codelang" value="${encodeURIComponent(
+      code
+    )}">${language}</div><ol><li>${hljs
       .highlight(code, { language })
       .value.replace(/\n/g, `</li><li class="line">`)}</li></ol></div>`;
   },
@@ -187,20 +190,23 @@ const loaddocRaw = (page: string): void => {
         jumpLocation(route.params.id as string);
       }
 
+      let clipboard = null;
       //处理代码复制
       document.querySelectorAll("code .hljs-box").forEach((element) => {
         const butDom = element.querySelector(".doc-codelang");
+        const copyTextS = decodeURIComponent(butDom.getAttribute("value")); 
         butDom.addEventListener("click", () => {
-          const copyText = decodeURIComponent(butDom.getAttribute("value"));
-          const clipboard = new Clipboard(butDom, {
-            text: function (trigger) {
-              return copyText;
-            },
-          }); 
-          clipboard.on("success", function (e) {
-            butDom.innerHTML = "复制成功"
-            e.clearSelection();
-          });
+          copyText(copyTextS)
+          butDom.innerHTML = "复制成功";
+          // clipboard = new Clipboard(butDom, {
+          //   text: function (trigger) {
+          //     return copyText;
+          //   },
+          // });
+          // clipboard.on("success", function (e) {
+          //   butDom.innerHTML = "复制成功";
+          //   e.clearSelection();
+          // });
         });
         const oldcodelang = butDom.innerHTML;
         element.addEventListener("mouseover", () => {

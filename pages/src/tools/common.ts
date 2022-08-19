@@ -4,12 +4,11 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 14:32:56
+ * @LastEditTime: 2022-08-19 17:51:28
  * @FilePath: \pages\src\tools\common.ts
- */
-import { message } from "ant-design-vue";
+ */ 
 //复制文本
-export function copyText(text) {
+export function copyText(text:string) {
    // 添加一个input元素放置需要的文本内容
    const copyContent= document.createElement('input');
    copyContent.value = text;
@@ -19,11 +18,7 @@ export function copyText(text) {
    document.execCommand('copy'); 
    // 移除input元素
    document.body.removeChild(copyContent);
-   message
-   .success({
-     content: "copy succeeded" , 
-     duration: 1,
-   }) 
+  
 }
 
 

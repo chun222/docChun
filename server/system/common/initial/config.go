@@ -2,7 +2,7 @@
  * @Date: 2022-02-14 14:09:57
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-08-17 10:38:32
+ * @LastEditTime: 2022-08-19 17:14:29
  * @FilePath: \server\system\common\initial\config.go
  */
 package initial
@@ -13,7 +13,7 @@ const DataVersion = `[{"name":"v01","dir":"v01"},{"name":"vTest","dir":"v02"}]`
 
 const ConfigToml = `[app]
 Key = "ADSDWW1DSADSADSAWJJK"   
-HttpPort = 8023
+HttpPort = 8024
 WsPort = 2345   ###websocket 端口
 PageSize = 20
 Env = "dev"   ####运行环境 dev/prod
