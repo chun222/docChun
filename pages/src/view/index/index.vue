@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 16:52:22
+ * @LastEditTime: 2022-08-19 16:56:26
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -192,7 +192,7 @@ const loaddocRaw = (page: string): void => {
         const butDom = element.querySelector(".doc-codelang");
         butDom.addEventListener("click", () => {
           const copyText = decodeURIComponent(butDom.getAttribute("value"));
-          var clipboard = new Clipboard(butDom, {
+          const clipboard = new Clipboard(butDom, {
             text: function (trigger) {
               return copyText;
             },
