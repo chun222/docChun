@@ -4,11 +4,11 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 10:18:32
+ * @LastEditTime: 2022-08-19 13:58:39
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
-  <a-row type="flex" id="header">
+  <a-row type="flex">
     <a-col flex="200px"><div class="logo"><img src="@/assets/logo.png" />  chundoc</div></a-col>
     <a-col flex="auto">auto</a-col>
     <a-col flex="600px">

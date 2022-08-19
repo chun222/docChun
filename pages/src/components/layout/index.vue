@@ -4,12 +4,12 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-11 09:35:31
- * @FilePath: \web\src\components\layout\index.vue
+ * @LastEditTime: 2022-08-19 14:00:01
+ * @FilePath: \pages\src\components\layout\index.vue
 -->
 <template>
   <a-layout>
-    <a-layout-header>
+    <a-layout-header id="header">
       <Header></Header>
     </a-layout-header>
 
@@ -22,14 +22,13 @@
       >
         <Menu></Menu>
       </a-layout-sider>
-      <a-layout-content>
+      <a-layout-content id="content">
         <Content></Content>
+        <a-layout-footer id="footer">
+          <Footer></Footer>
+        </a-layout-footer>
       </a-layout-content>
     </a-layout>
-
-    <a-layout-footer>
-      <Footer></Footer>
-    </a-layout-footer>
   </a-layout>
 </template>
 

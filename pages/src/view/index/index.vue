@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 16:14:10
+ * @LastEditTime: 2022-08-19 16:52:22
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -27,7 +27,9 @@
       <a-spin size="large" />
     </div>
 
-    <div @click="jumpLocation('doc-main')" v-show="showTop" class="totop"><to-top theme="outline" size="34" /></div>
+    <div @click="jumpLocation('', 0)" v-show="showTop" class="totop">
+      <to-top theme="outline" size="34" />
+    </div>
   </div>
 </template>
 
@@ -35,6 +37,7 @@
 import { svgArr } from "./svg";
 import { ref, onMounted, nextTick, watch, defineComponent } from "vue";
 import { marked } from "marked";
+import Clipboard from "clipboard";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
@@ -74,22 +77,33 @@ const doc_card = ref();
 const listTitle = ref([]);
 
 //跳转
-const jumpLocation = (id: string) => {
+const jumpLocation = (id: string, top?: number) => {
+  if (top != undefined) {
+    document.getElementById("content").scroll({ top: top, behavior: "smooth" });
+    return;
+  }
   if (document.getElementById(id)) {
-    document.getElementById(id).scrollIntoView({
+    const el = document.getElementById(id);
+    document.getElementById("content").scroll({
+      top: top == undefined ? el.offsetTop : top,
       behavior: "smooth",
     });
+    // document.getElementById(id).scrollIntoView({
+    //   behavior: "smooth",
+    // });
   }
 };
 
-// Set options
-// `highlight` example uses https://highlightjs.org
 marked.setOptions({
   baseUrl: "https://marked.js.org/aaa/",
   renderer: new marked.Renderer(),
-  highlight: function (code, lang) {
+  highlight: function (code: string, lang: string) {
+    console.log("code", code);
     const language = hljs.getLanguage(lang) ? lang : "plaintext";
-    return hljs.highlight(code, { language }).value;
+    console.log("code22", hljs.highlight(code, { language }));
+    return `<div class="hljs-box"><div class="doc-codelang" value="${encodeURIComponent(code)}">${language}</div><ol><li>${hljs
+      .highlight(code, { language })
+      .value.replace(/\n/g, `</li><li class="line">`)}</li></ol></div>`;
   },
   langPrefix: "hljs language-", // highlight.js css expects a top-level 'hljs' class.
   pedantic: false,
@@ -157,8 +171,10 @@ const loaddocRaw = (page: string): void => {
     rawHtml.value = DOMPurify.sanitize(marked.parse(v.data));
     nextTick(() => {
       (window as any).MathJax.typeset();
-      const domlist = doc_card.value.querySelectorAll("h1, h2, h3, h4, h5, h6");
-      domlist.forEach((x) => {
+      const Hdomlist = doc_card.value.querySelectorAll(
+        "h1, h2, h3, h4, h5, h6"
+      );
+      Hdomlist.forEach((x) => {
         listTitle.value.push({
           page: page,
           id: x.id,
@@ -170,22 +186,45 @@ const loaddocRaw = (page: string): void => {
       if (route.params.id) {
         jumpLocation(route.params.id as string);
       }
+
+      //处理代码复制
+      document.querySelectorAll("code .hljs-box").forEach((element) => {
+        const butDom = element.querySelector(".doc-codelang");
+        butDom.addEventListener("click", () => {
+          const copyText = decodeURIComponent(butDom.getAttribute("value"));
+          var clipboard = new Clipboard(butDom, {
+            text: function (trigger) {
+              return copyText;
+            },
+          }); 
+          clipboard.on("success", function (e) {
+            butDom.innerHTML = "复制成功"
+            e.clearSelection();
+          });
+        });
+        const oldcodelang = butDom.innerHTML;
+        element.addEventListener("mouseover", () => {
+          butDom.innerHTML = "复制";
+        });
+        element.addEventListener("mouseout", () => {
+          butDom.innerHTML = oldcodelang;
+        });
+      });
     });
   });
 };
 
-const showTop = ref(false)
+const showTop = ref(false);
 
-const lisscroll = () => { 
-    const odiv = document.getElementById("content"); 
-    odiv.onscroll = function (e) {
-       if (odiv.scrollTop>200) {
-          showTop.value = true
-       } else {
-         showTop.value = false
-       }
-    };
- 
+const lisscroll = () => {
+  const odiv = document.getElementById("content");
+  odiv.onscroll = function (e) {
+    if (odiv.scrollTop > 200) {
+      showTop.value = true;
+    } else {
+      showTop.value = false;
+    }
+  };
 };
 
 onMounted(() => {

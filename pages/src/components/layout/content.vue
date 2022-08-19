@@ -2,12 +2,11 @@
  * @Date: 2021-11-30 15:42:07
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-18 16:10:20
+ * @LastEditTime: 2022-08-19 13:56:46
  * @FilePath: \pages\src\components\layout\content.vue
 -->
 <template>
-  <!-- 框架 content 区域 -->
-  <div id="content">
+  <!-- 框架 content 区域 --> 
     <router-view v-slot="{ Component, route }" v-if="!Loading">
     <transition :name="'fade'" mode="out-in"> 
       <!-- <transition :name="route.meta.transition || 'fade'" mode="out-in"> -->
@@ -20,8 +19,7 @@
     </router-view>
     <div class="content-loading" v-else>
       <a-spin size="large" />
-    </div>
-  </div>
+    </div> 
 </template>
 <script lang="ts"> 
 
