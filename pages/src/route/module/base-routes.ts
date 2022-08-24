@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 09:13:42
+ * @LastEditTime: 2022-08-24 17:07:52
  * @FilePath: \pages\src\route\module\base-routes.ts
  */
 export default [
@@ -23,6 +23,14 @@ export default [
     component: () => import('@/view/404.vue'),
     meta: {
       title: '404'
+    },
+  },
+  {
+    name:'test',
+    path: '/test',
+    component: () => import('@/view/test.vue'),
+    meta: {
+      title: 'test'
     },
   }
 ]

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:启动核心服务
- * @LastEditTime: 2022-08-17 10:58:48
+ * @LastEditTime: 2022-08-22 13:54:48
  * @FilePath: \server\system\init.go
  */
 package system
@@ -48,6 +48,7 @@ func Init(staticFs embed.FS) {
 		WriteTimeout:   30 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+
 	url := fmt.Sprintf(`http://127.0.0.1:%d`, config.Instance().App.HttpPort)
 	fmt.Println("运行地址：" + url)
 	// exec.Command("cmd", "/C", "start "+url).Run() //windows打开默认浏览器
