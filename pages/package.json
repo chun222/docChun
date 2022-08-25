@@ -20,6 +20,7 @@
     "mermaid": "^8.11.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.17",
+    "pinyin-pro": "^3.11.0",
     "vue": "^3.2.25",
     "vue-router": "^4.1.3"
   },

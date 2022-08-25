@@ -310,6 +310,28 @@ html {
 }
 
 
+div[data-type=codeBlock] pre[class*=language-] {
+  position: relative; 
+  padding: 30px 5px 0 10px !important; 
+}
+
+div[data-type=codeBlock] pre[class*=language-]::before {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 12px;
+  height: 12px;
+  overflow: visible;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 12px;
+  white-space: nowrap;
+  text-indent: 75px;
+  background-color: var(--chun-error-color);
+  border-radius: 16px;
+  box-shadow: 20px 0 var(--chun-warning-color), 40px 0 var(--chun-success-color);
+  content: attr(codetype);
+}
 
 .doc-card .hljs {
   position: relative;
@@ -319,9 +341,7 @@ html {
   text-align: left;
   /* box-shadow: 0 10px 30px 0 rgb(0 0 0 / 30%); */
 }
-
-
-
+ 
 .doc-card .hljs::before {
   position: absolute;
   top: 10px;
