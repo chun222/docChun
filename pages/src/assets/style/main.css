@@ -108,9 +108,9 @@ html {
   min-height: calc(100vh - 140px);
 }
 
-.doc-card {
+/* .cherry-previewer {
   width: calc(100% - 250px);
-}
+} */
 
 .title_nav {
   box-sizing: border-box;
@@ -149,126 +149,43 @@ html {
   background-color: transparent;
   height: 100%;
 }
+ 
 
-.doc-card blockquote {
-  padding: 10px 15px;
-  border-left-style: solid;
-  border-left-width: 10px;
-}
-
-.doc-card {
+.cherry-previewer {
   padding: 20px 20px;
 }
 
-.doc-card p {
+.cherry-previewer p {
   font-size: var(--chun-font-size-p);
 }
 
-.doc-card h1 {
+.cherry-previewer h1 {
   font-size: var(--chun-font-size-h1);
 }
 
-.doc-card h2 {
+.cherry-previewer h2 {
   font-size: var(--chun-font-size-h2);
 }
 
-.doc-card h3 {
+.cherry-previewer h3 {
   font-size: var(--chun-font-size-h3);
 }
 
-.doc-card h4 {
+.cherry-previewer h4 {
   font-size: var(--chun-font-size-h4);
 }
 
-.doc-card h5 {
+.cherry-previewer h5 {
   font-size: var(--chun-font-size-h5);
 }
 
-.doc-card h6 {
+.cherry-previewer h6 {
   font-size: var(--chun-font-size-h6);
 }
+  
+ 
 
-.doc-card nav {
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  background: white;
-  margin-right: 10px;
-}
-
-.doc-card nav>ul {
-  position: sticky;
-  top: 5px;
-  margin: 10px 0px;
-  padding: 0;
-  list-style-type: none;
-  font-size: 14px;
-}
-
-.doc-card nav>ul>li {
-  min-width: 125px;
-  padding: 0px 15px;
-}
-
-.doc-card nav>ul>li>ul {
-  padding-left: 25px;
-}
-
-.doc-card nav>ul>li>ul>li {
-  font-size: 0.8em;
-}
-
-.doc-card nav .selected {
-  color: #111;
-  font-weight: bold;
-}
-
-.doc-card nav .selected:hover {
-  text-decoration: none;
-}
-
-.doc-card header {
-  display: flex;
-}
-
-.doc-card table {
-  border-spacing: 0;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.doc-card td,
-.doc-card th {
-  padding: 5px;
-}
-
-.doc-card a {
-  color: #0366d6;
-  text-decoration: none;
-}
-
-.doc-card a:hover {
-  text-decoration: underline;
-}
-
-.doc-card pre {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  padding: 10px;
-  overflow: auto;
-  font-size: 85%;
-  line-height: 1.45;
-  background-color: #eee;
-  border-radius: 3px;
-}
-
-.doc-card code:not([class]) {
-  padding: 0.2em 0.4em;
-  margin: 0;
-  font-size: 85%;
-  background-color: rgba(27, 31, 35, 0.05);
-  border-radius: 3px;
-}
-
-.doc-card .tip-header {
+.cherry-previewer .tip-header {
   height: 40px;
   color: currentColor;
   margin: 0;
@@ -276,22 +193,22 @@ html {
   font-size: 22px;
 }
 
-.doc-card .tip-header svg {
+.cherry-previewer .tip-header svg {
   float: left;
-  margin-top: 6px;
+  margin-top: 3px;
 }
 
-.doc-card .tip-header span {
+.cherry-previewer .tip-header span {
   float: left;
   margin-left: 5px;
 }
 
 /*  float: left; margin-left: 5px;  */
 
-.doc-card .info,
-.doc-card .error,
-.doc-card .success,
-.doc-card .warning {
+.cherry-previewer .info,
+.cherry-previewer .error,
+.cherry-previewer .success,
+.cherry-previewer .warning {
   padding: 5px 10px;
   margin-bottom: 10px;
   border-radius: 3px;
@@ -299,10 +216,10 @@ html {
   border-left-style: solid;
 }
 
-.doc-card .info p,
-.doc-card .error p,
-.doc-card .success p,
-.doc-card .warning p {
+.cherry-previewer .info p,
+.cherry-previewer .error p,
+.cherry-previewer .success p,
+.cherry-previewer .warning p {
   font-size: 16px;
   white-space: pre-line;
   margin: 0;
@@ -310,12 +227,13 @@ html {
 }
 
 
-div[data-type=codeBlock] pre[class*=language-] {
+.cherry-previewer div[data-type=codeBlock] pre[class*=language-] {
   position: relative; 
-  padding: 30px 5px 0 10px !important; 
+  padding: 30px 5px 10px 10px !important;  
+  overflow-y: hidden;
 }
 
-div[data-type=codeBlock] pre[class*=language-]::before {
+.cherry-previewer div[data-type=codeBlock] pre[class*=language-]::before {
   position: absolute;
   top: 10px;
   left: 15px;
@@ -331,58 +249,10 @@ div[data-type=codeBlock] pre[class*=language-]::before {
   border-radius: 16px;
   box-shadow: 20px 0 var(--chun-warning-color), 40px 0 var(--chun-success-color);
   content: attr(codetype);
-}
-
-.doc-card .hljs {
-  position: relative;
-  display: block;
-  padding: 30px 5px 0 10px !important;
-  line-height: 20px;
-  text-align: left;
-  /* box-shadow: 0 10px 30px 0 rgb(0 0 0 / 30%); */
 }
  
-.doc-card .hljs::before {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  width: 12px;
-  height: 12px;
-  overflow: visible;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 12px;
-  white-space: nowrap;
-  text-indent: 75px;
-  background-color: var(--chun-error-color);
-  border-radius: 16px;
-  box-shadow: 20px 0 var(--chun-warning-color), 40px 0 var(--chun-success-color);
-  content: attr(codetype);
-}
 
-
-.doc-card .hljs-box {
-  position: relative; 
-  padding: 0;
-}
-
-.doc-card .hljs-box .doc-codelang { position: absolute; right: 10px; top:-20px; cursor: pointer; background-color: rgb(214, 214, 214,0.3);  padding:2px 15px; border-radius: 2px;}
-
-.doc-card .hljs ol {
-  padding-inline-start: 10px;
-  list-style: none;
-}
-
-/* 显示行号 */
-/* 
-.doc-card .hljs ol li { counter-increment:custom; }
-.doc-card .hljs ol li:before
-{
-    content: counter(custom) " ";  
-} 
-.doc-card .hljs ol li:first-child {
-    counter-reset: custom;
-} */
+  
 
 div::-webkit-scrollbar {
   width: 10px;

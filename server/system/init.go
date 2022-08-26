@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:启动核心服务
- * @LastEditTime: 2022-08-22 13:54:48
+ * @LastEditTime: 2022-08-26 10:30:40
  * @FilePath: \server\system\init.go
  */
 package system
@@ -85,44 +85,49 @@ func InitData() {
 	if file.CheckNotExist(initlockFilePtah) {
 
 		file.IsNotExistMkDir(basedir + "data")
-		//写入多语言配置
-		langPath := basedir + "data/lang.json"
-		if file.CheckNotExist(langPath) {
-			err := ioutil.WriteFile(langPath, []byte(initial.DataLang), 0777)
-			if err != nil {
-				log.Write(log.Fatal, "lang:"+err.Error())
-			}
-		}
 
-		//写入多版本配置
-		versionPath := basedir + "data/version.json"
-		if file.CheckNotExist(versionPath) {
-			err := ioutil.WriteFile(versionPath, []byte(initial.DataVersion), 0777)
-			if err != nil {
-				log.Write(log.Fatal, "version:"+err.Error())
+		//初始化配置
+		initconfigs := make(map[string]string)
+		initconfigs["project"] = initial.DataProject
+		initconfigs["lang"] = initial.DataLang
+		initconfigs["version"] = initial.DataVersion
+
+		for k, v := range initconfigs {
+			langPath := fmt.Sprintf("%sdata/%s.json", basedir, k)
+			if file.CheckNotExist(langPath) {
+				err := ioutil.WriteFile(langPath, []byte(v), 0777)
+				if err != nil {
+					log.Write(log.Fatal, err.Error())
+				}
 			}
 		}
 
 		//读取默认版本
 		var serConfig configService.ConfigService
+		var projects []configService.DirAlias
 		var versions []configService.DirAlias
 		var langs []configService.DirAlias
+
+		serConfig.GetStructBystring([]byte(initial.DataProject), &projects)
 		serConfig.GetStructBystring([]byte(initial.DataVersion), &versions)
 		serConfig.GetStructBystring([]byte(initial.DataLang), &langs)
 
-		for _, v := range versions {
-			for _, l := range langs {
-				dirMk := fmt.Sprintf("%s/md/%s/%s", basedir, v.Dir, l.Dir)
-				file.IsNotExistMkDir(dirMk)
-				fileMk := fmt.Sprintf("%s/index.md", dirMk)
-				if file.CheckNotExist(fileMk) {
-					contentInit := initial.EnMd
-					if l.Dir == "zh-cn" {
-						contentInit = initial.ZhMd
-					}
-					err := ioutil.WriteFile(fileMk, []byte(contentInit), 0777)
-					if err != nil {
-						log.Write(log.Fatal, fileMk+err.Error())
+		//写入初始化内容，只区分中英文
+		for _, p := range projects {
+			for _, v := range versions {
+				for _, l := range langs {
+					dirMk := fmt.Sprintf("%s/md/%s/%s/%s", basedir, p.Dir, v.Dir, l.Dir)
+					file.IsNotExistMkDir(dirMk)
+					fileMk := fmt.Sprintf("%s/index.md", dirMk)
+					if file.CheckNotExist(fileMk) {
+						contentInit := initial.EnMd
+						if l.Dir == "zh-cn" {
+							contentInit = initial.ZhMd
+						}
+						err := ioutil.WriteFile(fileMk, []byte(contentInit), 0777)
+						if err != nil {
+							log.Write(log.Fatal, fileMk+err.Error())
+						}
 					}
 				}
 			}

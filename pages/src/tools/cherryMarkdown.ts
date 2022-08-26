@@ -20,6 +20,22 @@ const AddPrefixTemplate = Cherry.createMenuHook("AddPrefixTemplate", {
 });
 
 
+const CustomHookA = Cherry.createSyntaxHook('codeBlock', Cherry.constants.HOOKS_TYPE_LIST.PAR, {
+    makeHtml(str) {
+      console.warn('custom hook', 'hello');
+      return str;
+    },
+    rule(str) {
+      const regex = {
+        begin: '',
+        content: '',
+        end: '',
+      };
+      regex.reg = new RegExp(regex.begin + regex.content + regex.end, 'g');
+      return regex;
+    },
+  });
+
 const cherryEngineInstance = new CherryEngine(null) as any;  
 /*
  *  tips Hook
@@ -118,6 +134,9 @@ export const BasicConfig = {
         },
         syntax: {
             codeBlock: {
+                theme: 'twilight',
+              },
+            codeBlock2: {
                 theme: "dark", // 默认为深色主题
                 wrap: true, // 超出长度是否换行，false则显示滚动条
                 lineNumber: true, // 默认显示行号
@@ -135,7 +154,7 @@ export const BasicConfig = {
                  *    已经引用6.x以下版本的业务如果想做到用户无感知升级，可以去掉该语法：
                  *        indentedCodeBlock：false
                  */
-                indentedCodeBlock: true,
+                indentedCodeBlock: false,
             },
             table: {
                 enableChart: false,
@@ -175,6 +194,11 @@ export const BasicConfig = {
             },
         },
         customSyntax: {
+            CustomHook: {
+                syntaxClass: CustomHookA,
+                force: false,
+                after: 'br',
+              },
             // 注入编辑器的自定义语法中
             BlockSensitiveWordsHook: {
                 syntaxClass: BlockSensitiveWordsHook,
@@ -250,7 +274,7 @@ export const BasicConfig = {
         codemirror: {
             // depend on codemirror theme name: https://codemirror.net/demo/theme.html
             // 自行导入主题文件: `import 'codemirror/theme/<theme-name>.css';`
-            theme: "default",
+           //  theme: "default",
         },
         // 编辑器的高度，默认100%，如果挂载点存在内联设置的height则以内联样式为主
         height: "100%",
@@ -263,8 +287,7 @@ export const BasicConfig = {
         convertWhenPaste: true,
     },
     previewer: {
-        dom: false,
-        className: "doc-card",
+        dom: false, 
         // 是否启用预览区域编辑能力（目前支持编辑图片尺寸、编辑表格内容）
         enablePreviewerBubble: true,
     },

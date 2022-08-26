@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 16:52:09
+ * @LastEditTime: 2022-08-26 11:24:23
  * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue' 
@@ -20,16 +20,17 @@ import './assets/style/theme/dark.css';
 import './assets/style/theme/light.css';  
 import { createPinia } from 'pinia'
 
-import { useStore } from "@/store/index";
+
 const app = createApp(App);
 app.config.globalProperties.$message = message;
-app.use(Router); 
-app.use(createPinia())
+app.use(createPinia()) 
 //全局注册常用antd组件 
-registerComponents.forEach((v)=>app.use(v)) 
-
+registerComponents.forEach((v)=>app.use(v))  
+import { useStore } from "@/store/index";
 const store = useStore();
+//状态优先
 store.InitConfig().then(()=>{
+    app.use(Router); 
     app.mount('#app')
 })
 

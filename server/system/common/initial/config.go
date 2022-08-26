@@ -2,10 +2,12 @@
  * @Date: 2022-02-14 14:09:57
  * @LastEditors: 春贰
  * @Desc:
- * @LastEditTime: 2022-08-19 17:14:29
+ * @LastEditTime: 2022-08-26 10:16:56
  * @FilePath: \server\system\common\initial\config.go
  */
 package initial
+
+const DataProject = `[{"name":"helloworld","dir":"helloworld"}]`
 
 const DataLang = `[{"name":"中文","dir":"zh-cn"},{"name":"English","dir":"en-us"}]`
 

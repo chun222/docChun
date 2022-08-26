@@ -4,13 +4,15 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-15 09:50:46
+ * @LastEditTime: 2022-08-26 11:33:51
  * @FilePath: \pages\src\route\index.ts
  */
 import { createRouter, createWebHashHistory, RouteMeta } from 'vue-router'
 import routes from './module/base-routes'
 import NProgress from "nprogress";
-import "nprogress/nprogress.css"; 
+import "nprogress/nprogress.css";
+
+import { useStore } from "@/store/index";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -22,9 +24,19 @@ const setDocumentTitle = (title: unknown) => {
 }
 
 //添加动态路由
-router.beforeEach(to => { 
-  const  meta = to.meta
-    setDocumentTitle(meta.title)
+router.beforeEach(to => {
+  const meta = to.meta
+  setDocumentTitle(meta.title)
+  //设置默认首页跳转
+  const store = useStore();
+
+  console.log(store.version, "======");
+  if (!router.hasRoute("/")) {
+    NProgress.start();
+    router.addRoute({ name: '/', redirect: "/admin" })
+    return to.fullPath
+  }
+
   if (!router.hasRoute("admin")) {
     NProgress.start();
     router.addRoute({ path: '/admin', name: 'admin', component: () => import('@/view/admin.vue') })
@@ -36,9 +48,9 @@ router.beforeEach(to => {
 router.beforeEach((to, from, next) => {
   //NProgress.start();
   if (!to.fullPath.includes('login') && !localStorage.getItem('USER_TOKEN') && false) {
-    next({ path: '/login' }) 
+    next({ path: '/login' })
   } else {
-   // console.log("router",router.getRoutes(),to.path,to.fullPath,to.name);
+    // console.log("router",router.getRoutes(),to.path,to.fullPath,to.name);
     if (router.getRoutes().map(it => it.name).includes(to.name)) {
       next()
     } else {
@@ -46,7 +58,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
- 
+
 router.afterEach((to, from) => {
   NProgress.done();
 })

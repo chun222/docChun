@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-18 09:39:39
+ * @LastEditTime: 2022-08-26 11:31:26
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -15,10 +15,8 @@ import { allconfig } from "@/api/module/base";
 type AliasDirType = {
   name:string;
   dir:string;
-}
-
-// useStore 可以是 useUser、useCart 之类的任何东西
-// 第一个参数是应用程序中 store 的唯一 id
+} 
+ 
 export const useStore = defineStore('main', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
@@ -29,6 +27,8 @@ export const useStore = defineStore('main', {
       menus: [],
       version:  {name:"",dir:""},
       lang: {name:"",dir:""},
+      project: {name:"",dir:""},
+      projects:[{name:"",dir:""}],
       versions:[{name:"",dir:""}],
       langs: [{name:"",dir:""}],
       routeLoading:false,
@@ -42,10 +42,24 @@ export const useStore = defineStore('main', {
     //初始化配置
     async InitConfig() {
       return allconfig().then((re) => {
-        if (re.code == 0) {
-          console.log(re.data);
+        if (re.code == 0) { 
           this.versions = re.data.Version;
           this.langs = re.data.Lang;
+          this.projects = re.data.Project;
+
+          if (this.projects.length > 0) { 
+            let cacheSet = localStorage.getItem("project")
+            if(cacheSet === null){
+             this.changeProject(this.projects[0])
+            }else{
+              let finded =  this.projects.find((item:AliasDirType)=>item.dir==cacheSet)
+              if(finded){
+                this.changeProject(finded)
+              }else{ 
+                 this.changeProject(this.projects[0])
+              }
+            } 
+          } 
           
           if (this.versions.length > 0) { 
             let cacheSet = localStorage.getItem("version")
@@ -60,6 +74,7 @@ export const useStore = defineStore('main', {
               }
             } 
           } 
+
           if (this.langs.length > 0) { 
             let cacheSet = localStorage.getItem("lang")
             if(cacheSet === null){
@@ -81,6 +96,12 @@ export const useStore = defineStore('main', {
     changeTheme(v: string) {
       this.theme = v;
       localStorage.setItem("theme", v)
+    },
+
+     //改变项目
+     changeProject(v: AliasDirType) {
+      this.version = v;
+      localStorage.setItem("project", v.dir)
     },
 
     //改变版本
