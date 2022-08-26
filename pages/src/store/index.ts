@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-26 11:31:26
+ * @LastEditTime: 2022-08-26 12:05:19
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -100,7 +100,7 @@ export const useStore = defineStore('main', {
 
      //改变项目
      changeProject(v: AliasDirType) {
-      this.version = v;
+      this.project = v;
       localStorage.setItem("project", v.dir)
     },
 

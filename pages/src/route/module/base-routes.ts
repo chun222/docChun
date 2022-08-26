@@ -4,13 +4,13 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-24 17:07:52
+ * @LastEditTime: 2022-08-26 12:06:37
  * @FilePath: \pages\src\route\module\base-routes.ts
  */
 export default [
   {
     name:'index',
-    path: '/:page/:id?',
+    path: '/:project/:version/:lang/:page?/:id?',
     component: () => import('@/view/index/index.vue'),
     meta: {
       title: '首页'
