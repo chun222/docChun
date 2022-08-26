@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-18 10:29:43
+ * @LastEditTime: 2022-08-26 14:12:21
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -16,9 +16,10 @@
     <template v-for="item in list" :key="item.fullpath">
       <template v-if="!item.children">
         <a-menu-item :key="item.fullpath">
-          <router-link :to="`/${encodeURIComponent(item.fullpath)}`">{{
-            item.name
-          }}</router-link>
+          <router-link
+            :to="`${preParam + encodeURIComponent(item.fullpath)}`"
+            >{{ item.name }}</router-link
+          >
         </a-menu-item>
       </template>
       <template v-else>
@@ -46,20 +47,27 @@ export default defineComponent({
     const route = useRoute();
 
     const store = useStore();
-
+    const preParam = ref("");
+    console.log("preParam", preParam);
     const getMenu = (isReload: boolean) => {
-      doclist({ lang: store.lang.dir, version: store.version.dir }).then(
-        (re) => {
-          if (re.code == 0) {
-            list.value = re.data;
-            //默认指向第一篇文章
-            if (list.value.length > 0 && isReload) {
-              router.push(`/${encodeURIComponent(list.value[0].fullpath)}`);
-            } else {
-            }
+      preParam.value = `/${route.params.project}/${route.params.version}/${route.params.lang}/`;
+      doclist({
+        project: store.project.dir,
+        lang: store.lang.dir,
+        version: store.version.dir,
+      }).then((re) => {
+        if (re.code == 0) {
+          list.value = re.data;
+          //默认指向第一篇文章
+          if (list.value.length > 0 && isReload) {
+            const firstUrl =
+              preParam.value + encodeURIComponent(list.value[0].fullpath);
+            console.log(firstUrl);
+            router.push(firstUrl);
+          } else {
           }
         }
-      );
+      });
     };
     watch(
       () => store.version,
@@ -91,6 +99,16 @@ export default defineComponent({
       { immediate: true }
     );
 
+    //监听
+    watch(
+      () => route.params,
+      (params) => {
+        getMenu(true);
+        console.log(params, "路由参数变化 ");
+      },
+      { immediate: true }
+    );
+
     const collapsed = ref(false);
 
     const toggleCollapsed = () => {
@@ -101,6 +119,7 @@ export default defineComponent({
       collapsed,
       toggleCollapsed,
       selectedKeys,
+      preParam,
     };
   },
 });

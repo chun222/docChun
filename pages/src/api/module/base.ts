@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-17 16:34:04
+ * @LastEditTime: 2022-08-26 13:39:25
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -15,8 +15,9 @@ import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosIn
 
 //获取文档列表
 type TypeDoclist = {
-  lang:string
-  version:string 
+  project:string;
+  lang:string;
+  version:string ;
 } 
 export const doclist = (data: TypeDoclist) => {
   return http.request({
@@ -41,6 +42,7 @@ export const read = (data: TypePath) => {
 
 
 type TypeSearch =  {
+  project:string;
   lang:string ; 
   version:string ;
   keyword:string;

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-17 16:47:04
+ * @LastEditTime: 2022-08-26 13:47:12
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -37,7 +37,7 @@ func List(c *gin.Context) {
 		response.FailWithMessage(msg, c)
 		return
 	}
-	files := thisMd.List(r.Lang, r.Version)
+	files := thisMd.List(r)
 	response.OkWithData(files, c)
 }
 

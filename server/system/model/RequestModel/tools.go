@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-17 16:42:26
+ * @LastEditTime: 2022-08-26 13:45:55
  * @FilePath: \server\system\model\RequestModel\tools.go
  */
 package RequestModel
@@ -20,6 +20,7 @@ type Search struct {
 type InitData struct {
 	Lang    string `json:"lang" binding:"required"`
 	Version string `json:"version" binding:"required"`
+	Project string `json:"project" binding:"required"`
 }
 
 type Path struct {

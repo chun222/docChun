@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-17 16:45:59
+ * @LastEditTime: 2022-08-26 13:47:01
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -13,18 +13,18 @@ package md
 import (
 	//"chunDoc/system/util/file"
 	"bufio"
+	"chunDoc/system/model/RequestModel"
 	"chunDoc/system/util/convert"
 	"chunDoc/system/util/file"
 	"chunDoc/system/util/str"
 	"chunDoc/system/util/sys"
 	"fmt"
+	"github.com/dlclark/regexp2"
 	"io"
 	"io/ioutil"
 	"os"
 	"sort"
 	"strings"
-
-	"github.com/dlclark/regexp2"
 	//"sort"
 )
 
@@ -52,8 +52,8 @@ var basedir = sys.ExecutePath() + "/" //根目录
 var mdDir = "md/"
 var FileKey uint = 0
 
-func (_this *MdService) List(lang string, version string) []*SysFile {
-	filesr := _this.getDirFiles(fmt.Sprintf("%s%s/%s/", mdDir, version, lang))
+func (_this *MdService) List(r RequestModel.InitData) []*SysFile {
+	filesr := _this.getDirFiles(fmt.Sprintf("%s%s/%s/%s/", mdDir, r.Project, r.Version, r.Lang))
 	return filesr
 }
 
