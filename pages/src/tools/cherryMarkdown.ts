@@ -53,7 +53,7 @@ const BlockTipsHook = Cherry.createSyntaxHook(
 
                 console.log(this);
                 //获取匹配内部内容
-                const content =  cherryEngineInstance.makeHtml(match.replace(/^:(info|success|warning|error):|::$/g, ""))
+                const content =  cherryEngineInstance.makeHtml(match.replace(/^:(info|success|warning|error):[\s\n]|::$/g, ""))
 
                 const lineCount = (match.match(/\n/g) || []).length;
                 const sign = this.$engine.md5(match);

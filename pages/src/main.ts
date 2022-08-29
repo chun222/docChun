@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 11:28:47
+ * @LastEditTime: 2022-08-29 15:12:26
  * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue' 

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 11:33:59
+ * @LastEditTime: 2022-08-29 16:51:03
  * @FilePath: \pages\src\route\module\base-routes.ts
  */
 export default [
@@ -18,7 +18,7 @@ export default [
     hidden: 0,
   }, 
   {
-    name:'error/404',
+    name:'error_404',
     path: '/error/404',
     component: () => import('@/view/404.vue'),
     meta: {

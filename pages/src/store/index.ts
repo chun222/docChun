@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-29 11:22:37
+ * @LastEditTime: 2022-08-29 16:52:04
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -52,15 +52,18 @@ export const useStore = defineStore('main', {
           this.projects = re.data.Project;
 
           if (this.projects.length > 0) { 
-            let cacheSet = router.currentRoute.value.params.project
-            if(cacheSet === ""){
+            let cacheSet = router.currentRoute.value.params.project 
+            console.log("cacheSet",cacheSet);
+            if(cacheSet == ""){
              this.changeProject(this.projects[0])
             }else{
               let finded =  this.projects.find((item:AliasDirType)=>item.dir==cacheSet)
               if(finded){
                 this.changeProject(finded)
               }else{ 
-                 this.changeProject(this.projects[0])
+                //页面错误
+                router.push({name:"error_404"})
+                // this.changeProject(this.projects[0])
               }
             } 
           } 
@@ -74,7 +77,9 @@ export const useStore = defineStore('main', {
               if(finded){
                 this.changeVersion(finded)
               }else{ 
-                 this.changeVersion(this.versions[0])
+                // this.changeVersion(this.versions[0])
+                 //页面错误
+                router.push({name:"error_404"}) 
               }
             } 
           } 
@@ -88,7 +93,9 @@ export const useStore = defineStore('main', {
               if(finded){
                 this.changeLang(finded)
               }else{ 
-                 this.changeLang(this.langs[0])
+                // this.changeLang(this.langs[0])
+                   //页面错误
+                router.push({name:"error_404"}) 
               }
             } 
           }
@@ -104,25 +111,17 @@ export const useStore = defineStore('main', {
 
      //改变项目
      changeProject(v: AliasDirType) {
-      this.project = v;
-    // localStorage.setItem("project", v.dir)
-      
+      this.project = v;  
     },
 
     //改变版本
     changeVersion(v: AliasDirType,isChangeRouter?:boolean) {
-      this.version = v;
-    //  localStorage.setItem("version", v.dir)
-    // if (isChangeRouter) {
-    //     console.log("push==",Object.assign(router.currentRoute.value.params,{version: v.dir}));
-    //  router.push({name:"/",  params:Object.assign(router.currentRoute.value.params,{version: v.dir})})
-    // }
+      this.version = v; 
     },
 
     //改变语言
     changeLang(v: AliasDirType) {
-      this.lang = v;
-    //  localStorage.setItem("lang",  v.dir)
+      this.lang = v; 
     },
 
 
