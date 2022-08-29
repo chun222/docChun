@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 13:58:39
+ * @LastEditTime: 2022-08-29 10:37:02
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
@@ -117,7 +117,7 @@ export default defineComponent({
     };
 
     const changeVersion = ({ key }) => {
-     store.changeVersion(key)
+     store.changeVersion(key,true)
     };
 
     const langs = computed(() => store.langs);

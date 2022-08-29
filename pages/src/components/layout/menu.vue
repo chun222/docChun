@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-26 14:12:21
+ * @LastEditTime: 2022-08-29 11:35:11
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -48,42 +48,48 @@ export default defineComponent({
 
     const store = useStore();
     const preParam = ref("");
-    console.log("preParam", preParam);
+
+    //初始化
+    store.InitConfig().then(() => {
+      getMenu(true);
+    });
+
     const getMenu = (isReload: boolean) => {
-      preParam.value = `/${route.params.project}/${route.params.version}/${route.params.lang}/`;
-      doclist({
+      // preParam.value = `/${route.params.project}/${route.params.version}/${route.params.lang}/`;
+      const dataParams = {
         project: store.project.dir,
         lang: store.lang.dir,
         version: store.version.dir,
-      }).then((re) => {
+      }
+      doclist(dataParams).then((re) => {
         if (re.code == 0) {
           list.value = re.data;
           //默认指向第一篇文章
           if (list.value.length > 0 && isReload) {
-            const firstUrl =
-              preParam.value + encodeURIComponent(list.value[0].fullpath);
-            console.log(firstUrl);
-            router.push(firstUrl);
+           // const firstUrl = preParam.value + encodeURIComponent(list.value[0].fullpath);
+         
+            router.push({
+              name: "/",
+              params: dataParams,
+            });
           } else {
           }
         }
       });
     };
-    watch(
-      () => store.version,
-      (v1, v2) => {
-        getMenu(true);
-      }
-    );
+    // watch(
+    //   () => store.version,
+    //   (v1, v2) => {
+    //     getMenu(true);
+    //   }
+    // );
 
-    watch(
-      () => store.lang,
-      (v1, v2) => {
-        getMenu(true);
-      }
-    );
-
-    getMenu(false);
+    // watch(
+    //   () => store.lang,
+    //   (v1, v2) => {
+    //     getMenu(true);
+    //   }
+    // );
 
     // store.$subscribe((mutation, state) => {
     //     console.log("state",state);
@@ -91,23 +97,26 @@ export default defineComponent({
 
     //监听菜单选择
     const selectedKeys = ref();
-    watch(
-      () => route.params.page,
-      (page) => {
-        selectedKeys.value = [page];
-      },
-      { immediate: true }
-    );
+    // watch(
+    //   () => route.params.page,
+    //   (page) => {
+    //     selectedKeys.value = [page];
+    //   },
+    //   { immediate: true }
+    // );
 
-    //监听
-    watch(
-      () => route.params,
-      (params) => {
-        getMenu(true);
-        console.log(params, "路由参数变化 ");
-      },
-      { immediate: true }
-    );
+    // //监听
+    // watch(
+    //   () => route.params,
+    //   (params) => {
+    //    // getMenu(true);
+    //     console.log(params, "路由参数变化 ");
+    //     if (Object.keys(params).length>0) {
+    //       getMenu(true);
+    //     }
+    //   },
+    //   { immediate: true }
+    // );
 
     const collapsed = ref(false);
 

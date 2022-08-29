@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-26 12:03:20
+ * @LastEditTime: 2022-08-29 11:07:10
  * @FilePath: \pages\src\route\index.ts
  */
 import { createRouter, createWebHashHistory, RouteMeta } from 'vue-router'
@@ -28,12 +28,12 @@ router.beforeEach(to => {
   const meta = to.meta
   setDocumentTitle(meta.title)
   //设置默认首页跳转
-  const store = useStore(); 
-  if (!router.hasRoute("/")) {
-    NProgress.start();
-    router.addRoute({ name: '/',  path:null, redirect:`/${store.project.dir}/${store.version.dir}/${store.lang.dir}`})
-    return to.fullPath
-  }
+  // const store = useStore(); 
+  // if (!router.hasRoute("/")) {
+  //   NProgress.start(); 
+  //   router.addRoute({ name: '/',  path:null, redirect:`/${store.project.dir}/${store.version.dir}/${store.lang.dir}`})
+  //   return to.fullPath
+  // }
 
   if (!router.hasRoute("admin")) {
     NProgress.start();
