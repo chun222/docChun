@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 17:47:50
+ * @LastEditTime: 2022-08-30 16:57:39
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -17,7 +17,7 @@
           <router-link
             :to="{
               name: '/',
-              params:v.params,
+              params: v.params,
             }"
             title="heading"
             :style="{ 'margin-left': v.level + 'px' }"
@@ -37,19 +37,18 @@
 </template>
 
 <script setup lang="ts">
- 
 import { svgArr } from "./svg";
-import { ref, onMounted, nextTick, watch, defineComponent } from "vue"; 
-import DOMPurify from "dompurify"; 
+import { ref, onMounted, nextTick, watch, defineComponent } from "vue";
+import DOMPurify from "dompurify";
 import { RouteParams, useRoute } from "vue-router";
 import { read } from "@/api/module/base";
 import { useStore } from "@/store/index";
-import { ToTop } from "@icon-park/vue-next"; 
- 
+import { ToTop } from "@icon-park/vue-next";
+
 import Cherry from "cherry-markdown";
 import "cherry-markdown/dist/cherry-markdown.css";
 
-import { BasicConfig } from "@/tools/cherryMarkdown";
+import { CherryMarkdownConfig } from "@/tools/cherryMarkdown";
 const route = useRoute();
 const store = useStore();
 watch(
@@ -79,8 +78,7 @@ const pageLoading = ref(true);
 const count = ref(0);
 const doc_card = ref();
 const listTitle = ref([]);
- 
- 
+
 //跳转
 const jumpLocation = (id: string, top?: number) => {
   if (top != undefined) {
@@ -99,24 +97,33 @@ const jumpLocation = (id: string, top?: number) => {
   }
 };
 
-  
 const rawHtml = ref("");
 //请求页面数据
 const loaddocRaw = (page: string): void => {
   pageLoading.value = true;
   listTitle.value = [];
-  read({ path: page }).then((v) => {
+  read({
+    path: page,
+    project: store.project.dir,
+    version: store.version.dir,
+    lang: store.lang.dir,
+  }).then((v) => {
     pageLoading.value = false;
     if (v.data == "") {
       rawHtml.value = "404";
       return;
     }
-    const config = Object.assign({}, BasicConfig,{value:v.data, forceAppend: true}) 
-  const cherryInstance = new Cherry(config);
-     rawHtml.value = cherryInstance.getHtml()
- 
+     const BConfigClass =   new CherryMarkdownConfig()
+    const config = Object.assign({}, BConfigClass.BasicConfig, {
+      value: v.data,
+      forceAppend: true,
+    });
+    const cherryInstance = new Cherry(config); 
+    
+    rawHtml.value = cherryInstance.getHtml();
+
     nextTick(() => {
-      document.getElementById("markdown").remove()
+      document.getElementById("markdown").remove();
 
       console.log(cherryInstance.getToc());
       //原生
@@ -125,7 +132,7 @@ const loaddocRaw = (page: string): void => {
       // );
 
       //自带api
-      const Hdomlist  = cherryInstance.getToc()
+      const Hdomlist = cherryInstance.getToc();
       Hdomlist.forEach((x) => {
         listTitle.value.push({
           page: page,
@@ -133,7 +140,7 @@ const loaddocRaw = (page: string): void => {
           nodeName: decodeURI(x.id),
           //parseInt(x.nodeName.replace(/[Hh]/, ""))  //自带需处理
           level: x.level * 10,
-          params:Object.assign({},route.params,{id:x.id})    
+          params: Object.assign({}, route.params, { id: x.id }),
         });
       });
 
@@ -145,7 +152,7 @@ const loaddocRaw = (page: string): void => {
       // //处理代码复制
       // document.querySelectorAll("code .hljs-box").forEach((element) => {
       //   const butDom = element.querySelector(".doc-codelang");
-      //   const copyTextS = decodeURIComponent(butDom.getAttribute("value")); 
+      //   const copyTextS = decodeURIComponent(butDom.getAttribute("value"));
       //   butDom.addEventListener("click", () => {
       //     copyText(copyTextS)
       //     butDom.innerHTML = "复制成功";
@@ -184,11 +191,14 @@ const lisscroll = () => {
   };
 };
 
-onMounted(() => {
-  lisscroll();
-  const page = route.params.page as string;
-  loaddocRaw(page);
-});
+watch(
+  () => store.InitOk,
+  (v1: boolean, v2: boolean) => {
+    lisscroll();
+    const page = route.params.page as string;
+    loaddocRaw(page);
+  }
+);
 </script>
 
  

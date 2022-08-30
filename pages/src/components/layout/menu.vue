@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 12:15:55
+ * @LastEditTime: 2022-08-30 14:29:27
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -23,7 +23,7 @@
                 project: dataParams.project,
                 lang: dataParams.lang,
                 version: dataParams.version,
-                page: item.fullpath,
+                page: item.relativepath,
               },
             }"
             >{{ item.name }}</router-link
@@ -104,7 +104,8 @@ export default defineComponent({
     watch(
       () => route.params.page,
       (page) => {
-        selectedKeys.value = [page];
+        selectedKeys.value = [`md/${route.params.project}/${route.params.version}/${route.params.lang}/${page}`];
+       
       },
       { immediate: true }
     );

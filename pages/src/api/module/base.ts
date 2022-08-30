@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-26 13:39:25
+ * @LastEditTime: 2022-08-30 14:05:43
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -29,6 +29,9 @@ export const doclist = (data: TypeDoclist) => {
 
 
 type TypePath =  {
+  project:string;
+  lang:string;
+  version:string ;
   path:string
 }
 

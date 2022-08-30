@@ -90,6 +90,8 @@ html {
   background-color: transparent;
 }
 
+
+.diyButtons {    }
 #footer {
   text-align: center;
   vertical-align: middle;
@@ -146,7 +148,7 @@ html {
 
 .content-loading {
   width: 100%;
-  min-height: 60vh;
+  min-height: 90vh;
   padding-top: 30vh;
   text-align: center;
   background-color: transparent;

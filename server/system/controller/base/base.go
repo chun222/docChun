@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-26 13:47:12
+ * @LastEditTime: 2022-08-30 14:04:57
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -48,7 +48,7 @@ func ReadContent(c *gin.Context) {
 		response.FailWithMessage(msg, c)
 		return
 	}
-	files := thisMd.ReadContent(r.Path)
+	files := thisMd.ReadContent(r)
 	response.OkWithData(files, c)
 }
 

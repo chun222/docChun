@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-30 12:03:51
+ * @LastEditTime: 2022-08-30 15:03:04
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -25,6 +25,8 @@ export const useStore = defineStore('main', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
     return {
+      //初始化状态位
+      InitOk:false,
       // 所有这些属性都将自动推断其类型 
       theme: localStorage.getItem("theme")||'light',  //light or dark 
       //菜单
@@ -36,7 +38,7 @@ export const useStore = defineStore('main', {
       projects:[{name:"",dir:""}],
       versions:[{name:"",dir:""}],
       langs: [{name:"",dir:""}],
-      routeLoading:false,
+      routeLoading:true,
     }
   },
   getters: {
@@ -105,9 +107,13 @@ export const useStore = defineStore('main', {
                   }
               }
             } 
-          }
-          
+          } 
         }
+         
+        
+        this.routeLoading = false
+        this.InitOk = true
+
       })
     },
     //改变主题

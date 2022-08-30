@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 12:05:48
+ * @LastEditTime: 2022-08-30 14:33:07
  * @FilePath: \pages\src\tools\common.ts
  */ 
 
@@ -30,7 +30,7 @@ export const getMenu =  async (isReload: boolean) =>  {
       store.menus = re.data;
       if (re.data.length > 0) {
         if (isNotHaspage || isReload) {
-          dataParams.page = re.data[0].fullpath;
+          dataParams.page = re.data[0].relativepath;
         } else {
           dataParams.page = router.currentRoute.value.params.page;
         }

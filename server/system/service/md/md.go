@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-26 13:47:01
+ * @LastEditTime: 2022-08-30 14:03:55
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -38,14 +38,15 @@ type LineConfig struct {
 }
 
 type SysFile struct {
-	Key        uint       `json:"key"`
-	Position   int64      `json:"position"`
-	Name       string     `json:"name"`
-	Type       string     `json:"type"`
-	Size       float64    `json:"size"`
-	CreateTime string     `json:"create_time"`
-	Fullpath   string     `json:"fullpath"`
-	Child      []*SysFile `json:"children"`
+	Key          uint       `json:"key"`
+	Position     int64      `json:"position"`
+	Name         string     `json:"name"`
+	Type         string     `json:"type"`
+	Size         float64    `json:"size"`
+	CreateTime   string     `json:"create_time"`
+	Fullpath     string     `json:"fullpath"`
+	Relativepath string     `json:"relativepath"`
+	Child        []*SysFile `json:"children"`
 }
 
 var basedir = sys.ExecutePath() + "/" //根目录
@@ -65,7 +66,7 @@ func (_this *MdService) getDirFiles(path string) []*SysFile {
 		Name: path,
 		Type: "dir",
 	}
-	_this.getFileTree(path, &f)
+	_this.getFileTree(path, &f, path)
 	sortFileTree(f.Child)
 	return f.Child
 }
@@ -80,8 +81,8 @@ func sortFileTree(f []*SysFile) {
 	}
 }
 
-//递归获取文件夹下所有内容 , path 不包含根目录
-func (_this *MdService) getFileTree(path string, s *SysFile) {
+//递归获取文件夹下所有内容 , path 不包含根目录 , rePath:相对根目录
+func (_this *MdService) getFileTree(path string, s *SysFile, rePath string) {
 	fs, _ := ioutil.ReadDir(basedir + path)
 	//sort.Sort(file.ByModTime(fs))
 	s.Child = make([]*SysFile, 0)
@@ -103,16 +104,17 @@ func (_this *MdService) getFileTree(path string, s *SysFile) {
 				}
 			}
 			fileNow := SysFile{
-				Key:        FileKey,
-				Position:   posintion,
-				Name:       name,
-				Size:       0,
-				Fullpath:   path + f.Name(),
-				Type:       "dir",
-				CreateTime: f.ModTime().Format("2006-01-02 15:04:05"),
+				Key:          FileKey,
+				Position:     posintion,
+				Name:         name,
+				Size:         0,
+				Fullpath:     path + f.Name(),
+				Relativepath: f.Name(),
+				Type:         "dir",
+				CreateTime:   f.ModTime().Format("2006-01-02 15:04:05"),
 			}
 			s.Child = append(s.Child, &fileNow)
-			_this.getFileTree(path+"/"+f.Name()+"/", &fileNow)
+			_this.getFileTree(path+"/"+f.Name()+"/", &fileNow, rePath)
 
 		} else {
 
@@ -129,13 +131,14 @@ func (_this *MdService) getFileTree(path string, s *SysFile) {
 					posintion = lineRe.Position
 				}
 				fileNow := SysFile{
-					Key:        FileKey,
-					Position:   posintion,
-					Name:       name,
-					Size:       float64(f.Size()) / 1024, //返回kb
-					Fullpath:   path + f.Name(),
-					Type:       fileType,
-					CreateTime: f.ModTime().Format("2006-01-02 15:04:05"),
+					Key:          FileKey,
+					Position:     posintion,
+					Name:         name,
+					Size:         float64(f.Size()) / 1024, //返回kb
+					Fullpath:     path + f.Name(),
+					Relativepath: str.After(path, rePath) + f.Name(),
+					Type:         fileType,
+					CreateTime:   f.ModTime().Format("2006-01-02 15:04:05"),
 				}
 				s.Child = append(s.Child, &fileNow)
 			}
@@ -258,8 +261,8 @@ func (_this *MdService) readConfigLine(line string) (*string, *int64) {
 }
 
 //读取md内容
-func (_this *MdService) ReadContent(path string) string {
-	fullpath := basedir + path
+func (_this *MdService) ReadContent(r RequestModel.Path) string {
+	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Path)
 	re := ""
 	fileone, err := os.Open(fullpath)
 	if err != nil {

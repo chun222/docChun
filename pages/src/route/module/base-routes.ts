@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 12:14:00
+ * @LastEditTime: 2022-08-30 14:45:27
  * @FilePath: \pages\src\route\module\base-routes.ts
  */
 export default [
