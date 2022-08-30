@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 16:52:48
+ * @LastEditTime: 2022-08-30 12:15:55
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -18,11 +18,11 @@
         <a-menu-item :key="item.fullpath">
           <router-link
             :to="{
-              name: '/',
+              name: dataParams.routeName ,
               params: {
-                project: Params.project,
-                lang: Params.lang,
-                version: Params.version,
+                project: dataParams.project,
+                lang: dataParams.lang,
+                version: dataParams.version,
                 page: item.fullpath,
               },
             }"
@@ -31,19 +31,21 @@
         </a-menu-item>
       </template>
       <template v-else>
-        <sub-menu :key="item.fullpath" :menu-info="item" :dataParams="Params" />
+        <sub-menu :key="item.fullpath" :menu-info="item" :dataParams="dataParams" />
       </template>
     </template>
   </a-menu>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
-import SubMenu from "./submenu.vue";
-import router from "@/route/index";
-
-import { doclist } from "@/api/module/base";
+import { defineComponent, ref, watch, computed,reactive } from "vue";
+import SubMenu from "./submenu.vue"; 
+ 
 import { useStore } from "@/store/index";
 import { RouteParams, useRoute } from "vue-router";
+
+
+import { getMenu } from "@/tools/common"; 
+
 
 export default defineComponent({
   components: {
@@ -54,58 +56,15 @@ export default defineComponent({
     const route = useRoute();
 
     const store = useStore();
-    const Params = ref({
-      project: "",
-      lang: "",
-      version: "",
-      page: "",
-      id: "",
+ 
+
+    const dataParams =  reactive({
+      routeName:computed(() => route.name),
+      project:computed(() =>store.project.dir),
+      lang:computed(() =>store.lang.dir),
+      version:computed(() =>store.version.dir),
     });
-
-    router.isReady().then(() => {
-      const store = useStore();
-      console.log("router finish!");
-      //初始化菜单什么的
-      store.InitConfig().then(() => {
-        getMenu(false);
-      });
-    });
-
-    //需解构----
-    const getMenu = (isReload: boolean) => {
-      const store = useStore();
-      const dataParams: any = {};
-      dataParams.project = store.project.dir;
-      dataParams.lang = store.lang.dir;
-      dataParams.version = store.version.dir;
-      Params.value = dataParams;
-      doclist(dataParams).then((re) => {
-        if (re.code == 0) {
-          //默认指向第一篇文章
-          //isEmptyObjValue(router.currentRoute.value.params)
-          //  const isIndex = isEmptyObjValue(router.currentRoute.value.params);
-          //是否有页面
-          const isNotHaspage = router.currentRoute.value.params.page == "";
-
-      
-          store.menus = re.data;
-          if (re.data.length > 0) {
-            if (isNotHaspage || isReload) {
-              dataParams.page = re.data[0].fullpath;
-            } else {
-              dataParams.page = router.currentRoute.value.params.page;
-            }
-
-            //console.log("isHaspage", isNotHaspage,dataParams);
-              router.push({
-                name: "/",
-                params: dataParams,
-              });
-          }
-        }
-      });
-    };
-
+ 
     //对象值是否全为空
     const isEmptyObjValue = (obj: any) => {
       const values = Object.values(obj);
@@ -160,8 +119,8 @@ export default defineComponent({
       list,
       collapsed,
       toggleCollapsed,
-      selectedKeys,
-      Params,
+      selectedKeys, 
+      dataParams
     };
   },
 });

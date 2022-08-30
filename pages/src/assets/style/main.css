@@ -21,7 +21,7 @@ html {
   border-right: 1px solid var(--chun-gray-2);
   box-sizing: border-box;
 }
-
+ 
 .toprightNavHover {
   display: flex;
   justify-content: center;

@@ -4,16 +4,40 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 10:37:02
+ * @LastEditTime: 2022-08-30 11:36:20
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
   <a-row type="flex">
     <a-col flex="200px"><div class="logo"><img src="@/assets/logo.png" />  chundoc</div></a-col>
-    <a-col flex="auto">auto</a-col>
+    <a-col flex="auto"> 
+         <!-- 横向菜单 -->
+        <Menu v-if="!isIndex" :mode="'horizontal'"></Menu>
+
+    </a-col>
     <a-col flex="600px">
       <a-space :size="20" style="flex-direction: row-reverse; float: right">
-        <a-input placeholder="搜索" readonly @click="doshowSearch">
+
+
+        <a-dropdown
+        v-if="!isIndex"
+          :getPopupContainer="(triggerNode:any) => triggerNode.parentNode"
+        >
+          <div class="toprightNavHover" @click.prevent>
+            <config theme="outline"  class="navicon"  /><span>系统</span
+            ><down-one theme="filled" class="navicon" />
+          </div>
+          <template #overlay>
+            <a-menu @click="configChange">
+              <a-menu-item :key="1"> 版本配置 </a-menu-item>
+              <a-menu-item :key="2"> 版本配置 </a-menu-item>
+              <a-menu-item :key="3"> 版本配置 </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+
+
+        <a-input placeholder="搜索" readonly @click="doshowSearch" v-if="isIndex">
           <template #prefix>
             <search theme="outline" size="22" style="margin-top:6px"/>
           </template> 
@@ -69,6 +93,7 @@
 </template>
 
 <script lang="ts">
+import router from "@/route/index";
 import { defineComponent, reactive, toRefs, computed,nextTick } from "vue";
 import {
   Brightness,
@@ -76,9 +101,11 @@ import {
   Search,
   DownOne,
   Translate,
+  Config,
 } from "@icon-park/vue-next";
 import { useStore } from "@/store/index";
 import vsearch from "@/components/search.vue";  
+import Menu from "./menu.vue"; 
 export default defineComponent({
   components: {
     Brightness,
@@ -87,6 +114,8 @@ export default defineComponent({
     vsearch,
     DownOne,
     Translate,
+    Config,
+    Menu
   },
   setup() {
 
@@ -106,6 +135,10 @@ export default defineComponent({
           state.showSearch = true ;
       })
     }
+ const configChange = (v: string) => {
+      console.log(v); 
+    };
+    
 
     const changeTheme = (v: string) => {
       console.log(v);
@@ -117,7 +150,7 @@ export default defineComponent({
     };
 
     const changeVersion = ({ key }) => {
-     store.changeVersion(key,true)
+     store.changeVersion(key)
     };
 
     const langs = computed(() => store.langs);
@@ -136,6 +169,8 @@ export default defineComponent({
       changeLang,
       changeVersion, 
       doshowSearch,
+      configChange,
+      isIndex: computed(()=>router.currentRoute.value.name == "/"),
     };
   },
 });

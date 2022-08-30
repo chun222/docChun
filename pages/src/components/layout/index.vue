@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 14:00:01
+ * @LastEditTime: 2022-08-30 10:37:45
  * @FilePath: \pages\src\components\layout\index.vue
 -->
 <template>
@@ -19,6 +19,7 @@
         collapsed-width="0"
         @collapse="onCollapse"
         @breakpoint="onBreakpoint"
+        v-if="isIndex"
       >
         <Menu></Menu>
       </a-layout-sider>
@@ -33,12 +34,15 @@
 </template>
 
 <script lang="ts">
+import router from "@/route/index";
 import { UserOutlined } from "@ant-design/icons-vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref,computed } from "vue";
 import Content from "./content.vue";
 import Header from "./header.vue";
 import Footer from "./footer.vue";
-import Menu from "./menu.vue";
+import Menu from "./menu.vue"; 
+import { useStore } from "@/store/index";
+import { getMenu } from "@/tools/common";
 export default defineComponent({
   components: {
     Content,
@@ -56,7 +60,17 @@ export default defineComponent({
       console.log(broken);
     };
 
+    router.isReady().then(() => {
+      const store = useStore();
+      console.log("router finish!");
+      //初始化菜单什么的
+      store.InitConfig().then(() => {
+        getMenu(false);
+      });
+    });
+
     return {
+      isIndex: computed(()=>router.currentRoute.value.name == "/"),
       onCollapse,
       onBreakpoint,
     };

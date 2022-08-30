@@ -4,9 +4,51 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-19 17:51:28
+ * @LastEditTime: 2022-08-30 12:05:48
  * @FilePath: \pages\src\tools\common.ts
  */ 
+
+
+import router from "@/route/index";
+import { doclist } from "@/api/module/base";
+import { useStore } from "@/store/index";
+export const getMenu =  async (isReload: boolean) =>  {
+  const store = useStore();
+  const dataParams: any = {};
+  dataParams.project = store.project.dir;
+  dataParams.lang = store.lang.dir;
+  dataParams.version = store.version.dir;
+ 
+ await doclist(dataParams).then((re) => {
+    if (re.code == 0) {
+      //默认指向第一篇文章
+      //isEmptyObjValue(router.currentRoute.value.params)
+      //  const isIndex = isEmptyObjValue(router.currentRoute.value.params);
+      //是否有页面
+      const isNotHaspage = router.currentRoute.value.params.page == "";
+ 
+      store.menus = re.data;
+      if (re.data.length > 0) {
+        if (isNotHaspage || isReload) {
+          dataParams.page = re.data[0].fullpath;
+        } else {
+          dataParams.page = router.currentRoute.value.params.page;
+        }
+        store.page = dataParams.page ;  
+        if (router.currentRoute.value.name=="/") {
+          router.push({
+            name: "/",
+            params: dataParams,
+          });
+        }
+      }
+    }
+  });
+
+  return dataParams ; 
+};
+
+
 //复制文本
 export function copyText(text:string) {
    // 添加一个input元素放置需要的文本内容
