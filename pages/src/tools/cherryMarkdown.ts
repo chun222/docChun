@@ -50,8 +50,7 @@ const BlockTipsHook = Cherry.createSyntaxHook(
        needCache: true,
        // 预处理文本，避免受影响,生命周期，返回替换后的字符串
         beforeMakeHtml(str: string) {
-            return str.replace(this.RULE.reg, (match, code) => {
- 
+            return str.replace(this.RULE.reg, (match, code) => { 
                 //获取匹配内部内容
                 const content =  cherryEngineInstance.makeHtml(match.replace(/^:(info|success|warning|error):[\s\n]|::$/g, ""))
 

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-30 14:04:57
+ * @LastEditTime: 2022-08-31 14:36:46
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -49,6 +49,17 @@ func ReadContent(c *gin.Context) {
 		return
 	}
 	files := thisMd.ReadContent(r)
+	response.OkWithData(files, c)
+}
+
+func SaveContent(c *gin.Context) {
+	var r RequestModel.Path
+	err, msg := request.Binding(&r, c)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	files := thisMd.SaveContent(r)
 	response.OkWithData(files, c)
 }
 

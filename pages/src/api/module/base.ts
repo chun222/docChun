@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 14:05:43
+ * @LastEditTime: 2022-08-31 17:44:40
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -28,16 +28,25 @@ export const doclist = (data: TypeDoclist) => {
 }
 
 
-type TypePath =  {
+export type TypePath =  {
   project:string;
   lang:string;
   version:string ;
-  path:string
+  page:string
+  content?:string
 }
 
 export const read = (data: TypePath) => {
   return http.request<string>({
     url: '/read',
+    data: data,
+    method: 'post'
+  })
+}
+
+export const savecontent = (data: TypePath) => {
+  return http.request<string>({
+    url: '/savecontent',
     data: data,
     method: 'post'
   })

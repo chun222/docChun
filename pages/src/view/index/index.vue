@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 16:57:39
+ * @LastEditTime: 2022-08-31 18:54:49
  * @FilePath: \pages\src\view\index\index.vue
 -->
 <template>
@@ -52,11 +52,17 @@ import { CherryMarkdownConfig } from "@/tools/cherryMarkdown";
 const route = useRoute();
 const store = useStore();
 watch(
-  () => route.params.page,
-  (val: any) => {
-    loaddocRaw(val as string);
+  () => route.params,
+  (val: any,val2:any) => {
+    console.log("路由变化了",val.id,val2.id,val.page);
+    //只要不是id变化
+    if(val.id==val2.id || val.id==undefined){
+       console.log("路由变化了222");
+        loaddocRaw(val.page as string);
+            lisscroll();
+    } 
   }
-);
+); 
 
 watch(
   () => route.params.id,
@@ -103,7 +109,7 @@ const loaddocRaw = (page: string): void => {
   pageLoading.value = true;
   listTitle.value = [];
   read({
-    path: page,
+    page: page,
     project: store.project.dir,
     version: store.version.dir,
     lang: store.lang.dir,
@@ -119,7 +125,7 @@ const loaddocRaw = (page: string): void => {
       forceAppend: true,
     });
     const cherryInstance = new Cherry(config); 
-    
+
     rawHtml.value = cherryInstance.getHtml();
 
     nextTick(() => {
@@ -191,14 +197,17 @@ const lisscroll = () => {
   };
 };
 
-watch(
-  () => store.InitOk,
-  (v1: boolean, v2: boolean) => {
-    lisscroll();
-    const page = route.params.page as string;
-    loaddocRaw(page);
-  }
-);
+// watch(
+//   () => store.InitOk,
+//   (v1: boolean, v2: boolean) => {
+
+//     const page = route.params.page as string;
+   
+//     if(page!=""){  
+//      //loaddocRaw(page);
+//     }
+//   }
+// );
 </script>
 
  

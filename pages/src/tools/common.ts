@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 14:33:07
+ * @LastEditTime: 2022-08-31 18:45:00
  * @FilePath: \pages\src\tools\common.ts
  */ 
 
@@ -35,15 +35,20 @@ export const getMenu =  async (isReload: boolean) =>  {
           dataParams.page = router.currentRoute.value.params.page;
         }
         store.page = dataParams.page ;  
-        if (router.currentRoute.value.name=="/") {
-          router.push({
-            name: "/",
+        router.push({
+            name: router.currentRoute.value.name,
             params: dataParams,
           });
-        }
+        // if (router.currentRoute.value.name=="/") {
+        //   // router.push({
+        //   //   name: "/",
+        //   //   params: dataParams,
+        //   // });
+        // }
       }
     }
   });
+ 
 
   return dataParams ; 
 };

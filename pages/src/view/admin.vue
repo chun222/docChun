@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 18:07:41
+ * @LastEditTime: 2022-08-31 18:50:19
  * @FilePath: \pages\src\view\admin.vue
 -->
 <template>
@@ -12,7 +12,8 @@
 
   <!-- 曲线救国 标准方法获取不到 -->
   <div class="diyButtons">
-    <span class="diyButtonspan" @click="saveMd">sssss</span>
+    <span class="diyButtonspan cherry-toolbar-dropdown cherry-toolbar-button" @click="viewpage">查看</span> 
+    <span class="diyButtonspan cherry-toolbar-dropdown cherry-toolbar-button" @click="saveMd(true)">保存</span> 
   </div>
 </template>
 
@@ -24,16 +25,21 @@ import "cherry-markdown/dist/cherry-markdown.css";
 import { RouteParams, useRoute } from "vue-router";
 import { useStore } from "@/store/index";
 
-import { read } from "@/api/module/base";
+import { read,savecontent,TypePath } from "@/api/module/base";
 //cherryInstance.export("pdf");
-import { onMounted, ref, watch,h } from "vue"; 
+import { onMounted, ref, watch,reactive ,getCurrentInstance ,onUnmounted} from "vue"; 
 import 'font-awesome/css/font-awesome.min.css'
 
 import router from "@/route/index";
+
+// 自定义类型申明
+
+
+ 
 export default {
   setup() {
 
-  
+    const globleConfig = getCurrentInstance()?.proxy
     const pageLoading = ref(true);
 
     const store = useStore();
@@ -45,12 +51,23 @@ export default {
 
     let cherryInstance: any;
 
+  let IntervalKey:NodeJS.Timer 
+
+    //当前页面
+    let curpage:TypePath = {
+        page: "",
+        project: store.project.dir,
+        version: store.version.dir,
+        lang: store.lang.dir, 
+    }
+
     watch(
-      () => route.params.page,
-      (val: any) => {
-        loaddocRaw(val as string);
+      () => route.params,
+      (val: any,val2: any) => { 
+        loaddocRaw(val.page as string);
       }
     );
+
 
     onMounted(() => {
       cherryInstance = new Cherry(BConfigClass);  
@@ -60,8 +77,17 @@ export default {
       //   document.querySelector(".cherry-toolbar").appendChild(v)
       // })
       // document.querySelector(".diyButtons").remove()
+
+        //自动保存
+      IntervalKey =  setInterval(()=>{
+      // saveMd(false)
+    },1000)
       
     });
+
+    onUnmounted(()=>{
+      clearInterval(IntervalKey)
+    })
 
      watch(
       () => store.InitOk,
@@ -76,29 +102,52 @@ export default {
     //请求页面数据
     const loaddocRaw = (page: string): void => {
       pageLoading.value = true;
-      read({
-        path: page,
+      curpage = {
+        page: page,
         project: store.project.dir,
         version: store.version.dir,
         lang: store.lang.dir,
-      }).then((v) => {
+      }
+      read(curpage).then((v) => {
         if (v.code == 0) {
-          pageLoading.value = false;
-          if (v.data == "") {
-            return;
-          }
+          pageLoading.value = false; 
           cherryInstance.setMarkdown(v.data, false);
         }
       });
     };
 
-    const saveMd = ()=>{
-      console.log(cherryInstance.getMarkdown());
+  
+  const viewpage = ()=>{
+    const urlpage =   router.resolve({
+        name:"/",
+        params:curpage
+      })
+      window.open(urlpage.href,"_blank")
+  }
+
+    const saveMd = (showmsg:boolean)=>{ 
+      curpage.content = cherryInstance.getMarkdown()
+     // console.log(cherryInstance.getMarkdown());
+      savecontent(curpage).then((re)=>{
+        if (re.code==0) {
+          if (showmsg) {
+             globleConfig.$notice.success({
+              message:"保存成功~"
+          })
+          }
+         
+        }else{
+             globleConfig.$notice.error({
+              message:re.msg
+          })
+        }
+      })
     }
 
     return {
       mdHeight: document.body.clientHeight - 135,
-      saveMd
+      saveMd,
+      viewpage
     };
   },
 };

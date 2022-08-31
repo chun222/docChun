@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-30 14:03:55
+ * @LastEditTime: 2022-08-31 17:46:33
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -260,9 +260,37 @@ func (_this *MdService) readConfigLine(line string) (*string, *int64) {
 	return labelReturn, positionReturn
 }
 
+//保存md内容
+func (_this *MdService) SaveContent(r RequestModel.Path) error {
+	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page)
+	fileone, err := os.Open(fullpath)
+	if err != nil {
+		return err
+	}
+	defer fileone.Close()
+	buf := bufio.NewReader(fileone)
+
+	//读取2行,判断是否有位置和排序信息
+	headInfo := ""
+	for i := 0; i < 2; i++ {
+		line, _ := buf.ReadString('\n')
+		s, in := _this.readConfigLine(line)
+		if s != nil || in != nil {
+			headInfo = headInfo + line
+		}
+	}
+	//写入内容
+	filewrite, err := os.OpenFile(fullpath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	n, _ := filewrite.Seek(0, os.SEEK_END)
+	_, err = filewrite.WriteAt([]byte(headInfo+r.Content), n)
+	defer filewrite.Close()
+	return err
+
+}
+
 //读取md内容
 func (_this *MdService) ReadContent(r RequestModel.Path) string {
-	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Path)
+	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page)
 	re := ""
 	fileone, err := os.Open(fullpath)
 	if err != nil {
