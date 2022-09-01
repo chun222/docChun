@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 14:29:27
+ * @LastEditTime: 2022-09-01 11:03:16
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -81,8 +81,11 @@ export default defineComponent({
       () => store.version,
       (v1, v2) => {
         if (v2.dir != "") {
+          console.log("watch version",v1, v2);
           getMenu(true);
         }
+      },{
+        deep:true
       }
     );
 

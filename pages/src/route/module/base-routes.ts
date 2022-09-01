@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 14:45:27
+ * @LastEditTime: 2022-09-01 08:44:05
  * @FilePath: \pages\src\route\module\base-routes.ts
  */
 export default [
@@ -28,7 +28,7 @@ export default [
   {
     name:'admin',
     path: '/admin/:project?/:version?/:lang?/:page?',
-    component: () => import('@/view/admin.vue'),
+    component: () => import('@/view/admin/admin.vue'),
     meta: {
       title: '后台'
     },

@@ -7,7 +7,7 @@ type Result<T> = {
   data: T;
 };
 
-const refreshToken = (response: AxiosResponse) => {
+const refreshToken = (response: AxiosResponse) => { 
   let token = response.headers.authorization
   if (token) {
     localStorage.setItem('USER_TOKEN', token);
@@ -45,7 +45,7 @@ class Http {
         }
         return config;
       },
-      (err: any) => {
+      (err: any) => { 
         return Promise.reject(err);
       }
     );
@@ -57,6 +57,7 @@ class Http {
         return res.data;
       },
       (err: any) => {
+        console.log(err);
         // 这里用来处理http常见错误，进行全局提示
         refreshToken(err.response);//有token 就刷新 
         let message = "";

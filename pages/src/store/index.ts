@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-08-31 18:22:16
+ * @LastEditTime: 2022-09-01 11:33:05
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -14,13 +14,8 @@ import { allconfig } from "@/api/module/base";
 
 import router from "@/route/index" 
 
+import {AliasDirType} from '@/model';
 
-
-type AliasDirType = {
-  name:string;
-  dir:string;
-} 
- 
 export const useStore = defineStore('main', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
@@ -55,8 +50,7 @@ export const useStore = defineStore('main', {
           this.projects = re.data.Project;
 
           if (this.projects.length > 0) { 
-            let cacheSet = router.currentRoute.value.params.project 
-            console.log("cacheSet",cacheSet);
+            let cacheSet = router.currentRoute.value.params.project  
             if(cacheSet == ""){
              this.changeProject(this.projects[0])
             }else{
@@ -124,17 +118,25 @@ export const useStore = defineStore('main', {
 
      //改变项目
      changeProject(v: AliasDirType) {
-      this.project = v;  
+      
+      if (v.dir != this.project.dir||v.name != this.project.name) {
+        this.project = v;  
+      }
+    
     },
 
     //改变版本
     changeVersion(v: AliasDirType) {
-      this.version = v; 
+      if (v.dir != this.version.dir||v.name != this.version.name) {
+        this.version = v;  
+      } 
     },
 
     //改变语言
-    changeLang(v: AliasDirType) {
-      this.lang = v; 
+    changeLang(v: AliasDirType) { 
+      if (v.dir != this.lang.dir||v.name != this.lang.name) {
+        this.lang = v;  
+      } 
     },
 
 

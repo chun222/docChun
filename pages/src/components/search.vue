@@ -2,7 +2,7 @@
  * @Date: 2021-12-17 09:44:58
  * @LastEditors: 春贰
  * @Desc: 
- * @LastEditTime: 2022-08-19 11:20:51
+ * @LastEditTime: 2022-09-01 11:32:04
  * @FilePath: \pages\src\components\search.vue
 -->
 <template>
@@ -129,6 +129,7 @@ export default defineComponent({
       }
       state.loadingType = 1;
       search({
+        project:store.project.dir,
         lang: store.lang.dir,
         version: store.version.dir,
         keyword: state.serchValue,

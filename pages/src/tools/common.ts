@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-31 18:45:00
+ * @LastEditTime: 2022-09-01 11:00:23
  * @FilePath: \pages\src\tools\common.ts
  */ 
 
@@ -13,6 +13,8 @@ import router from "@/route/index";
 import { doclist } from "@/api/module/base";
 import { useStore } from "@/store/index";
 export const getMenu =  async (isReload: boolean) =>  {
+
+  console.log("执行了getmenu");
   const store = useStore();
   const dataParams: any = {};
   dataParams.project = store.project.dir;

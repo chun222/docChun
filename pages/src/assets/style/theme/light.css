@@ -37,6 +37,8 @@
     color: rgb(66, 66, 66);
 }
 
+
+.light .ant-input[readonly] { background-color: #eee;}
 .light #header .ant-input-affix-wrapper .ant-input::placeholder {
     color: rgb(66, 66, 66);
 }

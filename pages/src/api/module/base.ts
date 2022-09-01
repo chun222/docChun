@@ -4,21 +4,15 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-31 17:44:40
+ * @LastEditTime: 2022-09-01 11:29:58
  * @FilePath: \pages\src\api\module\base.ts
  */
 
-import http from '../http' 
-import axios, { Method, AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosInterceptorManager, AxiosResponse } from 'axios';
-
- 
+import http from '../http'
+import { TypeDoclist, TypePath, TypeSearch } from '@/model';
 
 //获取文档列表
-type TypeDoclist = {
-  project:string;
-  lang:string;
-  version:string ;
-} 
+
 export const doclist = (data: TypeDoclist) => {
   return http.request({
     url: '/doclist',
@@ -28,13 +22,6 @@ export const doclist = (data: TypeDoclist) => {
 }
 
 
-export type TypePath =  {
-  project:string;
-  lang:string;
-  version:string ;
-  page:string
-  content?:string
-}
 
 export const read = (data: TypePath) => {
   return http.request<string>({
@@ -53,12 +40,7 @@ export const savecontent = (data: TypePath) => {
 }
 
 
-type TypeSearch =  {
-  project:string;
-  lang:string ; 
-  version:string ;
-  keyword:string;
-}
+
 
 export const search = (data: TypeSearch) => {
   return http.request({
@@ -71,9 +53,17 @@ export const search = (data: TypeSearch) => {
 //所有配置
 export const allconfig = () => {
   return http.request({
-    url: '/allconfig', 
+    url: '/allconfig',
     method: 'post'
   })
 }
 
- 
+//保存配置 
+export const saveconfigs = (data: any) => {
+  return http.request({
+    url: '/saveconfigs',
+    data: data,
+    method: 'post'
+  })
+}
+

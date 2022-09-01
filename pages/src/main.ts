@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-31 15:43:17
+ * @LastEditTime: 2022-09-01 10:40:58
  * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue'
@@ -33,7 +33,8 @@ notification.config({
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $notice:typeof notification
+        $notice:typeof notification,
+        $message:typeof message
     }
  } 
 

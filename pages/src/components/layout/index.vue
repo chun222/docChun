@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-30 10:37:45
+ * @LastEditTime: 2022-09-01 11:02:17
  * @FilePath: \pages\src\components\layout\index.vue
 -->
 <template>
@@ -61,10 +61,10 @@ export default defineComponent({
     };
 
     router.isReady().then(() => {
-      const store = useStore();
-      console.log("router finish!");
+      const store = useStore(); 
       //初始化菜单什么的
       store.InitConfig().then(() => {
+        console.log("初始化执行===");
         getMenu(false);
       });
     });

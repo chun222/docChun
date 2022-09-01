@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-08-29 16:44:50
+ * @LastEditTime: 2022-09-01 08:44:12
  * @FilePath: \pages\src\route\index.ts
  */
 import { createRouter, createWebHashHistory, RouteMeta } from 'vue-router'
@@ -32,7 +32,7 @@ router.beforeEach(to => {
   setDocumentTitle(meta.title) 
   if (!router.hasRoute("admin")) {
     NProgress.start();
-    router.addRoute({ path: '/admin', name: 'admin', component: () => import('@/view/admin.vue') })
+    router.addRoute({ path: '/admin', name: 'admin', component: () => import('@/view/admin/admin.vue') })
     return to.fullPath
   }
 })
