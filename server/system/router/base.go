@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-31 14:37:09
+ * @LastEditTime: 2022-09-01 14:13:20
  * @FilePath: \server\system\router\base.go
  */
 
@@ -22,6 +22,7 @@ func BaseRouter(r *gin.Engine) {
 	r.POST("/read", base.ReadContent)
 	r.POST("/search", base.Search)
 	r.POST("/allconfig", base.AllConfig)
+	r.POST("/saveconfigs", base.SaveConfigs)
 
 	r.POST("/savecontent", base.SaveContent)
 

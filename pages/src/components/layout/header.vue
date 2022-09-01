@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 09:11:25
+ * @LastEditTime: 2022-09-01 14:55:12
  * @FilePath: \pages\src\components\layout\header.vue
 -->
 <template>
@@ -115,16 +115,16 @@
     :parentNode="domParent"
     @close="showSearch = false"
   >
-  </vsearch>
- 
-
-  <ConfigDrawer :visible="showConfig" @close="showConfig=false"></ConfigDrawer>
+  </vsearch> 
+  <ConfigDrawer :parentNode="domParent" :visible="showConfig" @close="showConfig=false"></ConfigDrawer>
+  <ConfigMenus :parentNode="domParent" :visible="showMenusConfig" @close="showMenusConfig=false"></ConfigMenus>
 </template>
 
 <script lang="ts">
 import router from "@/route/index";
 import { defineComponent, reactive, toRefs, computed, nextTick } from "vue";
-import ConfigDrawer from "./drawer/config.vue";
+import ConfigDrawer from "./drawer/config.vue"; 
+import ConfigMenus from "./drawer/menus.vue";
 import {
   Brightness,
   Moon,
@@ -138,6 +138,7 @@ import vsearch from "@/components/search.vue";
 import Menu from "./menu.vue";
 export default defineComponent({
   components: {
+    ConfigMenus,
     ConfigDrawer,
     Brightness,
     Moon,
@@ -156,7 +157,8 @@ export default defineComponent({
     const state = reactive({
       showSearch: false,
       domParent: null,
-      showConfig:false
+      showConfig:false,
+      showMenusConfig:false
     });
 
     const doshowSearch = () => {
@@ -165,13 +167,15 @@ export default defineComponent({
         state.showSearch = true;
       });
     };
-    const configChange = (v: any) => {
-      console.log(v); 
+    const configChange = (v: any) => { 
       //系统配置
       if (v.key==1) {
+         state.domParent = document.getElementById("content");
           state.showConfig = true
       }else if(v.key==2){
         //目录配置
+         state.domParent = document.getElementById("content");
+         state.showMenusConfig = true
         
       }
     };

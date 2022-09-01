@@ -102,6 +102,8 @@ html {
   height: 70px;
 }
 
+.configmenutree { padding: 10px;}
+
 .doc-previewer {
   width: 100% !important;
   display: flex;

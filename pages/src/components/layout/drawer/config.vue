@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 11:33:36
+ * @LastEditTime: 2022-09-01 14:35:24
  * @FilePath: \pages\src\components\layout\drawer\config.vue
 -->
 <template>
@@ -14,7 +14,7 @@
     :placement="placement"
     :visible="visible"
     @close="onClose"
-    :getContainer="drawerContainer"
+    :getContainer="parentNode"
   >
     <template #extra>
       <a-button style="margin-right: 8px" @click="onClose">取消</a-button>
@@ -31,7 +31,7 @@
         align="baseline"
       >
         <a-form-item
-          label="目录"
+          label="文件夹"
           :name="['projects', index, 'dir']"
           :rules="{
             required: true,
@@ -40,7 +40,7 @@
         >
           <a-input
             v-model:value="project.dir"
-            placeholder="目录"
+            placeholder="文件夹"
             :readonly="project.readonly !== false"
           />
         </a-form-item>
@@ -74,7 +74,7 @@
         align="baseline"
       >
         <a-form-item
-          label="目录"
+          label="文件夹"
           :name="['versions', index, 'dir']"
           :rules="{
             required: true,
@@ -83,7 +83,7 @@
         >
           <a-input
             v-model:value="project.dir"
-            placeholder="目录"
+            placeholder="文件夹"
             :readonly="project.readonly !== false"
           />
         </a-form-item>
@@ -117,7 +117,7 @@
         align="baseline"
       >
         <a-form-item
-          label="目录"
+          label="文件夹"
           :name="['langs', index, 'dir']"
           :rules="{
             required: true,
@@ -126,7 +126,7 @@
         >
           <a-input
             v-model:value="project.dir"
-            placeholder="目录"
+            placeholder="文件夹"
             :readonly="project.readonly !== false"
           />
         </a-form-item>
@@ -169,15 +169,20 @@ import type { DrawerProps, FormInstance } from "ant-design-vue";
 import { AddThree, Delete } from "@icon-park/vue-next";
 import { useStore } from "@/store/index"; 
 import {AliasDirType} from '@/model';
-import {saveconfigs} from '@/api/module/base';
+import {saveconfigs} from '@/api/module/base'; 
 
 export default defineComponent({
   components: {
     AddThree,
     Delete,
   },
-  props: {
-    visible: { type: Boolean },
+  props: {  
+    visible: {
+      type: Boolean,
+    }, 
+    parentNode:{
+      type:HTMLElement
+    }
   },
   emits: ["close"],
   setup(props, { emit }) {
@@ -187,13 +192,15 @@ export default defineComponent({
     const formRef = ref<FormInstance>();
 
     const onSubmit = () => {
-      formRef.value.validate().then(() => {
-        console.log(toRaw(allconfigs));
+      formRef.value.validate().then(() => { 
         //重载
-        saveconfigs({}).then((re)=>{
-          if (re.code==0) {
-              
-        store.InitConfig() 
+        saveconfigs(allconfigs).then((re)=>{
+          if (re.code==0) { 
+             store.InitConfig().then(()=>{
+                  globleConfig.$notice.success({message:"保存成功"})
+             })
+          }else{
+            globleConfig.$notice.error({message:re.msg})
           }
         })
       });
@@ -274,8 +281,7 @@ export default defineComponent({
       });
     };
 
-    const drawerContainer = document.getElementById("content");
-
+   
     return {
       placement,
       onClose,
@@ -287,8 +293,7 @@ export default defineComponent({
       removeversion,
       addversion,
       removelang,
-      addlang,
-      drawerContainer,
+      addlang,  
     };
   },
 });

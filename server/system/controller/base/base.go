@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-31 14:36:46
+ * @LastEditTime: 2022-09-01 14:11:53
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -27,6 +27,23 @@ func AllConfig(c *gin.Context) {
 	var thisConfig configService.ConfigService
 	data := thisConfig.InitConfig()
 	response.OkWithData(data, c)
+}
+
+//保存配置
+func SaveConfigs(c *gin.Context) {
+	var thisConfig configService.ConfigService
+	var r configService.InitConfigStruct
+	err, msg := request.Binding(&r, c)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	err = thisConfig.SaveConfigs(r)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	response.Ok(c)
 }
 
 //获取文档列表

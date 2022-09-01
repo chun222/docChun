@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-08-31 17:46:33
+ * @LastEditTime: 2022-09-01 16:23:59
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -40,6 +40,7 @@ type LineConfig struct {
 type SysFile struct {
 	Key          uint       `json:"key"`
 	Position     int64      `json:"position"`
+	Realname     string     `json:"realname"`
 	Name         string     `json:"name"`
 	Type         string     `json:"type"`
 	Size         float64    `json:"size"`
@@ -107,6 +108,7 @@ func (_this *MdService) getFileTree(path string, s *SysFile, rePath string) {
 				Key:          FileKey,
 				Position:     posintion,
 				Name:         name,
+				Realname:     f.Name(),
 				Size:         0,
 				Fullpath:     path + f.Name(),
 				Relativepath: f.Name(),
@@ -134,6 +136,7 @@ func (_this *MdService) getFileTree(path string, s *SysFile, rePath string) {
 					Key:          FileKey,
 					Position:     posintion,
 					Name:         name,
+					Realname:     str.BeforeLast(f.Name(), "."),
 					Size:         float64(f.Size()) / 1024, //返回kb
 					Fullpath:     path + f.Name(),
 					Relativepath: str.After(path, rePath) + f.Name(),

@@ -4,12 +4,12 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 11:29:58
+ * @LastEditTime: 2022-09-01 12:11:02
  * @FilePath: \pages\src\api\module\base.ts
  */
 
 import http from '../http'
-import { TypeDoclist, TypePath, TypeSearch } from '@/model';
+import { TypeDoclist, TypePath, TypeSearch, AliasDirType } from '@/model';
 
 //获取文档列表
 
@@ -59,7 +59,7 @@ export const allconfig = () => {
 }
 
 //保存配置 
-export const saveconfigs = (data: any) => {
+export const saveconfigs = (data: { projects: AliasDirType[]; versions: AliasDirType[], langs: AliasDirType[] }) => {
   return http.request({
     url: '/saveconfigs',
     data: data,

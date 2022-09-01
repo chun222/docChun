@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 状态很少无需解构
- * @LastEditTime: 2022-09-01 11:33:05
+ * @LastEditTime: 2022-09-01 13:50:50
  * @FilePath: \pages\src\store\index.ts
  */
 import { defineStore } from 'pinia'
@@ -45,9 +45,9 @@ export const useStore = defineStore('main', {
     async InitConfig() {
       return allconfig().then((re) => {
         if (re.code == 0) { 
-          this.versions = re.data.Version;
-          this.langs = re.data.Lang;
-          this.projects = re.data.Project;
+          this.versions = re.data.Versions;
+          this.langs = re.data.Langs;
+          this.projects = re.data.Projects;
 
           if (this.projects.length > 0) { 
             let cacheSet = router.currentRoute.value.params.project  
