@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-08-31 17:46:15
+ * @LastEditTime: 2022-09-02 11:11:56
  * @FilePath: \server\system\model\RequestModel\tools.go
  */
 package RequestModel
@@ -27,6 +27,15 @@ type Path struct {
 	InitData
 	Page    string `json:"page" binding:"required"`
 	Content string
+}
+
+type CreateFileAttr struct {
+	Path     string `json:"path"`
+	Parent   string `json:"parent" binding:"required"`
+	Position int64  `json:"position"`
+	Name     string `json:"name" binding:"required"`
+	Dir      string `json:"dir"`
+	Type     string `json:"type"`
 }
 
 type FileUpload struct {

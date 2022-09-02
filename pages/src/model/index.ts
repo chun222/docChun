@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 11:32:43
+ * @LastEditTime: 2022-09-02 10:18:56
  * @FilePath: \pages\src\model\index.ts
  */
 export type TypeDoclist = {
@@ -35,3 +35,5 @@ export interface AliasDirType {
     id?: number;
     readonly?: boolean;
 }
+ 
+ 

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 11:03:16
+ * @LastEditTime: 2022-09-02 11:32:00
  * @FilePath: \pages\src\components\layout\menu.vue
 -->
 <template>
@@ -91,6 +91,15 @@ export default defineComponent({
 
     watch(
       () => store.lang,
+      (v1, v2) => {
+        if (v2.dir != "") {
+          getMenu(true);
+        }
+      }
+    );
+
+     watch(
+      () => store.project,
       (v1, v2) => {
         if (v2.dir != "") {
           getMenu(true);

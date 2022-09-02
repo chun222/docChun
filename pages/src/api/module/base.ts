@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 12:11:02
+ * @LastEditTime: 2022-09-02 10:18:24
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -66,4 +66,14 @@ export const saveconfigs = (data: { projects: AliasDirType[]; versions: AliasDir
     method: 'post'
   })
 }
+
+//修改或新增文件菜单
+export const create_update_file = (data: any) => {
+  return http.request({
+    url: '/create_update_file',
+    data: data,
+    method: 'post'
+  })
+}
+
 

@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-09-01 14:11:53
+ * @LastEditTime: 2022-09-02 10:15:57
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -14,6 +14,8 @@ import (
 	"chunDoc/system/core/response"
 	"chunDoc/system/model/RequestModel"
 	"chunDoc/system/service/md"
+	"chunDoc/system/util/sys"
+	"fmt"
 
 	"chunDoc/system/service/configService"
 
@@ -65,7 +67,9 @@ func ReadContent(c *gin.Context) {
 		response.FailWithMessage(msg, c)
 		return
 	}
-	files := thisMd.ReadContent(r)
+	var basedir = sys.ExecutePath() + "/" //根目录
+	var mdDir = basedir + "md/"
+	files := thisMd.ReadContent(fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page))
 	response.OkWithData(files, c)
 }
 
@@ -76,8 +80,27 @@ func SaveContent(c *gin.Context) {
 		response.FailWithMessage(msg, c)
 		return
 	}
-	files := thisMd.SaveContent(r)
-	response.OkWithData(files, c)
+	err = thisMd.SaveContent(r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.Ok(c)
+}
+
+func CreateOrUpdateFile(c *gin.Context) {
+	var r RequestModel.CreateFileAttr
+	err, msg := request.Binding(&r, c)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	err = thisMd.CreateOrUpdateFileDir(r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.Ok(c)
 }
 
 //获取文档列表

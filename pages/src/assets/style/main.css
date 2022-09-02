@@ -9,6 +9,8 @@ html {
   margin-top: 5px;
 }
 
+.mt10 { margin-top: 10px;}
+
 #header {
   font-size: var(--chun-font-size-h5);
 }

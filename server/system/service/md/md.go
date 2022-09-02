@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-09-01 16:23:59
+ * @LastEditTime: 2022-09-02 11:29:23
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -13,18 +13,20 @@ package md
 import (
 	//"chunDoc/system/util/file"
 	"bufio"
+	"chunDoc/system/core/log"
 	"chunDoc/system/model/RequestModel"
 	"chunDoc/system/util/convert"
 	"chunDoc/system/util/file"
 	"chunDoc/system/util/str"
 	"chunDoc/system/util/sys"
 	"fmt"
-	"github.com/dlclark/regexp2"
 	"io"
 	"io/ioutil"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/dlclark/regexp2"
 	//"sort"
 )
 
@@ -38,21 +40,28 @@ type LineConfig struct {
 }
 
 type SysFile struct {
-	Key          uint       `json:"key"`
-	Position     int64      `json:"position"`
-	Realname     string     `json:"realname"`
-	Name         string     `json:"name"`
-	Type         string     `json:"type"`
-	Size         float64    `json:"size"`
-	CreateTime   string     `json:"create_time"`
-	Fullpath     string     `json:"fullpath"`
-	Relativepath string     `json:"relativepath"`
-	Child        []*SysFile `json:"children"`
+	Key          uint          `json:"key"`
+	Position     int64         `json:"position"`
+	Realname     string        `json:"realname"`
+	Name         string        `json:"name"`
+	Type         FileTypeAllow `json:"type"`
+	Size         float64       `json:"size"`
+	CreateTime   string        `json:"create_time"`
+	Fullpath     string        `json:"fullpath"`
+	Relativepath string        `json:"relativepath"`
+	Child        []*SysFile    `json:"children"`
 }
+
+type FileTypeAllow string
+
+const TypeDir FileTypeAllow = "dir"
+const TypeMd FileTypeAllow = "md"
 
 var basedir = sys.ExecutePath() + "/" //根目录
 var mdDir = "md/"
 var FileKey uint = 0
+
+var configFileName = "_.config"
 
 func (_this *MdService) List(r RequestModel.InitData) []*SysFile {
 	filesr := _this.getDirFiles(fmt.Sprintf("%s%s/%s/%s/", mdDir, r.Project, r.Version, r.Lang))
@@ -65,7 +74,7 @@ func (_this *MdService) getDirFiles(path string) []*SysFile {
 	f := SysFile{
 		Key:  FileKey,
 		Name: path,
-		Type: "dir",
+		Type: TypeDir,
 	}
 	_this.getFileTree(path, &f, path)
 	sortFileTree(f.Child)
@@ -92,11 +101,9 @@ func (_this *MdService) getFileTree(path string, s *SysFile, rePath string) {
 		FileKey++
 		if f.IsDir() {
 			name := f.Name() //默认为文件夹名称
-			configpath := path + "/" + f.Name() + "/_.config"
+			configpath := path + "/" + f.Name() + "/" + configFileName
 			if !file.CheckNotExist(configpath) {
 				lineRe := _this.readFileHead(configpath)
-
-				//fmt.Println("===", configpath, lineRe.Label, lineRe.Position)
 				if lineRe.Label != "" {
 					name = lineRe.Label
 				}
@@ -140,7 +147,7 @@ func (_this *MdService) getFileTree(path string, s *SysFile, rePath string) {
 					Size:         float64(f.Size()) / 1024, //返回kb
 					Fullpath:     path + f.Name(),
 					Relativepath: str.After(path, rePath) + f.Name(),
-					Type:         fileType,
+					Type:         TypeMd,
 					CreateTime:   f.ModTime().Format("2006-01-02 15:04:05"),
 				}
 				s.Child = append(s.Child, &fileNow)
@@ -180,7 +187,7 @@ func (_this *MdService) getFileList(path string) []SysFile {
 					Name:       name,
 					Size:       float64(f.Size()) / 1024, //返回kb
 					Fullpath:   path + f.Name(),
-					Type:       fileType,
+					Type:       TypeMd,
 					CreateTime: f.ModTime().Format("2006-01-02 15:04:05"),
 				}
 				result = append(result, fileNow)
@@ -265,7 +272,8 @@ func (_this *MdService) readConfigLine(line string) (*string, *int64) {
 
 //保存md内容
 func (_this *MdService) SaveContent(r RequestModel.Path) error {
-	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page)
+
+	fullpath := fmt.Sprintf("%s%s%s/%s/%s/%s", basedir, mdDir, r.Project, r.Version, r.Lang, r.Page)
 	fileone, err := os.Open(fullpath)
 	if err != nil {
 		return err
@@ -292,8 +300,8 @@ func (_this *MdService) SaveContent(r RequestModel.Path) error {
 }
 
 //读取md内容
-func (_this *MdService) ReadContent(r RequestModel.Path) string {
-	fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page)
+func (_this *MdService) ReadContent(fullpath string) string {
+	//fullpath := fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page)
 	re := ""
 	fileone, err := os.Open(fullpath)
 	if err != nil {
@@ -326,6 +334,100 @@ func (_this *MdService) ReadContent(r RequestModel.Path) string {
 
 }
 
+//创建文件或文件夹并赋予信息
+func (_this *MdService) createFileDir(r RequestModel.CreateFileAttr) error {
+	//文件不存在
+	fullpath := basedir + r.Parent + "/" + r.Dir
+	headinfo := fmt.Sprintf("label:%s\nposition:%d\n", r.Name, r.Position)
+	if file.CheckNotExist(fullpath) {
+		if r.Type == string(TypeMd) {
+			//创建文件并写入
+			fullpath = fullpath + ".md" //加后缀
+			err := ioutil.WriteFile(fullpath, []byte(headinfo), 0777)
+			if err != nil {
+
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			return nil
+		} else {
+			//文件夹
+			err := file.MkDir(fullpath)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			//创建文件信息
+			configPath := fullpath + "/" + configFileName
+			err = ioutil.WriteFile(configPath, []byte(headinfo), 0777)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			return nil
+		}
+	} else {
+		return fmt.Errorf("文件已存在")
+	}
+}
+
+func (_this *MdService) updateFileDir(r RequestModel.CreateFileAttr) error {
+	fullpath := basedir + r.Path
+	headinfo := fmt.Sprintf("label:%s\nposition:%d\n", r.Name, r.Position)
+
+	//文件存在
+	if !file.CheckNotExist(fullpath) {
+		//md修改前两行数据
+		if r.Type == string(TypeMd) {
+
+			mdContent := _this.ReadContent(fullpath)
+			//覆盖写入
+			filewrite, err := os.OpenFile(fullpath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			_, err = filewrite.WriteString(headinfo + mdContent)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			defer filewrite.Close()
+		} else {
+
+			configPath := fullpath + "/" + configFileName
+			//覆盖写入
+			filewrite, err := os.OpenFile(configPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			_, err = filewrite.WriteString(headinfo)
+			if err != nil {
+				log.Write(log.Error, err.Error())
+				return err
+			}
+			defer filewrite.Close()
+		}
+
+		return nil
+	} else {
+		return fmt.Errorf("文件不存在了,修改失败")
+	}
+}
+
+//创建或更新文件属性
+func (_this *MdService) CreateOrUpdateFileDir(r RequestModel.CreateFileAttr) error {
+
+	//根据path是否传入判断是创建还是更新
+	if r.Path == "" {
+		return _this.createFileDir(r)
+	} else {
+		//更新
+		return _this.updateFileDir(r)
+	}
+}
+
 //搜索
 
 type FindedResult struct {
@@ -336,7 +438,7 @@ type FindedResult struct {
 }
 
 func (_this *MdService) Search(lang string, version string, keyword string) []FindedResult {
-	files := _this.getFileList(fmt.Sprintf("%s%s/%s/", mdDir, version, lang))
+	files := _this.getFileList(fmt.Sprintf("%s%s%s/%s/", basedir, mdDir, version, lang))
 	var result []FindedResult
 	for _, vfile := range files {
 		f, err := os.Open(basedir + vfile.Fullpath)
