@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 10:40:58
+ * @LastEditTime: 2022-09-02 17:40:24
  * @FilePath: \pages\src\main.ts
  */
 import { createApp } from 'vue'
@@ -42,7 +42,7 @@ app.config.globalProperties.$message = message;
 app.config.globalProperties.$notice = notification;
 app.use(createPinia())
 //全局注册常用antd组件 
-registerComponents.forEach((v) => app.use(v))
+registerComponents.forEach((v) => app.use(v as any))
 //路由优先
 app.use(Router);
 app.mount('#app')

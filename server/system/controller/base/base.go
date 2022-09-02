@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-09-02 10:15:57
+ * @LastEditTime: 2022-09-02 16:07:24
  * @FilePath: \server\system\controller\base\base.go
  */
 package base
@@ -23,6 +23,8 @@ import (
 )
 
 var thisMd md.MdService
+var basedir = sys.ExecutePath() + "/" //根目录
+var mdDir = basedir + "md/"
 
 //所有配置
 func AllConfig(c *gin.Context) {
@@ -67,8 +69,7 @@ func ReadContent(c *gin.Context) {
 		response.FailWithMessage(msg, c)
 		return
 	}
-	var basedir = sys.ExecutePath() + "/" //根目录
-	var mdDir = basedir + "md/"
+
 	files := thisMd.ReadContent(fmt.Sprintf("%s%s/%s/%s/%s", mdDir, r.Project, r.Version, r.Lang, r.Page))
 	response.OkWithData(files, c)
 }
@@ -101,6 +102,38 @@ func CreateOrUpdateFile(c *gin.Context) {
 		return
 	}
 	response.Ok(c)
+}
+
+//删除  删除指定目录里的
+func RemoveFile(c *gin.Context) {
+	var r RequestModel.Remove
+	err, msg := request.Binding(&r, c)
+	if err != nil {
+		response.FailWithMessage(msg, c)
+		return
+	}
+	err = thisMd.RemoveFile(basedir + r.Path)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.Ok(c)
+}
+
+//上传文件
+func Upload(c *gin.Context) {
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	p, err := thisMd.Upload(file, c)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OkWithData(p, c)
 }
 
 //获取文档列表

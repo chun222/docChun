@@ -11,7 +11,7 @@
     "@icon-park/vue-next": "^1.4.2",
     "ant-design-vue": "^3.2.11",
     "axios": "^0.27.2",
-    "cherry-markdown": "^0.7.9",
+    "cherry-markdown": "^0.8.0",
     "dompurify": "^2.3.10",
     "echarts": "^4.6.0",
     "font-awesome": "^4.7.0",

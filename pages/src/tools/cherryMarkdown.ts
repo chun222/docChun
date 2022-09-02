@@ -4,40 +4,50 @@ import CherryEngine from 'cherry-markdown/dist/cherry-markdown.engine.core';
 import { pinyin } from "pinyin-pro";
 import echarts from "echarts";
 import { svgArr } from "@/view/index/svg";
+import { upload } from '@/api/module/base';
 // 自定义菜单
 const AddPrefixTemplate = Cherry.createMenuHook("AddPrefixTemplate", {
-    iconName: "icon-add-prefix",
-    onClick(selection: string) { 
+    name: "插入告示",
+    onClick(selection: string) {
+        console.log(selection);
+        return 'Prefix-' + selection;
     },
-    shortcutKeys: [], //快捷键集合, 用于注册键盘函数，当匹配的快捷键组合命中时，也会调用click函数
-    //子菜单
-    //name: String
-    // iconName： String
-    // noIcon: Boolean
-    // onClick: Function
-    subMenuConfig: [],
+    ///shortcutKeys: [], //快捷键集合, 用于注册键盘函数，当匹配的快捷键组合命中时，也会调用click函数
+    //子菜单 
+    subMenuConfig: [{
+        name: "菜单1",
+        noIcon: true,
+        onClick(selection:string) {
+            console.log(selection);
+            return 'Prefix-' + selection;
+          },
+        
+    }],
 });
 
 
-
-
 const CustomHookA = Cherry.createSyntaxHook('codeBlock', Cherry.constants.HOOKS_TYPE_LIST.PAR, {
-    makeHtml(str) {
-      console.warn('custom hook', 'hello');
-      return str;
+    makeHtml(str: string) {
+        console.warn('custom hook', 'hello');
+        return str;
     },
-    rule(str) {
-      const regex = {
-        begin: '',
-        content: '',
-        end: '',
-      };
-      regex.reg = new RegExp(regex.begin + regex.content + regex.end, 'g');
-      return regex;
+    rule(str: string) {
+        const regex: {
+            begin: string;
+            content: string;
+            end: string;
+            reg?: any
+        } = {
+            begin: '',
+            content: '',
+            end: '',
+        };
+        regex.reg = new RegExp(regex.begin + regex.content + regex.end, 'g');
+        return regex;
     },
-  });
+});
 
-const cherryEngineInstance = new CherryEngine(null) as any;  
+const cherryEngineInstance = new CherryEngine(null) as any;
 /*
  *  tips Hook
     语法 Hook 类型，仅可选 SEN（行内语法）、PAR（段落语法）
@@ -45,14 +55,14 @@ const cherryEngineInstance = new CherryEngine(null) as any;
 const BlockTipsHook = Cherry.createSyntaxHook(
     "blockTipsHook",
     Cherry.constants.HOOKS_TYPE_LIST.PAR,
-    { 
+    {
         // 开启缓存，用于保护内容
-       needCache: true,
-       // 预处理文本，避免受影响,生命周期，返回替换后的字符串
+        needCache: true,
+        // 预处理文本，避免受影响,生命周期，返回替换后的字符串
         beforeMakeHtml(str: string) {
-            return str.replace(this.RULE.reg, (match, code) => { 
+            return str.replace(this.RULE.reg, (match, code) => {
                 //获取匹配内部内容
-                const content =  cherryEngineInstance.makeHtml(match.replace(/^:(info|success|warning|error):[\s\n]|::$/g, ""))
+                const content = cherryEngineInstance.makeHtml(match.replace(/^:(info|success|warning|error):[\s\n]|::$/g, ""))
 
                 const lineCount = (match.match(/\n/g) || []).length;
                 const sign = this.$engine.md5(match);
@@ -61,14 +71,14 @@ const BlockTipsHook = Cherry.createSyntaxHook(
                     <div class="tip-header">${svgArr[code] || ""} <span>${code}</span></div>
                     <p> ${content}</p>
                     </div></div>`;
-                   
+
                 return this.pushCache(html, sign, lineCount);
- 
+
             });
         },
         //处理成html之后的
-        makeHtml(str: string) { 
-             return str
+        makeHtml(str: string) {
+            return str
         },
         rule(str: string) {
             return {
@@ -113,18 +123,21 @@ const BlockSensitiveWordsHook = Cherry.createSyntaxHook(
     }
 );
 
-export class CherryMarkdownConfig {  
-    static cherryInstance:any
-    BasicConfig:any
-    constructor(BasicConfig?:any){
+export class CherryMarkdownConfig {
+    static cherryInstance: any
+    BasicConfig: any
+    constructor(BasicConfig?: any) {
         let that = this
-       
-        this.BasicConfig =  Object.assign({
+
+        this.BasicConfig = Object.assign({
             id: "markdown",
-            fileUpload(file, callback) {
+            fileUpload(file: File, callback: (url: string) => void) {
                 console.log("上传了：", file);
-                callback("");
-            }, 
+                upload({ file: file }).then((re) => {
+                    callback(import.meta.env.VITE_API_URL + re.data);
+                })
+
+            },
             externals: {
                 echarts: echarts,
                 // katex:katex,
@@ -141,7 +154,7 @@ export class CherryMarkdownConfig {
                 syntax: {
                     codeBlock: {
                         theme: 'twilight',
-                      },
+                    },
                     codeBlock2: {
                         theme: "dark", // 默认为深色主题
                         wrap: true, // 超出长度是否换行，false则显示滚动条
@@ -204,7 +217,7 @@ export class CherryMarkdownConfig {
                         syntaxClass: CustomHookA,
                         force: false,
                         after: 'br',
-                      }, //代码行号
+                    }, //代码行号
                     // 注入编辑器的自定义语法中
                     BlockSensitiveWordsHook: {
                         syntaxClass: BlockSensitiveWordsHook,
@@ -233,7 +246,7 @@ export class CherryMarkdownConfig {
                     "|",
                     "list",
                     {
-                        insert: [
+                        insert: [ 
                             "image",
                             "audio",
                             "video",
@@ -254,7 +267,7 @@ export class CherryMarkdownConfig {
                     "settings",
                     "switchModel",
                     "codeTheme",
-                    "export", 
+                    "export",
                 ],
                 bubble: [
                     "bold",
@@ -273,14 +286,14 @@ export class CherryMarkdownConfig {
                 customMenu: {
                     // 注入编辑器的菜单中
                     // 对象 key 可以作为菜单项的名字（需要保证唯一），在上方的配置中使用
-                    addPrefix: AddPrefixTemplate, 
+                    addPrefix: AddPrefixTemplate,
                 },
             },
             editor: {
                 codemirror: {
                     // depend on codemirror theme name: https://codemirror.net/demo/theme.html
                     // 自行导入主题文件: `import 'codemirror/theme/<theme-name>.css';`
-                   //  theme: "default",
+                    //  theme: "default",
                 },
                 // 编辑器的高度，默认100%，如果挂载点存在内联设置的height则以内联样式为主
                 height: "100%",
@@ -293,7 +306,7 @@ export class CherryMarkdownConfig {
                 convertWhenPaste: true,
             },
             previewer: {
-                dom: false, 
+                dom: false,
                 // 是否启用预览区域编辑能力（目前支持编辑图片尺寸、编辑表格内容）
                 enablePreviewerBubble: true,
             },
@@ -302,19 +315,19 @@ export class CherryMarkdownConfig {
             callback: {
                 changeString2Pinyin: pinyin,
             },
-        },BasicConfig)
+        }, BasicConfig)
 
-        
+
     }
 
 
     //实现不了,获取不到内容
-     private MenuSaveHook:any  = Cherry.createMenuHook("save", {
-        name:"save",  
-       // iconName: " fa fa-save",
-        onClick(selection: string) {  
-           // return "Prefix-" + selection;
-        }, 
+    private MenuSaveHook: any = Cherry.createMenuHook("save", {
+        name: "save",
+        // iconName: " fa fa-save",
+        onClick(selection: string) {
+            // return "Prefix-" + selection;
+        },
         shortcutKeys: [], //快捷键集合, 用于注册键盘函数，当匹配的快捷键组合命中时，也会调用click函数
         //子菜单
         //name: String

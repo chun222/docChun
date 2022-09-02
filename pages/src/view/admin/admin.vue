@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-01 11:31:15
+ * @LastEditTime: 2022-09-02 17:38:25
  * @FilePath: \pages\src\view\admin\admin.vue
 -->
 <template>
@@ -72,7 +72,7 @@ export default {
 
     let cherryInstance: any;
 
-    let IntervalKey: NodeJS.Timer;
+    let IntervalKey: any;
 
     //当前页面
     let curpage: TypePath = {

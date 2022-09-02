@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:markdown
- * @LastEditTime: 2022-09-02 11:29:23
+ * @LastEditTime: 2022-09-02 16:33:55
  * @FilePath: \server\system\service\md\md.go
  */
 
@@ -13,6 +13,7 @@ package md
 import (
 	//"chunDoc/system/util/file"
 	"bufio"
+	"chunDoc/system/core/config"
 	"chunDoc/system/core/log"
 	"chunDoc/system/model/RequestModel"
 	"chunDoc/system/util/convert"
@@ -22,11 +23,15 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"os"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/dlclark/regexp2"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	//"sort"
 )
 
@@ -426,6 +431,38 @@ func (_this *MdService) CreateOrUpdateFileDir(r RequestModel.CreateFileAttr) err
 		//更新
 		return _this.updateFileDir(r)
 	}
+}
+
+//删除文件
+func (_this *MdService) RemoveFile(path string) error {
+	return os.RemoveAll(path)
+}
+
+//上传文件
+func (_this *MdService) Upload(r *multipart.FileHeader, c *gin.Context) (string, error) {
+	// 上传文件到指定的路径
+	if r.Size > int64(config.Instance().Upload.MaxSize*1024*1024) {
+		return "", fmt.Errorf("file too large")
+	}
+	dateDir := time.Now().Format("20060102")
+	uploaddir := fmt.Sprintf("%s%s/%s/", basedir, config.Instance().Upload.Path, dateDir)
+	file.MkDir(uploaddir)
+	uid := uuid.New().String()
+	filename := uid + "." + str.AfterLast(r.Filename, ".")
+	filepath := uploaddir + filename
+	if file.CheckNotExist(filepath) {
+		err := c.SaveUploadedFile(r, filepath)
+		if err != nil {
+			return "", err
+		} else {
+			//返回路径
+			returnPath := fmt.Sprintf("upload/%s/%s", dateDir, filename)
+			return returnPath, nil
+		}
+	} else {
+		return "", fmt.Errorf("has exist file")
+	}
+
 }
 
 //搜索

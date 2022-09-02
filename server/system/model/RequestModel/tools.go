@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-09-02 11:11:56
+ * @LastEditTime: 2022-09-02 15:02:57
  * @FilePath: \server\system\model\RequestModel\tools.go
  */
 package RequestModel
@@ -15,6 +15,10 @@ type Search struct {
 	Lang    string `json:"lang" binding:"required"`
 	Version string `json:"version" binding:"required"`
 	Keyword string `json:"keyword" binding:"required"`
+}
+
+type Remove struct {
+	Path string `json:"path" binding:"required"`
 }
 
 type InitData struct {
@@ -39,7 +43,5 @@ type CreateFileAttr struct {
 }
 
 type FileUpload struct {
-	File    multipart.FileHeader `form:"file" json:"file"`
-	Path    []string             `form:"path[]" json:"path"`
-	Dirname string               `json:"dirname"` //新建文件夹用到
+	File multipart.FileHeader `form:"file" json:"file"`
 }

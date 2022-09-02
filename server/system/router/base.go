@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc:
- * @LastEditTime: 2022-09-02 10:16:52
+ * @LastEditTime: 2022-09-02 16:09:27
  * @FilePath: \server\system\router\base.go
  */
 
@@ -26,6 +26,10 @@ func BaseRouter(r *gin.Engine) {
 
 	r.POST("/savecontent", base.SaveContent)
 	r.POST("/create_update_file", base.CreateOrUpdateFile)
+
+	r.POST("/removefile", base.RemoveFile)
+
+	r.POST("/uploadfile", base.Upload)
 
 	// authG := r.Group("tools")
 	// //只需要登录

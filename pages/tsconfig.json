@@ -14,6 +14,7 @@
     "skipLibCheck": true, 
     "allowJs":true,
     "baseUrl": "./", 
+    "types": [ "vite/client" ],
     "paths": {
       "@": ["src"],
       "@/*": ["src/*"]  

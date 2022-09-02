@@ -4,11 +4,11 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 全局注册组件
- * @LastEditTime: 2022-09-01 15:42:32
+ * @LastEditTime: 2022-09-02 14:24:29
  * @FilePath: \pages\src\tools\registerComponents.ts
  */
 
 //按需引入
-import { Button,Layout,Menu,Space,Row,Col,Spin,Switch,Input,Modal,Dropdown,Empty,Drawer,Select,FormItem,Form,Divider,Tree ,InputNumber} from 'ant-design-vue';
+import { Button,Layout,Menu,Space,Row,Col,Spin,Switch,Input,Modal,Dropdown,Empty,Drawer,Select,FormItem,Form,Divider,Tree ,InputNumber,Alert} from 'ant-design-vue';
 
-export default [Button,Layout,Menu,Space,Row,Col,Spin,Switch,Input,Modal,Dropdown,Empty,Drawer,Select,FormItem,Form,Divider,Tree,InputNumber]
+export default [Button,Layout,Menu,Space,Row,Col,Spin,Switch,Input,Modal,Dropdown,Empty,Drawer,Select,FormItem,Form,Divider,Tree,InputNumber,Alert]

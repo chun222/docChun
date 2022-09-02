@@ -19,8 +19,8 @@ notification.config({
 })
 
 
-const baseurl = "http://localhost:8024/";
-
+const baseurl = import.meta.env.VITE_API_URL;
+console.log(baseurl,"baseurl");
 class Http {
   // axios 实例
   instance: AxiosInstance;

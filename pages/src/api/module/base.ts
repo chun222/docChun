@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-02 10:18:24
+ * @LastEditTime: 2022-09-02 16:09:38
  * @FilePath: \pages\src\api\module\base.ts
  */
 
@@ -71,6 +71,27 @@ export const saveconfigs = (data: { projects: AliasDirType[]; versions: AliasDir
 export const create_update_file = (data: any) => {
   return http.request({
     url: '/create_update_file',
+    data: data,
+    method: 'post'
+  })
+}
+
+export const removefile = (data: { path: string }) => {
+  return http.request({
+    url: '/removefile',
+    data: data,
+    method: 'post'
+  })
+}
+
+
+//上传文件
+export const upload = (data: { file: File }) => {
+  return http.request({
+    headers:{
+      'Content-Type': 'multipart/form-data',
+    },
+    url: '/uploadfile',
     data: data,
     method: 'post'
   })

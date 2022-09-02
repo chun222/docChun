@@ -4,7 +4,7 @@
  * @gitee: https://gitee.com/chun22222222
  * @github: https://github.com/chun222
  * @Desc: 
- * @LastEditTime: 2022-09-02 11:16:53
+ * @LastEditTime: 2022-09-02 14:24:57
  * @FilePath: \pages\src\components\layout\drawer\menus.vue
 -->
 <template>
@@ -22,10 +22,10 @@
 
     <a-row :gutter="20">
       <a-col span="24">
-          <a-button type="dashed" block @click="setbaseDir">
-            <add-three theme="outline" />
-            根目录下创建
-          </a-button> 
+        <a-button type="dashed" block @click="setbaseDir">
+          <add-three theme="outline" />
+          根目录下创建
+        </a-button>
       </a-col>
       <a-col span="24" class="mt10">
         <a-form ref="formRef" :model="formState" autocomplete="off">
@@ -47,8 +47,7 @@
             <a-input
               v-model:value="formState.dir"
               placeholder="请选择左侧菜单"
-              
-            :readonly="formState.typereadonly"
+              :readonly="formState.typereadonly"
             />
           </a-form-item>
 
@@ -87,54 +86,56 @@
               placeholder="请选择左侧菜单"
             />
           </a-form-item>
-
-          
-           
         </a-form>
-          <a-button   type="primary"  block @click="onSubmit">提交</a-button>
+        <a-button type="primary" block @click="onSubmit">提交</a-button>
       </a-col>
 
       <a-col span="24">
+       
         <a-divider orientation="left">目录列表</a-divider>
-        
+     <a-alert
+          message="右键点击列表可以删除或添加文件" 
+          type="info"
+          show-icon
+          closable
+        />
         <div class="configmenutree">
-        <a-tree
-          @select="selectTree"
-          :autoExpandParent="true"
-          :tree-data="treeData"
-          show-icon 
-          default-expand-all
-        >
-        <template #icon="{ type }">
-      <template v-if="type === 'dir'">
-       <folder-open theme="outline" />
-      </template> 
-      <template v-else>
-        <file-editing-one  theme="outline"/>
-      </template>
-    </template>
-
-          <template #title="{ fullpath, name, type }">
-            <a-dropdown :trigger="['contextmenu']">
-              <span>{{ name }}</span>
-              <template #overlay>
-                <a-menu
-                  @click="
-                    ({ key: menuKey }) =>
-                      onContextMenuClick(fullpath, name, menuKey)
-                  "
+          <a-tree
+            @select="selectTree"
+            :autoExpandParent="true"
+            :tree-data="treeData"
+            show-icon
+            default-expand-all
+          >
+            <template #title="{ fullpath, name, type }">
+              <a-dropdown :trigger="['contextmenu']">
+                <span>
+                  <template v-if="type === 'dir'">
+                    <folder-open theme="outline" />
+                  </template>
+                  <template v-else>
+                    <file-editing-one theme="outline" />
+                  </template>
+                  {{ name }}</span
                 >
-                  <a-menu-item v-if="type == 'dir'" :key="1">
-                    <add-three theme="outline" /> 目录下添加</a-menu-item
+                <template #overlay>
+                  <a-menu
+                    @click="
+                      ({ key: menuKey }) =>
+                        onContextMenuClick(fullpath, name, menuKey)
+                    "
                   >
-                  <a-menu-item :key="2"
-                    ><delete theme="outline" /> 删除</a-menu-item
-                  >
-                </a-menu>
-              </template>
-            </a-dropdown>
-          </template>
-        </a-tree>
+                    <a-menu-item v-if="type == 'dir'" :key="1">
+                      <add-three theme="outline" /> 目录下添加</a-menu-item
+                    >
+                    <a-menu-item :key="2"
+                      ><delete theme="outline" /> 删除</a-menu-item
+                    >
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </template>
+          </a-tree>
         </div>
       </a-col>
     </a-row>
@@ -153,17 +154,24 @@ import {
   getCurrentInstance,
 } from "vue";
 import type { DrawerProps, FormInstance } from "ant-design-vue";
-import { AddThree, Delete,FolderOpen,FileEditingOne } from "@icon-park/vue-next";
+
+import { Modal } from "ant-design-vue";
+import {
+  AddThree,
+  Delete,
+  FolderOpen,
+  FileEditingOne,
+} from "@icon-park/vue-next";
 import { useStore } from "@/store/index";
 import { AliasDirType } from "@/model";
-import { create_update_file } from "@/api/module/base";
+import { create_update_file, removefile } from "@/api/module/base";
 
 export default defineComponent({
   components: {
     AddThree,
     Delete,
     FolderOpen,
-    FileEditingOne
+    FileEditingOne,
   },
   props: {
     visible: {
@@ -192,16 +200,15 @@ export default defineComponent({
 
     const onSubmit = () => {
       formRef.value.validate().then(() => {
-        create_update_file(formState).then((re)=>{ 
-              if (re.code==0) { 
-             store.InitMenus().then(()=>{
-                  globleConfig.$notice.success({message:"保存成功"})
-             })
-          }else{
-            globleConfig.$notice.error({message:re.msg})
-          } 
-            
-        })
+        create_update_file(formState).then((re) => {
+          if (re.code == 0) {
+            store.InitMenus().then(() => {
+              globleConfig.$notice.success({ message: "保存成功" });
+            });
+          } else {
+            globleConfig.$notice.error({ message: re.msg });
+          }
+        });
       });
     };
     const onClose = () => {
@@ -215,12 +222,28 @@ export default defineComponent({
     ) => {
       console.log(`fullpath: ${fullpath},name: ${name}, menuKey: ${menuKey}`);
       if (menuKey == 1) {
-        formState.path = ""
+        formState.path = "";
         formState.parent = fullpath;
         formState.parentname = name;
         formState.typereadonly = false;
       } else if (menuKey == 2) {
         //删除
+        Modal.confirm({
+          okText: "确认",
+          cancelText: "取消",
+          title: "确认删除吗?",
+          onOk: () => {
+            removefile({ path: fullpath }).then((re) => {
+              if (re.code == 0) {
+                store.InitMenus().then(() => {
+                  globleConfig.$notice.success({ message: "删除成功" });
+                });
+              } else {
+                globleConfig.$notice.error({ message: re.msg });
+              }
+            });
+          },
+        });
       }
     };
 
@@ -231,7 +254,9 @@ export default defineComponent({
       formState.dir = v2.node.realname;
       formState.type = v2.node.type;
       formState.position = v2.node.position;
-      formState.parent = v2.node.parent ? v2.node.parent.node.fullpath : `md/${store.project.dir}/${store.version.dir}/${store.lang.dir}`;
+      formState.parent = v2.node.parent
+        ? v2.node.parent.node.fullpath
+        : `md/${store.project.dir}/${store.version.dir}/${store.lang.dir}`;
       formState.parentname = v2.node.parent ? v2.node.parent.node.name : "";
     };
 
@@ -240,7 +265,7 @@ export default defineComponent({
     const treeData = computed(() => store.menus);
 
     const setbaseDir = () => {
-       formState.path = ""
+      formState.path = "";
       formState.parent = `md/${store.project.dir}/${store.version.dir}/${store.lang.dir}`;
       formState.parentname = "";
       formState.typereadonly = false;
