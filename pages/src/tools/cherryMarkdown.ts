@@ -237,7 +237,7 @@ export class CherryMarkdownConfig {
             },
             toolbars: {
                 toolbar: [
-                   "addPrefix",
+                  // "addPrefix",
                     "bold",
                     "italic",
                     "strikethrough",
@@ -285,7 +285,7 @@ export class CherryMarkdownConfig {
                     "size",
                     "color",
                 ], // array or false
-                sidebar: ["mobilePreview", "copy","addPrefix"],
+                sidebar: ["mobilePreview", "copy"],
                 float: ["addPrefix",'h1', 'h2', 'h3', '|', 'checklist', 'quote', 'quickTable', 'code',], // array or false
                 customMenu: {
                     // 注入编辑器的菜单中
