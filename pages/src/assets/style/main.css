@@ -19,10 +19,11 @@ html {
   height: 40px;
 }
 
-.ant-layout-sider {
-  border-right: 1px solid var(--chun-gray-2);
+.ant-layout-sider { 
   box-sizing: border-box;
 }
+
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left { border-right: none;}
  
 .toprightNavHover {
   display: flex;
@@ -108,6 +109,8 @@ html {
 
 .doc-previewer {
   width: 100% !important;
+  max-width: 1200px;
+  margin: auto;
   display: flex;
   position: relative !important;
   padding: 10px !important;

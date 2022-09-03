@@ -1,5 +1,7 @@
 :root {
   --light-bg: #ffffff;
+  --dark-bg:#0d1117;
+  --dark-bg-front:#161b22;
   --light-footer-bg: #1d202e;
   --chun-font-size-h1: 34px;
   --chun-font-size-h2: 30px;

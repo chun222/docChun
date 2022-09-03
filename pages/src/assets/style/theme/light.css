@@ -32,6 +32,10 @@
     background: var(--light-bg);
 }
 
+.light .ant-layout-sider {
+    border-right: 1px solid var(--chun-gray-2); 
+  }
+
 .light #header .ant-input-affix-wrapper {
     background-color: #e0e0e0;
     color: rgb(66, 66, 66);
@@ -51,7 +55,7 @@
     background-color: var(--light-footer-bg);
 }
 
-.ant-switch {
+.light .ant-switch {
     background-color: var(--chun-gray-1);
 }
 
