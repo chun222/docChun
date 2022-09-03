@@ -7,6 +7,7 @@ import { svgArr } from "@/view/index/svg";
 import { upload } from '@/api/module/base';
 // 自定义菜单
 const AddPrefixTemplate = Cherry.createMenuHook("AddPrefixTemplate", {
+    iconName: " fa fa-save",
     name: "插入告示",
     onClick(selection: string) {
         console.log(selection);
@@ -14,15 +15,15 @@ const AddPrefixTemplate = Cherry.createMenuHook("AddPrefixTemplate", {
     },
     ///shortcutKeys: [], //快捷键集合, 用于注册键盘函数，当匹配的快捷键组合命中时，也会调用click函数
     //子菜单 
-    subMenuConfig: [{
-        name: "菜单1",
-        noIcon: true,
-        onClick(selection:string) {
-            console.log(selection);
-            return 'Prefix-' + selection;
-          },
+    // subMenuConfig: [{
+    //     name: "菜单1",
+    //     noIcon: true,
+    //     onClick(selection:string) {
+    //         console.log(selection);
+    //         return 'Prefix-' + selection;
+    //       },
         
-    }],
+    // }],
 });
 
 
@@ -147,7 +148,7 @@ export class CherryMarkdownConfig {
             engine: {
                 global: {
                     urlProcessor(url, srcType) {
-                        console.log(`url-processor`, url, srcType);
+                        //console.log(`url-processor`, url, srcType);
                         return url;
                     },
                 },
@@ -187,7 +188,8 @@ export class CherryMarkdownConfig {
                     },
                     mathBlock: {
                         engine: "MathJax", // katex或MathJax
-                        src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js", // 如果使用MathJax plugins，则需要使用该url通过script标签引入
+                          //src:"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js",
+                         src: "./MathJax/tex-svg.js", // 如果使用MathJax plugins，则需要使用该url通过script标签引入 https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js
                     },
                     inlineMath: {
                         engine: "MathJax", // katex或MathJax
@@ -235,7 +237,7 @@ export class CherryMarkdownConfig {
             },
             toolbars: {
                 toolbar: [
-                    "addPrefix",
+                   "addPrefix",
                     "bold",
                     "italic",
                     "strikethrough",
@@ -270,7 +272,8 @@ export class CherryMarkdownConfig {
                     "export",
                 ],
                 bubble: [
-                    "bold",
+                    "addPrefix",
+                   // "bold",
                     "italic",
                     "underline",
                     "strikethrough",
@@ -282,7 +285,8 @@ export class CherryMarkdownConfig {
                     "size",
                     "color",
                 ], // array or false
-                sidebar: ["mobilePreview", "copy"],
+                sidebar: ["mobilePreview", "copy","addPrefix"],
+                float: ["addPrefix",'h1', 'h2', 'h3', '|', 'checklist', 'quote', 'quickTable', 'code',], // array or false
                 customMenu: {
                     // 注入编辑器的菜单中
                     // 对象 key 可以作为菜单项的名字（需要保证唯一），在上方的配置中使用
