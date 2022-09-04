@@ -80,6 +80,12 @@
     color: #c9d1d9;
 }
 
+.dark div[data-type=codeBlock] pre[class*=language-] {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #1e242e !important; 
+}
+
 .dark .cherry-previewer table tbody>tr:nth-child(2n+1)>td,
 .dark .cherry-previewer table tbody>tr:nth-child(2n+1)>th {
     background-color: #161b22;
@@ -96,8 +102,18 @@
     font-weight: bold;
     background-color: #111111;
 }
-
+.dark figure { background-color: #1e242e ;}
  
+.dark  .node rect, .dark  .node circle,.dark  .node ellipse, .dark  .node polygon, .dark  .node path {
+    fill: #1e242e !important;
+    stroke: #111111 !important;
+}
+
+.dark svg .label { color: #c9d1d9  !important;}
+
+.dark svg .edgeLabel { background-color: #242511 !important;}
+.dark svg .label text,.dark svg span {  fill: #1e242e !important;  color:#c9d1d9  !important; }
+.dark svg  .edgeLabel rect  { fill: none !important;}
 .dark .cherry-markdown .cherry-table-container .cherry-table th,.dark .cherry-markdown .cherry-table-container .cherry-table td {
     padding: 5px;
     border: 1px solid #30363d; 
@@ -127,6 +143,8 @@
     border-color: var(--chun-success-color);
     color: var(--chun-success-color);
 }
+
+
 
 .dark .cherry-previewer .warning {
     background-color: #312b1d;
