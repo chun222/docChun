@@ -1,7 +1,8 @@
 # 简介
 
-chundoc是一款部署容易，可快速创建在线markdown文档网站的系统。
-
+chundoc是一款部署容易，可快速创建在线markdown文档网站的系统。 
+[下载发布版](https://github.com/chun222/docChun/releases)
+ 
 ## 初衷
 优秀的文档工具有很多，但对小白来说部署起来还是有困难，然后chundoc就诞生（缝合）了，站在巨人们的肩膀上~
 

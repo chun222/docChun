@@ -6,7 +6,7 @@ import echarts from "echarts";
 import { svgArr } from "@/view/index/svg";
 import { upload } from '@/api/module/base';
 // 自定义菜单
-const AddPrefixTemplate = Cherry.createMenuHook("AddPrefixTemplate", {
+const AddPrefixTemplate = Cherry.createMenuHook("AddPrefix", {
     iconName: " fa fa-save",
     name: "插入告示",
     onClick(selection: string) {
@@ -271,8 +271,7 @@ export class CherryMarkdownConfig {
                     "codeTheme",
                     "export",
                 ],
-                bubble: [
-                    "addPrefix",
+                bubble: [ 
                    // "bold",
                     "italic",
                     "underline",
@@ -286,7 +285,7 @@ export class CherryMarkdownConfig {
                     "color",
                 ], // array or false
                 sidebar: ["mobilePreview", "copy"],
-                float: ["addPrefix",'h1', 'h2', 'h3', '|', 'checklist', 'quote', 'quickTable', 'code',], // array or false
+                float: ['h1', 'h2', 'h3', '|', 'checklist', 'quote', 'quickTable', 'code',], // array or false
                 customMenu: {
                     // 注入编辑器的菜单中
                     // 对象 key 可以作为菜单项的名字（需要保证唯一），在上方的配置中使用

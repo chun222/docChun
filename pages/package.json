@@ -1,7 +1,7 @@
 {
   "name": "pages",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "scripts": {
     "serve": "vite",
     "build": "vue-tsc --noEmit && vite build",
