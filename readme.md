@@ -32,6 +32,12 @@ chundoc是一款部署容易，可快速创建在线markdown文档网站的系�
 
 ## 预览
 
+![image](https://user-images.githubusercontent.com/57406062/188342241-87c1921f-9677-4806-9655-ab7cae06fba1.png)
+
+![image](https://user-images.githubusercontent.com/57406062/188342259-4c5652da-1267-4447-aa3b-06e7256ff2a6.png)
+
+![image](https://user-images.githubusercontent.com/57406062/188342289-99726aa9-e75d-4a57-a164-27888f0b7879.png)
+
 
 # 部署
 只需要双击exe即可，初次运行会生成配置，按需修改配置后再次启动即可。
